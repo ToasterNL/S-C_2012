@@ -1,0 +1,74 @@
+\documentclass[11pt]{article}
+\usepackage{a4wide, graphicx, fancyhdr, wrapfig, tabularx, amsmath, amssymb, hyperref, color, verbatim, nameref}
+\usepackage[english]{babel}
+\definecolor{linkcolour}{rgb}{0,0.2,0.6}
+\hypersetup{colorlinks,breaklinks,urlcolor=linkcolour, linkcolor=linkcolour}
+
+%----------------------- Macros and Definitions --------------------------
+
+\setlength\headheight{20pt}\usepackage{}
+\addtolength\topmargin{-10pt}
+%\addtolength\footskip{20pt}
+
+\fancypagestyle{plain}{%
+\fancyhf{}
+\fancyfoot[RO,LE]{\sffamily\bfseries\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[RO,LE]{\sffamily\bfseries\thepage}
+\fancyhead[RO,LE]{\textsc{}}
+\fancyhead[LO,RE]{\emph{}}
+\renewcommand{\headrulewidth}{1pt}
+\renewcommand{\footrulewidth}{0pt}
+\newcommand{\tab}{\hspace*{2em}}
+
+\newcommand{\tocheck}[1]{{\bf !?: #1 :!?}}
+\newcommand{\OBA}{Online behavioural advertising }
+\newcommand{\oba}{online behavioural advertising }
+\newcommand{\ePD}{ePrivacy Directive }
+\newcommand{\DPD}{Data Protection Directive }
+
+\frenchspacing
+
+%-------------------------------- Title ----------------------------------
+
+\title{\textbf{Semantiek \& Correctheid \\ \emph{Opzet werkstuk: Foo}}}
+\author{
+	Mark Vijfvinkel, 4077148
+	\and Aram Verstegen, xxxxxxx
+}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+
+\section{Introductie Foo}
+
+Welke taalconstructies gaan jullie beschrijven? Dus niet "We doen iets met Pascal", maar graag een expliciete beschrijving welke constructies uit Pascal bekeken zullen worden. Zeker als jullie een taal hebben gekozen die niet bij iedereen bekend zal zijn, graag een korte inleiding over die taal.
+
+\section{Semantische Technieken}
+
+Welke semantische technieken en concepten denken jullie te gaan gebruiken? Zijn dit uitsluitend standaardtechnieken? Moeten jullie de bestaande technieken uitbreiden? Moeten jullie misschien hele nieuwe technieken bedenken? Zo ja, hoe gaan die (uitbreidingen van) technieken er dan ongeveer uitzien?
+
+\section{Nadere Analyse}
+
+Welke nadere analyses zijn jullie van plan om met jullie semantiekregels uit te voeren? Hebben jullie een bepaalde eigenschap in gedachten? Of gaan jullie een case study doen met jullie semantiekregels? Wees zo concreet mogelijk en beschrijf die eigenschappen of case studies.
+
+\section{Lastige Punten}
+
+Verwachten jullie (nu al) lastige punten? Geef die dan vast aan.
+
+\section{Tijdsplanning}
+
+Wat is jullie tijdsplanning voor de standaardonderdelen syntactische beschrijving, semantische beschrijving en nadere analyse?
+
+
+%\bibliographystyle{plain} % amsalpha
+%\bibliography{}
+
+\end{document}
