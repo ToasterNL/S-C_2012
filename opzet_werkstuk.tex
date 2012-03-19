@@ -49,15 +49,61 @@
 
 \section{Introductie Foo}
 
+Foo is een esoterische taal gebaseerd op BrainFuck. Het is in 2008 ontwikkeld door "Feky". De taal maakt gebruik van een eendimensionale array in combinatie met een pointer. Verder zijn er een stack en kopieeroperaties aanwezig. De stack wordt voornamelijk gebruikt voor rekenkundige operaties en loops. Programma's in Foo stoppen als de interpreter aan het einde van het bestand komt (EOF).
+
+\begin{center}
+    \begin{tabular}{ | l | p{15cm} |}
+    \hline
+    Teken & Betekenis \\ \hline
+    " & Alles tussen deze tekens wordt afgedrukt naar stdout. \\ \hline
+    \& & Zet de waarde van de geselecteerde cel in de array om naar een andere waarde. Gevolgd door een nummer (\&55) levert dit de waarde 55 in de cel. Zonder nummer wordt er een waarde van de stack gepopped. \\ \hline
+    @ & Vergelijkbaar met '\&' alleen wordt er een waarde op de stack gepushed. \\ \hline
+    < & Verlaag de array pointer met één. \\ \hline
+    > & Verhoog de array pointer met één. \\ \hline
+    \$ & Drukt een enkele waarde af. Er zijn drie mogelijkheden: druk af als integer (i), druk af als hexadecimaal integer (h) en als ASCII karakter (c). Als er niks wordt gespecificeerd wordt er een foutmelding gegeven door de interpreter. \\ \hline
+    +, -, *, /, \% & Rekenkundige operators, deze worden toegepast op het huidige element in de array. \\ \hline
+    \# & Pauzeert de uitvoering van het programma voor opgegeven aantal seconden. \\ \hline
+    ( & Begin van een loop, als dit gevolgd wordt door een nummer dan wordt die loop uitgevoerd zolang de waarde in de cel ongelijk is aan de opgegeven waarde. Als er geen nummer is opgegeven dan wordt de loop uitgevoerd zolang de waarde in de cel ongelijk is aan nul. \\ \hline
+    ) & Einde van de loop, er wordt teruggesprongen naar de laatste '(' en als de waarde van de cel gelijk is aan het eerder opgegeven nummer, dan wordt verder gegaan met de rest van code. \\ \hline
+  
+
+    \hline
+    \end{tabular}
+\end{center}
+
+In het werkstuk van Talen \& Automaten hebben we al aangetoond dat Foo een niet-reguliere taal is, maar wel contextvrije taal.
+
+Aangezien deze taal maar een kleine instructieset bevat en de semantiekregels niet vastgelegd zijn, willen we ons hier graag op richten. Wij zullen voor Foo, semantiekregels opstellen en vervolgens een aan de hand van een voorbeeld programma bewijzen.
+
+
+{\bf
+Er wordt gebruik gemaakt van de volgende operators: 
+
 Welke taalconstructies gaan jullie beschrijven? Dus niet "We doen iets met Pascal", maar graag een expliciete beschrijving welke constructies uit Pascal bekeken zullen worden. Zeker als jullie een taal hebben gekozen die niet bij iedereen bekend zal zijn, graag een korte inleiding over die taal.
+}
+
+
 
 \section{Semantische Technieken}
 
-Welke semantische technieken en concepten denken jullie te gaan gebruiken? Zijn dit uitsluitend standaardtechnieken? Moeten jullie de bestaande technieken uitbreiden? Moeten jullie misschien hele nieuwe technieken bedenken? Zo ja, hoe gaan die (uitbreidingen van) technieken er dan ongeveer uitzien?
+\begin{itemize}
+\item Structurele Operationele Semantiek
+\item Axiomatische Semantiek, waarschijnlijk makkelijker voor het bewijzen van loops, ipv inductie bij NS en SOS
+\end{itemize}
 
+Wederom omdat Foo een beperkte instructieset bevat zijn we van plan alleen gebruik te maken van de standaardtechnieken.
+
+{\bf
+Welke semantische technieken en concepten denken jullie te gaan gebruiken? Zijn dit uitsluitend standaardtechnieken? Moeten jullie de bestaande technieken uitbreiden? Moeten jullie misschien hele nieuwe technieken bedenken? Zo ja, hoe gaan die (uitbreidingen van) technieken er dan ongeveer uitzien?
+}
 \section{Nadere Analyse}
 
+Voor de nadere analyse doen we een case study naar een bestaand programma in de taal Foo en gebruiken hiervoor onze eigen semantiekregels. Het programma zal elke instructie, zodat ook iedere semantiekregel getest kan worden. 
+
+
+{\bf
 Welke nadere analyses zijn jullie van plan om met jullie semantiekregels uit te voeren? Hebben jullie een bepaalde eigenschap in gedachten? Of gaan jullie een case study doen met jullie semantiekregels? Wees zo concreet mogelijk en beschrijf die eigenschappen of case studies.
+}
 
 \section{Lastige Punten}
 
