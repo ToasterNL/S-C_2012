@@ -39,7 +39,7 @@
 \title{\textbf{Semantiek \& Correctheid \\ \emph{Opzet werkstuk: Foo}}}
 \author{
 	Mark Vijfvinkel, 4077148
-	\and Aram Verstegen, xxxxxxx
+	\and Aram Verstegen, 4092368
 }
 \date{\today}
 
@@ -49,31 +49,36 @@
 
 \section{Introductie Foo}
 
-Foo is een esoterische taal gebaseerd op BrainFuck. Het is in 2008 ontwikkeld door "Feky". De taal maakt gebruik van een eendimensionale array in combinatie met een pointer. Verder zijn er een stack en kopieeroperaties aanwezig. De stack wordt voornamelijk gebruikt voor rekenkundige operaties en loops. Programma's in Foo stoppen als de interpreter aan het einde van het bestand komt (EOF).
+Foo is een esoterische taal gebaseerd op `turing-tarpit'-achtige talen zoals `Brainfuck'. Het is in 2008 ontwikkeld door ene ``Feky''.
+De taal maakt gebruik van een eendimensionale array in combinatie met een pointer, die de tape in een turingmachine voorstelt.
+Verder zijn er een stack en kopieeroperaties aanwezig.
+De stack wordt voornamelijk gebruikt voor rekenkundige operaties en loops.
+Foo maakt dus gebruik van hetzelfde principe als een turingmachine met drie tapes (die misschien in het geval van Foo op \'e\'en logische `tape' worden bijgehouden in het geheugen van de interpreter), waarbij \'e\'en van de tapes de data (invoer) bevat, \'e\'en die als stack gebruikt wordt en de laatste die de programmacode bevat.
+Programma's in Foo stoppen als de interpreter aan het einde van het de programmacode komt (EOF).
 
 \begin{center}
     \begin{tabular}{ | l | p{15cm} |}
     \hline
     Teken & Betekenis \\ \hline
-    " & Alles tussen deze tekens wordt afgedrukt naar stdout. \\ \hline
-    \& & Zet de waarde van de geselecteerde cel in de array om naar een andere waarde. Gevolgd door een nummer (\&55) levert dit de waarde 55 in de cel. Zonder nummer wordt er een waarde van de stack gepopped. \\ \hline
+    " & Alle invoer tussen deze tekens wordt afgedrukt naar stdout. \\ \hline
+    \& & Zet de waarde van de geselecteerde cel in de array om naar een andere waarde. Gevolgd door een nummer (\&55) levert dit de waarde 55 in de cel. Zonder nummer wordt er een waarde van de stack gepopped om in de cel te zetten. \\ \hline
     @ & Vergelijkbaar met '\&' alleen wordt er een waarde op de stack gepushed. \\ \hline
-    < & Verlaag de array pointer met één. \\ \hline
-    > & Verhoog de array pointer met één. \\ \hline
+    < & Verlaag de array pointer met \'e\'en. \\ \hline
+    > & Verhoog de array pointer met \'e\'en. \\ \hline
     \$ & Drukt een enkele waarde af. Er zijn drie mogelijkheden: druk af als integer (i), druk af als hexadecimaal integer (h) en als ASCII karakter (c). Als er niks wordt gespecificeerd wordt er een foutmelding gegeven door de interpreter. \\ \hline
-    +, -, *, /, \% & Rekenkundige operators, deze worden toegepast op het huidige element in de array. \\ \hline
+    +, -, *, /, \% & Rekenkundige operatoren, deze worden toegepast op het huidige element in de array. \\ \hline
     \# & Pauzeert de uitvoering van het programma voor opgegeven aantal seconden. \\ \hline
-    ( & Begin van een loop, als dit gevolgd wordt door een nummer dan wordt die loop uitgevoerd zolang de waarde in de cel ongelijk is aan de opgegeven waarde. Als er geen nummer is opgegeven dan wordt de loop uitgevoerd zolang de waarde in de cel ongelijk is aan nul. \\ \hline
-    ) & Einde van de loop, er wordt teruggesprongen naar de laatste '(' en als de waarde van de cel gelijk is aan het eerder opgegeven nummer, dan wordt verder gegaan met de rest van code. \\ \hline
+    ( & Begin van een loop, als dit gevolgd wordt door een nummer dan wordt die loop uitgevoerd zolang de waarde in de huidige cel ongelijk is aan de opgegeven waarde. Als er geen nummer is opgegeven dan wordt de loop uitgevoerd zolang de waarde in de cel ongelijk is aan nul. \\ \hline
+    ) & Einde van de loop, er wordt teruggesprongen naar de laatste '(' en als de waarde van de huidige cel gelijk is aan het eerder opgegeven nummer, dan wordt verder gegaan met de rest van code. \\ \hline
   
 
     \hline
     \end{tabular}
 \end{center}
 
-In het werkstuk van Talen \& Automaten hebben we al aangetoond dat Foo een niet-reguliere taal is, maar wel contextvrije taal.
+In het werkstuk van Talen \& Automaten hebben we al aangetoond dat Foo een niet-reguliere taal is, maar wel een contextvrije taal.
 
-Aangezien deze taal maar een kleine instructieset bevat en de semantiekregels niet vastgelegd zijn, willen we ons hier graag op richten. Wij zullen voor Foo, semantiekregels opstellen en vervolgens een aan de hand van een voorbeeld programma bewijzen.
+Aangezien deze taal maar een kleine instructieset bevat en de semantiekregels niet vastgelegd zijn, willen we ons hier graag op richten. Wij zullen voor Foo semantiekregels opstellen en vervolgens aan de hand van een voorbeeldprogramma bewijzen.
 
 
 {\bf
@@ -98,7 +103,7 @@ Welke semantische technieken en concepten denken jullie te gaan gebruiken? Zijn 
 }
 \section{Nadere Analyse}
 
-Voor de nadere analyse doen we een case study naar een bestaand programma in de taal Foo en gebruiken hiervoor onze eigen semantiekregels. Het programma zal elke instructie, zodat ook iedere semantiekregel getest kan worden. 
+Voor de nadere analyse doen we een case study naar een bestaand programma in de taal Foo en gebruiken hiervoor onze eigen semantiekregels. Het programma zal elke instructie bevatten, zodat ook iedere semantiekregel getest kan worden. 
 
 
 {\bf
