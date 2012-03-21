@@ -53,7 +53,7 @@ Foo is een esoterische taal gebaseerd op `turing-tarpit'-achtige talen zoals `Br
 De taal maakt gebruik van een eendimensionale array in combinatie met een pointer, die de tape in een turingmachine voorstelt.
 Verder zijn er een stack en kopieeroperaties aanwezig.
 De stack wordt voornamelijk gebruikt voor rekenkundige operaties en loops.
-Foo maakt dus gebruik van hetzelfde principe als een turingmachine met drie tapes (die misschien in het geval van Foo op \'e\'en logische `tape' worden bijgehouden in het geheugen van de interpreter), waarbij \'e\'en van de tapes de data (invoer) bevat, \'e\'en die als stack gebruikt wordt en de laatste die de programmacode bevat.
+Foo maakt dus gebruik van hetzelfde principe als een turingmachine met drie tapes (die misschien in het geval van Foo op \'e\'en logische `tape' worden bijgehouden in het geheugen van de interpreter), waarbij \'e\'en van de tapes de data (invoer) bevat, \'e\'en die als stack gebruikt wordt en de laatste die de programmacode bevat. %waar baseren we dit op?
 Programma's in Foo stoppen als de interpreter aan het einde van het de programmacode komt (EOF).
 
 \begin{center}
@@ -76,10 +76,10 @@ Programma's in Foo stoppen als de interpreter aan het einde van het de programma
     \end{tabular}
 \end{center}
 
-In het werkstuk van Talen \& Automaten hebben we al aangetoond dat Foo een niet-reguliere taal is, maar wel een contextvrije taal.
+In het werkstuk van Talen \& Automaten hebben we aangetoond dat Foo een niet-reguliere taal is, maar wel een contextvrije taal.
 
-Aangezien deze taal maar een kleine instructieset bevat en de semantiekregels niet vastgelegd zijn, willen we ons hier graag op richten. De interessanste constructie in Foo voorkomt is de loop. Deze wordt opgebouwd uit een waarde voor de "(" en een waarde na "(". Deze combinatie houdt bij hoe vaak de loop uitgevoerd moet worden. Wij zullen voor de operators in Foo, semantiekregels opstellen (met name voor de loopconstructie). Vervolgens worden deze semantiekregels getest en bewezen aan de hand van een voorbeeldprogramma.
-Hierbij wordt (nog) niet gekeken naar de verschillende modi van de "\$" operator, aangezien dit een soort format string constructie is en we niet precies weten hoe we hiervoor semantiekregels kunnen opstellen.
+Aangezien deze taal maar een kleine instructieset bevat en de semantiekregels niet vastgelegd zijn, willen we ons hier graag op richten. De interessanste constructie in Foo voorkomt is de loop. Deze wordt opgebouwd uit een waarde voor de "(" en een waarde na "(". Zolang deze combinatie ongelijk zijn aan elkaar, zal de loop worden uitgevoerd. Na het "(" moet er nog wel een manupilatie plaatsvinden op de waarde voor "(", zodat de loop ook termineert. Wij zullen voor de operators in Foo, semantiekregels opstellen (met name voor de loopconstructie). Vervolgens worden deze semantiekregels getest en bewezen aan de hand van een voorbeeldprogramma.
+Hierbij wordt (nog) niet gekeken naar de verschillende modi van de "\$" operator, aangezien dit een soort format string constructie is en we niet precies weten hoe we hiervoor semantiekregels kunnen opstellen. %klopt dit?
 
 {\bf
 Er wordt gebruik gemaakt van de volgende operators: 
@@ -91,7 +91,7 @@ Welke taalconstructies gaan jullie beschrijven? Dus niet "We doen iets met Pasca
 
 \section{Semantische Technieken}
 
-Zoals hierboven al werd vermeld heeft Foo een beperkte instructieset. We verwachten daarom niet dat er nieuwe technieken bedacht moeten worden, maar dat we aan de hand van de standaard technieken de semantiek van Foo kunnen beschrijven. Aangezien onze nadruk ligt op de loopcontructie .....
+Zoals hierboven al werd vermeld heeft Foo een beperkte instructieset. We verwachten daarom niet dat er nieuwe technieken bedacht moeten worden, maar dat we aan de hand van de standaard technieken de semantiek van Foo kunnen beschrijven. Aangezien onze nadruk ligt op de loopcontructie en wij vermoeden dat deze partieel correct is (in theorie is het immers mogelijk om een oneindige loop te construeren) dan kunnen we de totale 
 
 \begin{itemize}
 \item Structurele Operationele Semantiek
@@ -116,7 +116,7 @@ Voor de nadere analyse doen we een case study naar een bestaand programma in de 
 
 De terugtel loop is om aan te tonen dat onze semantiekregels voor de loop werken, waarbij het Fibonacci programma zal worden gebruikt om.....
 
-Mocht blijken dat het bewijzen van de semantiekregels te eenvoudig is, dan kunnen we het verslag meer diepgang geven door proberen aan te tonen dat Foo turing compleet is of juist niet. Ons vermoeden is dat Foo wel Turingcompleet is, omdat Foo lijkt op een 3-tape Turing machine. Hiervoor gaan we waarschijnlijk gebruik maken van de lambda calculus.
+Mocht blijken dat het bewijzen van de semantiekregels te eenvoudig is, dan kunnen we het verslag meer diepgang geven door proberen aan te tonen dat Foo Turing-compleet is of juist niet. Op de website wordt namelijk vermeld dat Foo Turing-compleet, omdat Brainfuck Turing-compleet is en Foo is gebaseerd op Brainfuck. Echter ontbreekt hiervoor het bewijs en om dit bewijzen of weerleggen gaan we waarschijnlijk gebruik maken van de lambda calculus.
 
 {\bf
 Welke nadere analyses zijn jullie van plan om met jullie semantiekregels uit te voeren? Hebben jullie een bepaalde eigenschap in gedachten? Of gaan jullie een case study doen met jullie semantiekregels? Wees zo concreet mogelijk en beschrijf die eigenschappen of case studies.
