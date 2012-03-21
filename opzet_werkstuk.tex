@@ -63,13 +63,13 @@ Programma's in Foo stoppen als de interpreter aan het einde van het de programma
     " & Alle invoer tussen deze tekens wordt afgedrukt naar stdout. \\ \hline
     \& & Zet de waarde van de geselecteerde cel in de array om naar een andere waarde. Gevolgd door een nummer (\&55) levert dit de waarde 55 in de cel. Zonder nummer wordt er een waarde van de stack gepopped om in de cel te zetten. \\ \hline
     @ & Vergelijkbaar met '\&' alleen wordt er een waarde op de stack gepushed. \\ \hline
-    \(<\) & Verlaag de array pointer met \'e\'en. \\ \hline
-    \(>\) & Verhoog de array pointer met \'e\'en. \\ \hline
-    \$ & Drukt een enkele waarde af. Er zijn drie mogelijkheden: druk af als integer (i), druk af als hexadecimaal integer (h) en als ASCII karakter (c). Als er niks wordt gespecificeerd wordt er een foutmelding gegeven door de interpreter. \\ \hline
-    +, -, *, /, \% & Rekenkundige operatoren, deze worden toegepast op het huidige element in de array. \\ \hline
-    \# & Pauzeert de uitvoering van het programma voor opgegeven aantal seconden. \\ \hline
-    ( & Begin van een loop, als dit gevolgd wordt door een nummer dan wordt die loop uitgevoerd zolang de waarde in de huidige cel ongelijk is aan de opgegeven waarde. Als er geen nummer is opgegeven dan wordt de loop uitgevoerd zolang de waarde in de cel ongelijk is aan nul. \\ \hline
-    ) & Einde van de loop, er wordt teruggesprongen naar de laatste '(' en als de waarde van de huidige cel gelijk is aan het eerder opgegeven nummer, dan wordt verder gegaan met de rest van code. \\ \hline
+    \(<\) & Verlaagt de array pointer met \'e\'en. \\ \hline
+    \(>\) & Verhoogt de array pointer met \'e\'en. \\ \hline
+    \$ & Drukt een enkele waarde af. Er zijn drie mogelijkheden: druk af als integer (i), druk af als hexadecimaal integer (h) en als ASCII karakter (c). Als er niet zo een `format string' wordt gespecificeerd wordt er een foutmelding gegeven door de interpreter. \\ \hline
+    +, -, *, /, \% & Rekenkundige operatoren, deze werken zoals we zouden verwachten als optellen, aftrekken, vermenigvuldigen en delen, en worden toegepast op het huidige element in de array met gebruikersinvoer. \\ \hline
+    \# & Pauzeert de uitvoering van het programma voor een opgegeven aantal seconden. \\ \hline
+    ( & Specificeert het begin van een loop: als dit gevolgd wordt door een natuurlijk getal dan wordt deze loop uitgevoerd zolang de waarde in de huidige cel van de array met gebruikersinvoer ongelijk is aan de opgegeven waarde. Als er geen nummer is opgegeven dan wordt de loop uitgevoerd zolang de waarde die in de cel van de array met gebruikersinvoer staat ongelijk is aan nul. \\ \hline
+    ) & Specificeert het einde van een loop: er wordt teruggesprongen naar de laatste '(' en als de waarde van de huidige cel in de array met gebruikersinvoer gelijk is aan het eerder opgegeven nummer, dan wordt verder gegaan met de rest van code. \\ \hline
   
 
     \hline
@@ -78,20 +78,25 @@ Programma's in Foo stoppen als de interpreter aan het einde van het de programma
 
 In het werkstuk van Talen \& Automaten hebben we aangetoond dat Foo een niet-reguliere taal is, maar wel een contextvrije taal.
 
-Aangezien deze taal maar een kleine instructieset bevat en de semantiekregels niet vastgelegd zijn, willen we ons hier graag op richten. De interessanste constructie in Foo voorkomt is de loop. Deze wordt opgebouwd uit een waarde voor de "(" en een waarde na "(". Zolang deze combinatie ongelijk zijn aan elkaar, zal de loop worden uitgevoerd. Na het "(" moet er nog wel een manupilatie plaatsvinden op de waarde voor "(", zodat de loop ook termineert. Wij zullen voor de operators in Foo, semantiekregels opstellen (met name voor de loopconstructie). Vervolgens worden deze semantiekregels getest en bewezen aan de hand van een voorbeeldprogramma.
-Hierbij wordt (nog) niet gekeken naar de verschillende modi van de "\$" operator, aangezien dit een soort format string constructie is en we niet precies weten hoe we hiervoor semantiekregels kunnen opstellen. %klopt dit?
+Aangezien deze taal maar een kleine instructieset bevat en de semantiekregels niet vastgelegd zijn, willen we ons hier graag op richten.
+De interessanste constructie die in Foo voorkomt is de loop.
+Deze wordt opgebouwd uit een waarde voor de "(" en een waarde na "(".
+Zolang deze combinatie ongelijk zijn aan elkaar, zal de loop worden uitgevoerd. Na het "(" moet er nog wel een manupilatie plaatsvinden op de waarde voor "(", zodat de loop ook termineert.
+Wij zullen voor de operators in Foo semantiekregels opstellen (met name voor de loopconstructie). Vervolgens worden deze semantiekregels getest en bewezen aan de hand van een voorbeeldprogramma.
+Hierbij wordt (nog) niet gekeken naar de verschillende modi van de "\$" operator, aangezien dit een soort format string constructie is en we niet precies weten hoe we hiervoor semantiekregels kunnen opstellen. %klopt dit? - ik denk het wel
 
-{\bf
-Er wordt gebruik gemaakt van de volgende operators: 
+%{\bf
+%Er wordt gebruik gemaakt van de volgende operators: 
 
-Welke taalconstructies gaan jullie beschrijven? Dus niet "We doen iets met Pascal", maar graag een expliciete beschrijving welke constructies uit Pascal bekeken zullen worden. Zeker als jullie een taal hebben gekozen die niet bij iedereen bekend zal zijn, graag een korte inleiding over die taal.
-}
-
+%Welke taalconstructies gaan jullie beschrijven? Dus niet "We doen iets met Pascal", maar graag een expliciete beschrijving welke constructies uit Pascal bekeken zullen worden. Zeker als jullie een taal hebben gekozen die niet bij iedereen bekend zal zijn, graag een korte inleiding over die taal.
+%}
 
 
 \section{Semantische Technieken}
 
-Zoals hierboven al werd vermeld heeft Foo een beperkte instructieset. We verwachten daarom niet dat er nieuwe technieken bedacht moeten worden, maar dat we aan de hand van de standaard technieken de semantiek van Foo kunnen beschrijven. Aangezien onze nadruk ligt op de loopcontructie en wij vermoeden dat deze partieel correct is (in theorie is het immers mogelijk om een oneindige loop te construeren) dan kunnen we de totale 
+Zoals hierboven al werd vermeld heeft Foo een zeer beperkte set operatoren.
+We verwachten daarom niet dat er nieuwe technieken bedacht moeten worden, maar dat we aan de hand van de standaard technieken de semantiek van Foo kunnen beschrijven.
+Aangezien onze nadruk ligt op de loopcontructie en wij vermoeden dat deze partieel correct is (in theorie is het immers mogelijk om een oneindige loop te construeren), dan kunnen we de totale correctheid van een programma dat termineert bewijzen.
 
 \begin{itemize}
 \item Structurele Operationele Semantiek
@@ -101,61 +106,59 @@ Zoals hierboven al werd vermeld heeft Foo een beperkte instructieset. We verwach
 
 
 
-{\bf
-Welke semantische technieken en concepten denken jullie te gaan gebruiken? Zijn dit uitsluitend standaardtechnieken? Moeten jullie de bestaande technieken uitbreiden? Moeten jullie misschien hele nieuwe technieken bedenken? Zo ja, hoe gaan die (uitbreidingen van) technieken er dan ongeveer uitzien?
-}
+%{\bf
+%Welke semantische technieken en concepten denken jullie te gaan gebruiken? Zijn dit uitsluitend standaardtechnieken? Moeten jullie de bestaande technieken uitbreiden? Moeten jullie misschien hele nieuwe technieken bedenken? Zo ja, hoe gaan die (uitbreidingen van) technieken er dan ongeveer uitzien?
+%}
 \section{Nadere Analyse}
 
 Voor de nadere analyse doen we een case study naar een bestaand programma in de taal Foo en gebruiken hiervoor onze eigen semantiekregels om de correctheid van het programma aan te tonen. (Het programma zal elke operator bevatten, zodat ook iedere semantiekregel getest kan worden.) Het gaat om de volgende programma's:
 
 \begin{itemize}
-\item Terugtel loop: \&10(0\#1-1\$i\$c10)"boom!"\$c10
-\item Nummers van Fibonacci:\newline "0 1 "\&1\(>>>\)(20\(<<\)@\(>\)+\(<<\)@\(>>+<<\)@\(>\)\&\(>\)@\(<<\)\&\(>>\)\$i\$c32\&0\(>\)+1)
+\item Terugtellende loop: \&10(0\#1-1\$i\$c10)"boom!"\$c10
+\item Nummers uit de Fibonacci-reeks:\newline "0 1 "\&1\(>>>\)(20\(<<\)@\(>\)+\(<<\)@\(>>+<<\)@\(>\)\&\(>\)@\(<<\)\&\(>>\)\$i\$c32\&0\(>\)+1)
 \end{itemize}
 
 
-De terugtel loop is om aan te tonen dat onze semantiekregels voor de loop werken, waarbij het Fibonacci programma zal worden gebruikt om.....
+De terugtellende loop behandelen we om aan te tonen dat onze semantiekregels voor loops werken.
+Fibonacci leek ons een geschikt geval om aan te tonen dat Foo ook echt iets `kan', en kunnen we misschien ook correct bewijzen voor kleine \(n \in Fib\).
 
-Mocht blijken dat het bewijzen van de semantiekregels te eenvoudig is, dan kunnen we het verslag meer diepgang geven door proberen aan te tonen dat Foo Turing-compleet is of juist niet. Op de website wordt namelijk vermeld dat Foo Turing-compleet, omdat Brainfuck Turing-compleet is en Foo is gebaseerd op Brainfuck. Echter ontbreekt hiervoor het bewijs en om dit bewijzen of weerleggen gaan we waarschijnlijk gebruik maken van de lambda calculus.
+Mocht blijken dat het bewijzen van de semantiekregels te eenvoudig is, dan kunnen we het verslag meer diepgang geven door proberen aan te tonen dat Foo Turing-compleet is.
+Op de website wordt namelijk vermeld dat Foo Turing-compleet, omdat Brainfuck Turing-compleet is en Foo is gebaseerd op Brainfuck. Echter ontbreekt hiervoor het bewijs en om dit bewijzen of weerleggen zouden we waarschijnlijk gebruik moeten gaan maken van de lambda calculus.
 
-{\bf
-Welke nadere analyses zijn jullie van plan om met jullie semantiekregels uit te voeren? Hebben jullie een bepaalde eigenschap in gedachten? Of gaan jullie een case study doen met jullie semantiekregels? Wees zo concreet mogelijk en beschrijf die eigenschappen of case studies.
-}
+%{\bf
+%Welke nadere analyses zijn jullie van plan om met jullie semantiekregels uit te voeren? Hebben jullie een bepaalde eigenschap in gedachten? Of gaan jullie een case study doen met jullie semantiekregels? Wees zo concreet mogelijk en beschrijf die eigenschappen of case studies.
+%}
 
 \section{Lastige Punten}
 
 De diepgang van het werkstuk kan voor problemen zorgen. Foo is niet uitgebreid en heeft geen bijzondere constructies, het verzinnen en bewijzen van semantiekregels kan daarom te eenvoudig zijn. Daar staat tegenover dat het bewijzen dat Foo Turingcompleet is of niet, juist erg ingewikkeld kan zijn en dat we daardoor vastlopen.
 \newline
-Wij hebben beide moeite met de leertaken van het vak, het werkstuk zal dus zeker niet van een leiendakje gaan.
+Wij hebben beide moeite met de leertaken van het vak, het werkstuk zal dus zeker niet van een leien dakje gaan.
 
-{\bf
-Verwachten jullie (nu al) lastige punten? Geef die dan vast aan.
-}
+%{\bf
+%Verwachten jullie (nu al) lastige punten? Geef die dan vast aan.
+%}
 \section{Tijdsplanning}
 
 \begin{center}
     \begin{tabular}{ | l | p{15cm} |}
     \hline
     Datum deadline & Beschrijving \\ \hline
-    " & Alle invoer tussen deze tekens wordt afgedrukt naar stdout. \\ \hline
-    \& & Zet de waarde van de geselecteerde cel in de array om naar een andere waarde. Gevolgd door een nummer (\&55) levert dit de waarde 55 in de cel. Zonder nummer wordt er een waarde van de stack gepopped om in de cel te zetten. \\ \hline
-    @ & Vergelijkbaar met '\&' alleen wordt er een waarde op de stack gepushed. \\ \hline
-    \(<\) & Verlaag de array pointer met \'e\'en. \\ \hline
-    \(>\) & Verhoog de array pointer met \'e\'en. \\ \hline
-    \$ & Drukt een enkele waarde af. Er zijn drie mogelijkheden: druk af als integer (i), druk af als hexadecimaal integer (h) en als ASCII karakter (c). Als er niks wordt gespecificeerd wordt er een foutmelding gegeven door de interpreter. \\ \hline
-    +, -, *, /, \% & Rekenkundige operatoren, deze worden toegepast op het huidige element in de array. \\ \hline
-    \# & Pauzeert de uitvoering van het programma voor opgegeven aantal seconden. \\ \hline
-    ( & Begin van een loop, als dit gevolgd wordt door een nummer dan wordt die loop uitgevoerd zolang de waarde in de huidige cel ongelijk is aan de opgegeven waarde. Als er geen nummer is opgegeven dan wordt de loop uitgevoerd zolang de waarde in de cel ongelijk is aan nul. \\ \hline
-    ) & Einde van de loop, er wordt teruggesprongen naar de laatste '(' en als de waarde van de huidige cel gelijk is aan het eerder opgegeven nummer, dan wordt verder gegaan met de rest van code. \\ \hline
-  
-
+    21 Maart & Opzet werkstuk. \\ \hline
+    28 Maart & Semantiek van loops \\ \hline
+    4 April  & Semantiek van rekenkundige operators \\ \hline
+    11 April & Semantiek van array-navigatie \\ \hline
+    18 April & Semantiek van array-manipulatie \\ \hline
+    25 April & Correctheidsbewijs van voorbeeldprogramma's \\ \hline
+    25 April & Draft versie, laten proofreaden \\ \hline
+    2 Mei    & Definitieve versie, `werkbespreking' met de docenten \\ \hline
     \hline
     \end{tabular}
 \end{center}
 
-{\bf
-Wat is jullie tijdsplanning voor de standaardonderdelen syntactische beschrijving, semantische beschrijving en nadere analyse?
-}
+%{\bf
+%Wat is jullie tijdsplanning voor de standaardonderdelen syntactische beschrijving, semantische beschrijving en nadere analyse?
+%}
 
 %\bibliographystyle{plain} % amsalpha
 %\bibliography{}
