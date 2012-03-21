@@ -110,11 +110,13 @@ Voor de nadere analyse doen we een case study naar een bestaand programma in de 
 
 \begin{itemize}
 \item Terugtel loop: \&10(0\#1-1\$i\$c10)"boom!"\$c10
-\item Nummers van Fibonacci: "0 1 "\&1\(>>>\)(20\(<<\)@\(>\)+\(<<\)@\(>>+<<\)@\(>\)\&\(>\)@\(<<\)\&\(>>\)\$i\$c32\&0\(>\)+1)
+\item Nummers van Fibonacci:\newline "0 1 "\&1\(>>>\)(20\(<<\)@\(>\)+\(<<\)@\(>>+<<\)@\(>\)\&\(>\)@\(<<\)\&\(>>\)\$i\$c32\&0\(>\)+1)
 \end{itemize}
 
 
 De terugtel loop is om aan te tonen dat onze semantiekregels voor de loop werken, waarbij het Fibonacci programma zal worden gebruikt om.....
+
+Mocht blijken dat het bewijzen van de semantiekregels te eenvoudig is, dan kunnen we het verslag meer diepgang geven door proberen aan te tonen dat Foo turing compleet is of juist niet. Ons vermoeden is dat Foo wel Turingcompleet is, omdat Foo lijkt op een 3-tape Turing machine. Hiervoor gaan we waarschijnlijk gebruik maken van de lambda calculus.
 
 {\bf
 Welke nadere analyses zijn jullie van plan om met jullie semantiekregels uit te voeren? Hebben jullie een bepaalde eigenschap in gedachten? Of gaan jullie een case study doen met jullie semantiekregels? Wees zo concreet mogelijk en beschrijf die eigenschappen of case studies.
@@ -122,12 +124,38 @@ Welke nadere analyses zijn jullie van plan om met jullie semantiekregels uit te 
 
 \section{Lastige Punten}
 
-Verwachten jullie (nu al) lastige punten? Geef die dan vast aan.
+De diepgang van het werkstuk kan voor problemen zorgen. Foo is niet uitgebreid en heeft geen bijzondere constructies, het verzinnen en bewijzen van semantiekregels kan daarom te eenvoudig zijn. Daar staat tegenover dat het bewijzen dat Foo Turingcompleet is of niet, juist erg ingewikkeld kan zijn en dat we daardoor vastlopen.
+\newline
+Wij hebben beide moeite met de leertaken van het vak, het werkstuk zal dus zeker niet van een leiendakje gaan.
 
+{\bf
+Verwachten jullie (nu al) lastige punten? Geef die dan vast aan.
+}
 \section{Tijdsplanning}
 
-Wat is jullie tijdsplanning voor de standaardonderdelen syntactische beschrijving, semantische beschrijving en nadere analyse?
+\begin{center}
+    \begin{tabular}{ | l | p{15cm} |}
+    \hline
+    Datum deadline & Beschrijving \\ \hline
+    " & Alle invoer tussen deze tekens wordt afgedrukt naar stdout. \\ \hline
+    \& & Zet de waarde van de geselecteerde cel in de array om naar een andere waarde. Gevolgd door een nummer (\&55) levert dit de waarde 55 in de cel. Zonder nummer wordt er een waarde van de stack gepopped om in de cel te zetten. \\ \hline
+    @ & Vergelijkbaar met '\&' alleen wordt er een waarde op de stack gepushed. \\ \hline
+    \(<\) & Verlaag de array pointer met \'e\'en. \\ \hline
+    \(>\) & Verhoog de array pointer met \'e\'en. \\ \hline
+    \$ & Drukt een enkele waarde af. Er zijn drie mogelijkheden: druk af als integer (i), druk af als hexadecimaal integer (h) en als ASCII karakter (c). Als er niks wordt gespecificeerd wordt er een foutmelding gegeven door de interpreter. \\ \hline
+    +, -, *, /, \% & Rekenkundige operatoren, deze worden toegepast op het huidige element in de array. \\ \hline
+    \# & Pauzeert de uitvoering van het programma voor opgegeven aantal seconden. \\ \hline
+    ( & Begin van een loop, als dit gevolgd wordt door een nummer dan wordt die loop uitgevoerd zolang de waarde in de huidige cel ongelijk is aan de opgegeven waarde. Als er geen nummer is opgegeven dan wordt de loop uitgevoerd zolang de waarde in de cel ongelijk is aan nul. \\ \hline
+    ) & Einde van de loop, er wordt teruggesprongen naar de laatste '(' en als de waarde van de huidige cel gelijk is aan het eerder opgegeven nummer, dan wordt verder gegaan met de rest van code. \\ \hline
+  
 
+    \hline
+    \end{tabular}
+\end{center}
+
+{\bf
+Wat is jullie tijdsplanning voor de standaardonderdelen syntactische beschrijving, semantische beschrijving en nadere analyse?
+}
 
 %\bibliographystyle{plain} % amsalpha
 %\bibliography{}
