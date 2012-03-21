@@ -63,8 +63,8 @@ Programma's in Foo stoppen als de interpreter aan het einde van het de programma
     " & Alle invoer tussen deze tekens wordt afgedrukt naar stdout. \\ \hline
     \& & Zet de waarde van de geselecteerde cel in de array om naar een andere waarde. Gevolgd door een nummer (\&55) levert dit de waarde 55 in de cel. Zonder nummer wordt er een waarde van de stack gepopped om in de cel te zetten. \\ \hline
     @ & Vergelijkbaar met '\&' alleen wordt er een waarde op de stack gepushed. \\ \hline
-    < & Verlaag de array pointer met \'e\'en. \\ \hline
-    > & Verhoog de array pointer met \'e\'en. \\ \hline
+    \(<\) & Verlaag de array pointer met \'e\'en. \\ \hline
+    \(>\) & Verhoog de array pointer met \'e\'en. \\ \hline
     \$ & Drukt een enkele waarde af. Er zijn drie mogelijkheden: druk af als integer (i), druk af als hexadecimaal integer (h) en als ASCII karakter (c). Als er niks wordt gespecificeerd wordt er een foutmelding gegeven door de interpreter. \\ \hline
     +, -, *, /, \% & Rekenkundige operatoren, deze worden toegepast op het huidige element in de array. \\ \hline
     \# & Pauzeert de uitvoering van het programma voor opgegeven aantal seconden. \\ \hline
@@ -78,8 +78,8 @@ Programma's in Foo stoppen als de interpreter aan het einde van het de programma
 
 In het werkstuk van Talen \& Automaten hebben we al aangetoond dat Foo een niet-reguliere taal is, maar wel een contextvrije taal.
 
-Aangezien deze taal maar een kleine instructieset bevat en de semantiekregels niet vastgelegd zijn, willen we ons hier graag op richten. Wij zullen voor Foo semantiekregels opstellen en vervolgens aan de hand van een voorbeeldprogramma bewijzen.
-
+Aangezien deze taal maar een kleine instructieset bevat en de semantiekregels niet vastgelegd zijn, willen we ons hier graag op richten. De interessanste constructie in Foo voorkomt is de loop. Deze wordt opgebouwd uit een waarde voor de "(" en een waarde na "(". Deze combinatie houdt bij hoe vaak de loop uitgevoerd moet worden. Wij zullen voor de operators in Foo, semantiekregels opstellen (met name voor de loopconstructie). Vervolgens worden deze semantiekregels getest en bewezen aan de hand van een voorbeeldprogramma.
+Hierbij wordt (nog) niet gekeken naar de verschillende modi van de "\$" operator, aangezien dit een soort format string constructie is en we niet precies weten hoe we hiervoor semantiekregels kunnen opstellen.
 
 {\bf
 Er wordt gebruik gemaakt van de volgende operators: 
@@ -91,20 +91,30 @@ Welke taalconstructies gaan jullie beschrijven? Dus niet "We doen iets met Pasca
 
 \section{Semantische Technieken}
 
+Zoals hierboven al werd vermeld heeft Foo een beperkte instructieset. We verwachten daarom niet dat er nieuwe technieken bedacht moeten worden, maar dat we aan de hand van de standaard technieken de semantiek van Foo kunnen beschrijven. Aangezien onze nadruk ligt op de loopcontructie .....
+
 \begin{itemize}
 \item Structurele Operationele Semantiek
-\item Axiomatische Semantiek, waarschijnlijk makkelijker voor het bewijzen van loops, ipv inductie bij NS en SOS
+\item Axiomatische Semantiek, waarschijnlijk makkelijker voor het bewijzen van loops, ipv inductie bij NS en SOS.
+\item Iets vermelden over de partiele correctheid van de loops...(oneindige loop mogelijk? in sommige gevallen)....dan kunnen we axiomatische semantiek gebruiken.
 \end{itemize}
 
-Wederom omdat Foo een beperkte instructieset bevat zijn we van plan alleen gebruik te maken van de standaardtechnieken.
+
 
 {\bf
 Welke semantische technieken en concepten denken jullie te gaan gebruiken? Zijn dit uitsluitend standaardtechnieken? Moeten jullie de bestaande technieken uitbreiden? Moeten jullie misschien hele nieuwe technieken bedenken? Zo ja, hoe gaan die (uitbreidingen van) technieken er dan ongeveer uitzien?
 }
 \section{Nadere Analyse}
 
-Voor de nadere analyse doen we een case study naar een bestaand programma in de taal Foo en gebruiken hiervoor onze eigen semantiekregels. Het programma zal elke instructie bevatten, zodat ook iedere semantiekregel getest kan worden. 
+Voor de nadere analyse doen we een case study naar een bestaand programma in de taal Foo en gebruiken hiervoor onze eigen semantiekregels om de correctheid van het programma aan te tonen. (Het programma zal elke operator bevatten, zodat ook iedere semantiekregel getest kan worden.) Het gaat om de volgende programma's:
 
+\begin{itemize}
+\item Terugtel loop: \&10(0\#1-1\$i\$c10)"boom!"\$c10
+\item Nummers van Fibonacci: "0 1 "\&1\(>>>\)(20\(<<\)@\(>\)+\(<<\)@\(>>+<<\)@\(>\)\&\(>\)@\(<<\)\&\(>>\)\$i\$c32\&0\(>\)+1)
+\end{itemize}
+
+
+De terugtel loop is om aan te tonen dat onze semantiekregels voor de loop werken, waarbij het Fibonacci programma zal worden gebruikt om.....
 
 {\bf
 Welke nadere analyses zijn jullie van plan om met jullie semantiekregels uit te voeren? Hebben jullie een bepaalde eigenschap in gedachten? Of gaan jullie een case study doen met jullie semantiekregels? Wees zo concreet mogelijk en beschrijf die eigenschappen of case studies.
