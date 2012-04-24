@@ -83,6 +83,7 @@ In het werkstuk van Talen \& Automaten hebben we aangetoond dat Foo een niet-reg
 
 Foo bevat, net als de taal While, een beperkte instructie set. 
 In vergelijking met While heeft Foo een aantal constructies die erg interessant zijn, zoals de pauzeer (\#) operatie, ... . 
+In dit hoofdstuk zullen we deze constructies bespreken.
 
 \subsection{Pauzeer operatie (\#)}
 De pauzeer operatie in Foo is het beste te vergelijken met een teller die de uitvoering van de rest van het programma het opgegeven aantal seconden uitstelt. 
@@ -95,52 +96,22 @@ Zouden we de waarde 10 achter de \# zetten, dan zou het programma tien seconden 
 
 Dit lijkt in eerste instantie heel erg op de {\bf\(<\)skip\(>\)} functie in While.
 Het enige wat veranderd is ten opzichte van de vorige state is de tijd.
+Om dit te simuleren moeten we de tijd op het moment van uitvoeren van de pauzeer operatie uitlezen, vervolgens de ingestelde tijd laten verlopen en in de nieuwe state de verstreken tijd weergeven.
+
+\subsection{Fout afhandeling}
+
+\section{Syntax van Foo}
+In dit hoofdstuk zullen we de operaties van Foo formeler maken door een syntax opstellen. De syntax van Foo ziet er als volgt uit:
 
 
+\section{Natuurlijke semantiek van Foo}
+
+In dit hoofdstuk zullen we de operaties van Foo inzichtelijker maken door semantiek regels op te stellen. 
+We zullen hiervoor in eerste instantie gebruik maken van natuurlijke semantiek.
+Mocht blijken dat dit te beperkt is, dan zullen we ons richten op structurele operationele semantiek.
 
 
-
-
-
-\section{Nadere Analyse}
-
-Voor de nadere analyse doen we een case study naar een bestaand programma in de taal Foo en gebruiken hiervoor onze eigen semantiekregels om de correctheid van het programma aan te tonen. 
-(Het programma zal elke operator bevatten, zodat ook iedere semantiekregel getest kan worden.)
- Het gaat om de volgende programma's:
-
-\begin{itemize}
-\item Terugtellende loop: \&10(0\#1-1\$i\$c10)"boom!"\$c10
-\item Nummers uit de Fibonacci-reeks:\newline "0 1 "\&1\(>>>\)(20\(<<\)@\(>\)+\(<<\)@\(>>+<<\)@\(>\)\&\(>\)@\(<<\)\&\(>>\)\$i\$c32\&0\(>\)+1)
-\end{itemize}
-
-
-De terugtellende loop behandelen we om aan te tonen dat onze semantiekregels voor loops werken.
-Fibonacci leek ons een geschikt geval om aan te tonen dat Foo ook echt iets `kan', en kunnen we misschien ook correct bewijzen voor kleine \(n \in Fib\).
-
-Mocht blijken dat het bewijzen van de semantiekregels te eenvoudig is, dan kunnen we het verslag meer diepgang geven door proberen aan te tonen dat Foo Turing-compleet is.
-Op de website wordt namelijk vermeld dat Foo Turing-compleet, omdat Brainfuck Turing-compleet is en Foo is gebaseerd op Brainfuck. 
-Echter ontbreekt hiervoor het bewijs en om dit bewijzen of weerleggen zouden we waarschijnlijk gebruik moeten gaan maken van de lambda calculus.
-
-%{\bf
-%Welke nadere analyses zijn jullie van plan om met jullie semantiekregels uit te voeren? Hebben jullie een bepaalde eigenschap in gedachten? Of gaan jullie een case study doen met jullie semantiekregels? Wees zo concreet mogelijk en beschrijf die eigenschappen of case studies.
-%}
-
-\section{Lastige Punten}
-
-De diepgang van het werkstuk kan voor problemen zorgen. 
-Foo is niet uitgebreid en heeft geen bijzondere constructies, het verzinnen en bewijzen van semantiekregels kan daarom te eenvoudig zijn. 
-Daar staat tegenover dat het bewijzen dat Foo Turing-compleet is of niet, juist erg ingewikkeld kan zijn en dat we daardoor vastlopen.
-\newline
-Wij hebben beide moeite met de leertaken van het vak, het werkstuk zal dus zeker niet van een leien dakje gaan.
-\newline
-We weten niet precies hoe we semantiekregels op kunnen stellen voor de verschillende modi van de "\$" operator, aangezien dit een soort format string constructie is en zullen dit in eerste instantie niet behandelen. %klopt dit? - ik denk het wel
-Om dezelfde reden zullen we ook de output van strings naar stdout en de pauzeerfunctionaliteit in eerste instantie buiten wegen laten.
-
-%{\bf
-%Verwachten jullie (nu al) lastige punten? Geef die dan vast aan.
-%}
-\section{Tijdsplanning}
-
+\section{Structurele operationale semantiek van Foo}
 
 %\bibliographystyle{plain} % amsalpha
 %\bibliography{}
