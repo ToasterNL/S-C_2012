@@ -1,0 +1,148 @@
+\documentclass[11pt]{article}
+\usepackage{a4wide, graphicx, fancyhdr, wrapfig, tabularx, amsmath, amssymb, hyperref, color, verbatim, nameref}
+\usepackage[english]{babel}
+\definecolor{linkcolour}{rgb}{0,0.2,0.6}
+\hypersetup{colorlinks,breaklinks,urlcolor=linkcolour, linkcolor=linkcolour}
+
+%----------------------- Macros and Definitions --------------------------
+
+\setlength\headheight{20pt}\usepackage{}
+\addtolength\topmargin{-10pt}
+%\addtolength\footskip{20pt}
+
+\fancypagestyle{plain}{%
+\fancyhf{}
+\fancyfoot[RO,LE]{\sffamily\bfseries\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
+}
+
+\pagestyle{fancy}
+\fancyhf{}
+\fancyfoot[RO,LE]{\sffamily\bfseries\thepage}
+\fancyhead[RO,LE]{\textsc{}}
+\fancyhead[LO,RE]{\emph{}}
+\renewcommand{\headrulewidth}{1pt}
+\renewcommand{\footrulewidth}{0pt}
+\newcommand{\tab}{\hspace*{2em}}
+
+\newcommand{\tocheck}[1]{{\bf !?: #1 :!?}}
+\newcommand{\OBA}{Online behavioural advertising }
+\newcommand{\oba}{online behavioural advertising }
+\newcommand{\ePD}{ePrivacy Directive }
+\newcommand{\DPD}{Data Protection Directive }
+
+\frenchspacing
+
+%-------------------------------- Title ----------------------------------
+
+\title{\textbf{Semantiek \& Correctheid \\ \emph{Foo}}}
+\author{
+	Mark Vijfvinkel, 4077148
+	\and Aram Verstegen, 4092368
+}
+\date{\today}
+
+\begin{document}
+\maketitle
+
+
+\section{Introductie Foo}
+
+Foo is een esoterische taal gebaseerd op `turing-tarpit'-achtige talen zoals `Brainfuck'. Het is in 2008 ontwikkeld door ene ``Feky''.
+De taal maakt gebruik van een eendimensionale array in combinatie met een pointer, die de tape in een turingmachine voorstelt.
+Verder zijn er een stack en kopieeroperaties aanwezig.
+De stack wordt voornamelijk gebruikt voor rekenkundige operaties en loops.
+Foo maakt dus gebruik van hetzelfde principe als een turingmachine met drie tapes (die misschien in het geval van Foo op \'e\'en logische `tape' worden bijgehouden in het geheugen van de interpreter), waarbij \'e\'en van de tapes de data (invoer) bevat, \'e\'en die als stack gebruikt wordt en de laatste die de programmacode bevat. %waar baseren we dit op?
+Programma's in Foo stoppen als de interpreter aan het einde van het de programmacode komt (EOF).
+
+\begin{center}
+    \begin{tabular}{ | l | p{15cm} |}
+    \hline
+    Teken & Betekenis \\ \hline
+    " & Alle invoer tussen deze tekens wordt afgedrukt naar stdout. \\ \hline
+    \& & Zet de waarde van de geselecteerde cel in de array om naar een andere waarde. Gevolgd door een nummer (\&55) levert dit de waarde 55 in de cel. Zonder nummer wordt er een waarde van de stack gepopped om in de cel te zetten. \\ \hline
+    @ & Vergelijkbaar met '\&' alleen wordt er een waarde op de stack gepushed. \\ \hline
+    \(<\) & Verlaagt de array pointer met \'e\'en. \\ \hline
+    \(>\) & Verhoogt de array pointer met \'e\'en. \\ \hline
+    \$ & Drukt een enkele waarde af. Er zijn drie mogelijkheden: druk af als integer (i), druk af als hexadecimaal integer (h) en als ASCII karakter (c). Als er niet zo een `format string' wordt gespecificeerd wordt er een foutmelding gegeven door de interpreter. \\ \hline
+    +, -, *, /, \% & Rekenkundige operatoren, deze werken zoals we zouden verwachten als optellen, aftrekken, vermenigvuldigen, delen en modulo, en worden toegepast op het huidige element in de array met gebruikersinvoer. \\ \hline
+    \# & Pauzeert de uitvoering van het programma voor een opgegeven aantal seconden. \\ \hline
+    ( & Specificeert het begin van een loop: als dit gevolgd wordt door een natuurlijk getal dan wordt deze loop uitgevoerd zolang de waarde in de huidige cel van de array met gebruikersinvoer ongelijk is aan de opgegeven waarde. Als er geen nummer is opgegeven dan wordt de loop uitgevoerd zolang de waarde die in de cel van de array met gebruikersinvoer staat ongelijk is aan nul. \\ \hline
+    ) & Specificeert het einde van een loop: er wordt teruggesprongen naar de laatste '(' en als de waarde van de huidige cel in de array met gebruikersinvoer gelijk is aan het eerder opgegeven nummer, dan wordt verder gegaan met de rest van code. \\ \hline
+  
+
+    \hline
+    \end{tabular}
+\end{center}
+
+
+In het werkstuk van Talen \& Automaten hebben we aangetoond dat Foo een niet-reguliere taal is, maar wel een contextvrije taal.
+
+\section{Interessante constructies in Foo}
+
+Foo bevat, net als de taal While, een beperkte instructie set. 
+In vergelijking met While heeft Foo een aantal constructies die erg interessant zijn, zoals de pauzeer (\#) operatie, ... . 
+
+\subsection{Pauzeer operatie (\#)}
+De pauzeer operatie in Foo is het beste te vergelijken met een teller die de uitvoering van de rest van het programma het opgegeven aantal seconden uitstelt. 
+Dit is terug te zien in het Foo programma van de terugtellende loop: \&10(0\#1-1\$i\$c10)"boom!"\$c10 .
+{\bf \#1} betekend hier, pauzeer de rest van het programma een seconde. 
+Pas dan wordt 1 van de huidige celwaarde afgehaald en de nieuwe waarde afgedrukt of, mocht al afgeteld zijn naar nul, komt er "boom" te staan.
+Dit programma is dus een teller opzich.
+Zouden we de waarde 10 achter de \# zetten, dan zou het programma tien seconden wachten en in totaal 100 seconden duren.
+
+
+Dit lijkt in eerste instantie heel erg op de {\bf\(<\)skip\(>\)} functie in While.
+Het enige wat veranderd is ten opzichte van de vorige state is de tijd.
+
+
+
+
+
+
+
+\section{Nadere Analyse}
+
+Voor de nadere analyse doen we een case study naar een bestaand programma in de taal Foo en gebruiken hiervoor onze eigen semantiekregels om de correctheid van het programma aan te tonen. 
+(Het programma zal elke operator bevatten, zodat ook iedere semantiekregel getest kan worden.)
+ Het gaat om de volgende programma's:
+
+\begin{itemize}
+\item Terugtellende loop: \&10(0\#1-1\$i\$c10)"boom!"\$c10
+\item Nummers uit de Fibonacci-reeks:\newline "0 1 "\&1\(>>>\)(20\(<<\)@\(>\)+\(<<\)@\(>>+<<\)@\(>\)\&\(>\)@\(<<\)\&\(>>\)\$i\$c32\&0\(>\)+1)
+\end{itemize}
+
+
+De terugtellende loop behandelen we om aan te tonen dat onze semantiekregels voor loops werken.
+Fibonacci leek ons een geschikt geval om aan te tonen dat Foo ook echt iets `kan', en kunnen we misschien ook correct bewijzen voor kleine \(n \in Fib\).
+
+Mocht blijken dat het bewijzen van de semantiekregels te eenvoudig is, dan kunnen we het verslag meer diepgang geven door proberen aan te tonen dat Foo Turing-compleet is.
+Op de website wordt namelijk vermeld dat Foo Turing-compleet, omdat Brainfuck Turing-compleet is en Foo is gebaseerd op Brainfuck. 
+Echter ontbreekt hiervoor het bewijs en om dit bewijzen of weerleggen zouden we waarschijnlijk gebruik moeten gaan maken van de lambda calculus.
+
+%{\bf
+%Welke nadere analyses zijn jullie van plan om met jullie semantiekregels uit te voeren? Hebben jullie een bepaalde eigenschap in gedachten? Of gaan jullie een case study doen met jullie semantiekregels? Wees zo concreet mogelijk en beschrijf die eigenschappen of case studies.
+%}
+
+\section{Lastige Punten}
+
+De diepgang van het werkstuk kan voor problemen zorgen. 
+Foo is niet uitgebreid en heeft geen bijzondere constructies, het verzinnen en bewijzen van semantiekregels kan daarom te eenvoudig zijn. 
+Daar staat tegenover dat het bewijzen dat Foo Turing-compleet is of niet, juist erg ingewikkeld kan zijn en dat we daardoor vastlopen.
+\newline
+Wij hebben beide moeite met de leertaken van het vak, het werkstuk zal dus zeker niet van een leien dakje gaan.
+\newline
+We weten niet precies hoe we semantiekregels op kunnen stellen voor de verschillende modi van de "\$" operator, aangezien dit een soort format string constructie is en zullen dit in eerste instantie niet behandelen. %klopt dit? - ik denk het wel
+Om dezelfde reden zullen we ook de output van strings naar stdout en de pauzeerfunctionaliteit in eerste instantie buiten wegen laten.
+
+%{\bf
+%Verwachten jullie (nu al) lastige punten? Geef die dan vast aan.
+%}
+\section{Tijdsplanning}
+
+
+%\bibliographystyle{plain} % amsalpha
+%\bibliography{}
+
+\end{document}
