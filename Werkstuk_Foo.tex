@@ -1,5 +1,6 @@
 \documentclass[11pt]{article}
 \usepackage{a4wide, graphicx, fancyhdr, wrapfig, tabularx, amsmath, amssymb, hyperref, color, verbatim, nameref}
+\usepackage{bussproofs}
 \usepackage[english]{babel}
 \definecolor{linkcolour}{rgb}{0,0.2,0.6}
 \hypersetup{colorlinks,breaklinks,urlcolor=linkcolour, linkcolor=linkcolour}
@@ -82,7 +83,8 @@ In het werkstuk van Talen \& Automaten hebben we aangetoond dat Foo een niet-reg
 \section{Interessante constructies in Foo}
 
 Foo bevat, net als de taal While, een beperkte instructie set. 
-In vergelijking met While heeft Foo een aantal constructies die erg interessant zijn, zoals de pauzeer (\#) operatie, ... . 
+Foo heeft een aantal constructies die niet voorkomen in While, wat Foo ten opzichte van While interessant maakt.
+Een aantal constructies die interessant zijn, zoals de pauzeer (\#) operatie, ... . 
 In dit hoofdstuk zullen we deze constructies bespreken.
 
 \subsection{Pauzeer operatie (\#)}
@@ -101,14 +103,55 @@ Om dit te simuleren moeten we de tijd op het moment van uitvoeren van de pauzeer
 \subsection{Fout afhandeling}
 
 \section{Syntax van Foo}
-In dit hoofdstuk zullen we de operaties van Foo formeler maken door een syntax opstellen. De syntax van Foo ziet er als volgt uit:
+In dit hoofdstuk zullen we de operaties van Foo formeler maken door een syntax opstellen. 
+De syntax van Foo ziet er als volgt uit:
+\newline
+
+\begin{math}
+{\bf S::= ``c" | \&n | @n | < | > | \$f | \#a | (nS) | S_{1}S_{2} }
+\newline
+\newline
+\indent{\bf c::= ASCII-symbolen| \epsilon}
+\newline
+\indent{\bf a::= n | \epsilon | +a | -a | *a | /a | \%a | na}
+\newline 
+\indent{\bf f::= c | i | h}
+\newline
+\indent{\bf n::= 0..9n | \epsilon}
+\end{math}
+
+
+
 
 
 \section{Natuurlijke semantiek van Foo}
-
 In dit hoofdstuk zullen we de operaties van Foo inzichtelijker maken door semantiek regels op te stellen. 
 We zullen hiervoor in eerste instantie gebruik maken van natuurlijke semantiek.
 Mocht blijken dat dit te beperkt is, dan zullen we ons richten op structurele operationele semantiek.
+Allereerst definieren we de volgende symbolen en functies:
+\newline
+\newline
+\begin{tabular}{ | l | p{12cm} |}
+    \hline
+    Teken of functie & Betekenis \\ \hline
+    \begin{math} \sigma \end{math} &  Dit verwijst naar de cel van de array en begint met de waarde 0. \\ \hline
+    \begin{math} AV(\sigma) \end{math} & Deze functie geeft de waarde terug die in de opegeven cel staat van de array. \\ \hline
+    \begin{math} \rho \end{math} &  Dit staat voor het aantal seconden dat het programma moet pauzeren. \\ \hline
+
+\end{tabular}
+\newline
+\newline
+\newline
+Hieronder beschrijven we de semantiekregels voor Foo:
+\newline
+
+\begin{prooftree}
+\LeftLabel{$[Comp_{ns}]$:\quad}
+\AxiomC{$\langle S_{1}, s(\sigma, AV(\sigma), \rho) \rangle \rightarrow s'(\sigma, AV(\sigma), \rho)$}
+\AxiomC{$\langle S_{2}, s'(\sigma, AV(\sigma), \rho) \rangle \rightarrow s''(\sigma, AV(\sigma), \rho)$}
+\BinaryInfC{$\langle S_{1}S_{2}, AV(\sigma, AV(\sigma), \rho) \rangle \rightarrow  s''(\sigma, AV(\sigma), \rho)$}
+\end{prooftree}
+
 
 
 \section{Structurele operationale semantiek van Foo}
