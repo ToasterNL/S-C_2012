@@ -143,16 +143,39 @@ Allereerst definieren we de volgende symbolen en functies:
 \newline
 \newline
 Hieronder beschrijven we de semantiekregels voor Foo:
-\newline
 
+%COMP-REGEL
 \begin{prooftree}
 \LeftLabel{$[Comp_{ns}]$:\quad}
 \AxiomC{$\langle S_{1}, s(\sigma, AV(\sigma), \rho) \rangle \rightarrow s'(\sigma, AV(\sigma), \rho)$}
 \AxiomC{$\langle S_{2}, s'(\sigma, AV(\sigma), \rho) \rangle \rightarrow s''(\sigma, AV(\sigma), \rho)$}
-\BinaryInfC{$\langle S_{1}S_{2}, AV(\sigma, AV(\sigma), \rho) \rangle \rightarrow  s''(\sigma, AV(\sigma), \rho)$}
+\BinaryInfC{$\langle S_{1}S_{2}, s(\sigma, AV(\sigma), \rho) \rangle \rightarrow  s''(\sigma, AV(\sigma), \rho)$}
 \end{prooftree}
 
+%#-REGEL, LABEL STAAT ER NIET !!!
+\begin{prooftree}
+\LeftLabel{$[\#_{ns}]$:\quad}
+\AxiomC{$\langle \#, s(\sigma,  AV(\sigma), \rho) \rangle \rightarrow s(\sigma,  AV(\sigma), \rho) $}
+\end{prooftree}
+%LOOP-REGELS:
 
+%LOOP TT 1
+\begin{prooftree}
+\LeftLabel{$[Loop_{ns}^{tt^1}]$:\quad}
+\RightLabel{$if \beta_{[n \not= Av(\sigma)]s} = tt$}
+\AxiomC{$\langle S, s(\sigma, AV(\sigma), \rho) \rangle \rightarrow s'(\sigma, AV(\sigma), \rho)$}
+\AxiomC{$\langle nS, s'(\sigma, AV(\sigma), \rho) \rangle \rightarrow s''(\sigma, AV(\sigma), \rho)$}
+\BinaryInfC{$\langle nS, s(\sigma, AV(\sigma), \rho) \rangle \rightarrow  s''(\sigma, AV(\sigma), \rho)$}
+\end{prooftree}
+
+%LOOP TT 2
+\begin{prooftree}
+\LeftLabel{$[Loop_{ns}^{tt^2}]$:\quad}
+\RightLabel{$if \beta_{[0 \not= Av(\sigma)]s} = tt$}
+\AxiomC{$\langle S, s(\sigma, AV(\sigma), \rho) \rangle \rightarrow s'(\sigma, AV(\sigma), \rho)$}
+\AxiomC{$\langle S, s'(\sigma, AV(\sigma), \rho) \rangle \rightarrow s''(\sigma, AV(\sigma), \rho)$}
+\BinaryInfC{$\langle S, s(\sigma, AV(\sigma), \rho) \rangle \rightarrow  s''(\sigma, AV(\sigma), \rho)$}
+\end{prooftree}
 
 \section{Structurele operationale semantiek van Foo}
 
