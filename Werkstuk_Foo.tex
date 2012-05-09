@@ -119,7 +119,7 @@ De syntax van Foo ziet er als volgt uit:
 \newline
 \indent{\bf c::= ASCII-symbolen| \epsilon}
 \newline
-\indent{\bf a::= n | \epsilon | +a | -a | *a | /a | \%a | na}
+\indent{\bf a::= n | +a | -a | *a | /a | \%a}
 \newline 
 \indent{\bf f::= c | i | h}
 \newline
@@ -182,6 +182,43 @@ Hieronder beschrijven we de semantiekregels voor Foo:
 \AxiomC{$\langle S, s'(\sigma, AV(\sigma), \rho) \rangle \rightarrow s''(\sigma, AV(\sigma), \rho)$}
 \BinaryInfC{$\langle S, s(\sigma, AV(\sigma), \rho) \rangle \rightarrow  s''(\sigma, AV(\sigma), \rho)$}
 \end{prooftree}
+
+%LOOP FF 1
+\begin{prooftree}
+\LeftLabel{$[Loop_{ns}^{ff}]$:\quad}
+\RightLabel{$if \beta_{[n \not= Av(\sigma)]s} = ff$}
+\AxiomC{$\langle nS, s(\sigma, AV(\sigma), \rho) \rangle \rightarrow  s(\sigma, AV(\sigma), \rho)$}
+\end{prooftree}
+
+%LOOP FF 2
+\begin{prooftree}
+\LeftLabel{$[Loop_{ns}^{ff}]$:\quad}
+\RightLabel{$if \beta_{[n \not= Av(\sigma)]s} = ff$}
+\AxiomC{$\langle S, s(\sigma, AV(\sigma), \rho) \rangle \rightarrow  s(\sigma, AV(\sigma), \rho)$}
+\end{prooftree}
+
+%Arimetische expressies
+
+\begin{prooftree}
+\AxiomC{$\langle +a, s(\sigma, AV(\sigma), \rho) \rangle \rightarrow  s'(\sigma, AV(\sigma)+a, \rho)$}
+\end{prooftree}
+
+\begin{prooftree}
+\AxiomC{$\langle -a, s(\sigma, AV(\sigma), \rho) \rangle \rightarrow  s'(\sigma, AV(\sigma)-a, \rho)$}
+\end{prooftree}
+
+\begin{prooftree}
+\AxiomC{$\langle *a, s(\sigma, AV(\sigma), \rho) \rangle \rightarrow  s'(\sigma, AV(\sigma)*a, \rho)$}
+\end{prooftree}
+
+\begin{prooftree}
+\AxiomC{$\langle /a, s(\sigma, AV(\sigma), \rho) \rangle \rightarrow  s'(\sigma, AV(\sigma)/a, \rho)$}
+\end{prooftree}
+
+\begin{prooftree}
+\AxiomC{$\langle \%a, s(\sigma, AV(\sigma), \rho) \rangle \rightarrow  s'(\sigma, AV(\sigma) \%a, \rho)$}
+\end{prooftree}
+
 
 \section{Structurele operationale semantiek van Foo}
 
