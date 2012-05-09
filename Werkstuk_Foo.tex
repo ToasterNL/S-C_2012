@@ -51,26 +51,28 @@
 \section{Introductie Foo}
 
 Foo is een esoterische taal gebaseerd op `turing-tarpit'-achtige talen zoals `Brainfuck'. Het is in 2008 ontwikkeld door ene ``Feky''.
-De taal maakt gebruik van een eendimensionale array in combinatie met een pointer, die de tape in een turingmachine voorstelt.
-Verder zijn er een stack en kopieeroperaties aanwezig.
-De stack wordt voornamelijk gebruikt voor rekenkundige operaties en loops.
-Foo maakt dus gebruik van hetzelfde principe als een turingmachine met drie tapes (die misschien in het geval van Foo op \'e\'en logische `tape' worden bijgehouden in het geheugen van de interpreter), waarbij \'e\'en van de tapes de data (invoer) bevat, \'e\'en die als stack gebruikt wordt en de laatste die de programmacode bevat. %waar baseren we dit op?
+Taalconstructies in Foo zijn ASCII-strings die een tape met instructies, het programma voor een Foo-machine, voorstellen.
+De operaties draaien om een eendimensionale array, de standard input, die genavigeerd en bewerkt kan worden.
+Verder zijn er rekenkundige, interne stack- en kopieeroperaties aanwezig.
+De standard input gedraagt zich als een tape in de zin dat als er geen standard input wordt gegeven er een lege invoer veronderstelt wordt. 
+%De stack wordt voornamelijk gebruikt voor rekenkundige operaties en loops.
+Foo maakt dus gebruik van hetzelfde principe als een turingmachine met drie tapes, waarbij \'e\'en van de tapes de standard input bevat, \'e\'en die als stack gebruikt wordt en de laatste die de programmacode bevat. %waar baseren we dit op?
 Programma's in Foo stoppen als de interpreter aan het einde van het de programmacode komt (EOF).
 
 \begin{center}
-    \begin{tabular}{ | l | p{15cm} |}
+    \begin{tabular}{ | l | p{14cm} | c |}
     \hline
-    Teken & Betekenis \\ \hline
-    " & Alle invoer tussen deze tekens wordt afgedrukt naar stdout. \\ \hline
-    \& & Zet de waarde van de geselecteerde cel in de array om naar een andere waarde. Gevolgd door een nummer (\&55) levert dit de waarde 55 in de cel. Zonder nummer wordt er een waarde van de stack gepopped om in de cel te zetten. \\ \hline
-    @ & Vergelijkbaar met '\&' alleen wordt er een waarde op de stack gepushed. \\ \hline
-    \(<\) & Verlaagt de array pointer met \'e\'en. \\ \hline
-    \(>\) & Verhoogt de array pointer met \'e\'en. \\ \hline
-    \$ & Drukt een enkele waarde af. Er zijn drie mogelijkheden: druk af als integer (i), druk af als hexadecimaal integer (h) en als ASCII karakter (c). Als er niet zo een `format string' wordt gespecificeerd wordt er een foutmelding gegeven door de interpreter. \\ \hline
-    +, -, *, /, \% & Rekenkundige operatoren, deze werken zoals we zouden verwachten als optellen, aftrekken, vermenigvuldigen, delen en modulo, en worden toegepast op het huidige element in de array met gebruikersinvoer. \\ \hline
-    \# & Pauzeert de uitvoering van het programma voor een opgegeven aantal seconden. \\ \hline
-    ( & Specificeert het begin van een loop: als dit gevolgd wordt door een natuurlijk getal dan wordt deze loop uitgevoerd zolang de waarde in de huidige cel van de array met gebruikersinvoer ongelijk is aan de opgegeven waarde. Als er geen nummer is opgegeven dan wordt de loop uitgevoerd zolang de waarde die in de cel van de array met gebruikersinvoer staat ongelijk is aan nul. \\ \hline
-    ) & Specificeert het einde van een loop: er wordt teruggesprongen naar de laatste '(' en als de waarde van de huidige cel in de array met gebruikersinvoer gelijk is aan het eerder opgegeven nummer, dan wordt verder gegaan met de rest van code. \\ \hline
+    Teken & Betekenis & ariteit \\ \hline
+    " & Alle invoer tussen deze tekens wordt afgedrukt naar stdout. & 1 \\ \hline
+    \& & Zet de waarde van de geselecteerde cel in de array om naar een andere waarde. Gevolgd door een numerieke waarde (\&55) levert dit de waarde 55 in de cel. Zonder numerieke waarde wordt er een waarde van de stack gepopped om in de cel te zetten. & 1 of 2\\ \hline
+    @ & Vergelijkbaar met '\&' alleen wordt er een waarde op de stack gepusht. & 1 of 2\\ \hline
+    \(<\) & Verlaagt de array pointer met \'e\'en. & 0 \\ \hline
+    \(>\) & Verhoogt de array pointer met \'e\'en. & 0 \\ \hline
+    \$ & Drukt een enkele waarde af. Er zijn drie mogelijkheden: druk af als integer (i), druk af als hexadecimaal integer (h) en als ASCII karakter (c). Als er niet zo een `format string' wordt gespecificeerd wordt er een foutmelding gegeven door de interpreter. & 2 \\ \hline
+    +, -, *, /, \% & Rekenkundige operatoren, deze werken zoals we zouden verwachten als respectievelijk optellen, aftrekken, vermenigvuldigen, delen en modulo. Deze operators worden links toegepast op het huidige element in de array met standard input en gebruiken van rechts de numerieke waarde die op de operator volgt. & 2\\ \hline
+    \# & Pauzeert de uitvoering van het programma voor een opgegeven aantal seconden. & 1\\ \hline
+    ( & Specificeert het begin van een loop: als dit gevolgd wordt door een natuurlijk getal dan wordt deze loop uitgevoerd zolang de waarde in de huidige cel van de array met standard input  ongelijk is aan de opgegeven waarde. Als er geen nummer is opgegeven dan wordt de loop uitgevoerd zolang de waarde die in de cel van de array met standard input staat ongelijk is aan nul. & 0 of 1 \\ \hline
+    ) & Specificeert het einde van een loop: er wordt teruggesprongen naar de laatste '(' tenzij de waarde van de huidige cel in de array met standard input gelijk is aan het eerder opgegeven nummer, dan wordt verder gegaan met de rest van code. & 0 \\ \hline
   
 
     \hline
@@ -82,25 +84,29 @@ In het werkstuk van Talen \& Automaten hebben we aangetoond dat Foo een niet-reg
 
 \section{Interessante constructies in Foo}
 
-Foo bevat, net als de taal While, een beperkte instructie set. 
+Foo bevat, net als de taal While, een beperkte instructieset. 
 Foo heeft een aantal constructies die niet voorkomen in While, wat Foo ten opzichte van While interessant maakt.
-Een aantal constructies die interessant zijn, zoals de pauzeer (\#) operatie, ... . 
+Een aantal constructies die interessant zijn, zoals de pauzeer (\#) operatie, een standard input/output en operaties op een stack als inherent taalonderdeel, in tegenstelling tot While dat stacks slechts als intern berekeningsmodel gebruikt.
 In dit hoofdstuk zullen we deze constructies bespreken.
 
-\subsection{Pauzeer operatie (\#)}
-De pauzeer operatie in Foo is het beste te vergelijken met een teller die de uitvoering van de rest van het programma het opgegeven aantal seconden uitstelt. 
-Dit is terug te zien in het Foo programma van de terugtellende loop: \&10(0\#1-1\$i\$c10)"boom!"\$c10 .
-{\bf \#1} betekend hier, pauzeer de rest van het programma een seconde. 
-Pas dan wordt 1 van de huidige celwaarde afgehaald en de nieuwe waarde afgedrukt of, mocht al afgeteld zijn naar nul, komt er "boom" te staan.
+\subsection{Pauzeer-operatie (\#)}
+De pauzeer-operatie in Foo is het beste te vergelijken met een teller die de uitvoering van de rest van het programma het opgegeven aantal seconden uitstelt. 
+Dit is terug te zien in het Foo programma van de terugtellende loop: \verb|&10(#1-1$i$c10)"boom!"$c10|.
+{\bf \verb|#1|} betekent hier: pauzeer de rest van het programma \'e\'en seconde. 
+Pas dan wordt 1 van de huidige celwaarde afgehaald en de nieuwe waarde afgedrukt of, mocht al afgeteld zijn naar nul, komt er de string "boom" op de standard output te staan.
 Dit programma is dus een teller opzich.
-Zouden we de waarde 10 achter de \# zetten, dan zou het programma tien seconden wachten en in totaal 100 seconden duren.
+Zouden we de waarde 10 achter de \#-operator zetten, dan zou het programma tien seconden wachten en in totaal 100 seconden duren.
 
 
-Dit lijkt in eerste instantie heel erg op de {\bf\(<\)skip\(>\)} functie in While.
-Het enige wat veranderd is ten opzichte van de vorige state is de tijd.
-Om dit te simuleren moeten we de tijd op het moment van uitvoeren van de pauzeer operatie uitlezen, vervolgens de ingestelde tijd laten verlopen en in de nieuwe state de verstreken tijd weergeven.
+Dit lijkt in eerste instantie heel erg op de {\bf\verb|<skip>|} functie in While.
+Het enige wat verandert is ten opzichte van de vorige state is de tijd.
+Om dit te simuleren moeten we de tijd op het moment van uitvoeren van de pauzeer operatie uitlezen, vervolgens de ingestelde tijd laten verlopen en in de nieuwe state de verstreken tijd vertegenwoordigen.
+We zouden dit kunnen modeleren met een interne klok die in hele secondes telt, die eigenlijk los staat van de semantiek vande taal.
+Gebruikmakend van Structurele Operationele Semantiek zouden we wellicht deze operator een postconditie kunnen laten hebben die een ongebonden variabele (`tijd') gebruikt om de huidige waarde van de klok op te slaan en een variabele (`x') voor het argument, en aan elk (opvolgend) statement de preconditie kunnen stellen dat de waarde van `tijd' met minstens `x' seconden van de klok verschilt.
 
-\subsection{Fout afhandeling}
+Omdat in Foo geen parallele operaties mogelijk zijn is het onmogelijk om door deze operator het strikt logisch gedrag van een programma te veranderen.
+
+\subsection{Foutafhandeling}
 
 \section{Syntax van Foo}
 In dit hoofdstuk zullen we de operaties van Foo formeler maken door een syntax opstellen. 
