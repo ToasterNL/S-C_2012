@@ -149,6 +149,7 @@ Allereerst definieren we de volgende symbolen en functies:
     \begin{math} AV(\sigma) \end{math} & Deze functie geeft de waarde terug die in de opgegeven cel staat van de array. \\ \hline
     \begin{math} \rho \end{math} &  Dit staat voor het aantal seconden dat het programma moet pauzeren. \\ \hline
     \begin{math} \theta \end{math} &  Dit staat voor de stack. \begin{math}\theta\end{math} (1) staat voor de eerste waarde van de stack. \\ \hline
+    \begin{math} O \end{math} &  Dit staat voor de stream standard output. Hieraan kunnen waardes worden geconcateneerd. \\ \hline
 
 \end{tabular}
 \newline
@@ -162,9 +163,48 @@ Bij Foo worden de statements direct aan elkaar geschreven zonder scheidingsteken
 %COMP-REGEL
 \begin{prooftree}
 \LeftLabel{$[Comp_{ns}]$:\quad}
-\AxiomC{$\langle S_{1}, s(\sigma, AV(\sigma), \rho, \theta) \rangle \rightarrow s'(\sigma, AV(\sigma), \rho, \theta)$}
-\AxiomC{$\langle S_{2}, s'(\sigma, AV(\sigma), \rho, \theta) \rangle \rightarrow s''(\sigma, AV(\sigma), \rho, \theta)$}
-\BinaryInfC{$\langle S_{1}S_{2}, s(\sigma, AV(\sigma), \rho, \theta) \rangle \rightarrow  s''(\sigma, AV(\sigma), \rho, \theta)$}
+\AxiomC{$\langle S_{1}, s(\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow s'(\sigma, AV(\sigma), \rho, \theta, O)$}
+\AxiomC{$\langle S_{2}, s'(\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow s''(\sigma, AV(\sigma), \rho, \theta, O)$}
+\BinaryInfC{$\langle S_{1}S_{2}, s(\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow  s''(\sigma, AV(\sigma), \rho, \theta, O)$}
+\end{prooftree}
+
+De $nav^R_{ns}$ regel verhoogt de index voor de huidige cel in de array met \'e\'en.
+\begin{prooftree}
+\LeftLabel{$[nav^R_{ns}]$:\quad}
+\AxiomC{$\langle >, s(\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow s'(\sigma+1, AV(\sigma), \rho, \theta, O)$}
+\end{prooftree}
+
+De $nav^L_{ns}$ regel verlaagt de index voor de huidige cel in de array met \'e\'en.
+\begin{prooftree}
+\LeftLabel{$[nav^L_{ns}]$:\quad}
+\AxiomC{$\langle <, s(\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow s'(\sigma-1, AV(\sigma), \rho, \theta, O)$}
+\end{prooftree}
+
+De $ass^i_{ns}$ regel zet een waarde in de huidige arraycel die gegeven wordt door een letterlijke, direct opvolgende numerieke waarde.
+\begin{prooftree}
+\LeftLabel{$[ass^i_{ns}]$:\quad}
+\AxiomC{$\langle \&i, s(\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow s'(\sigma, AV(\sigma) \mapsto i, \rho, \theta, O)$}
+\end{prooftree}
+
+De $ass^s_{ns}$ regel zet een waarde die van de stack gepopt wordt in de huidige arraycel.
+Het eerste (index nul) element van de stack wordt gebruikt, en in de volgende state wordt de stack gegeven vanaf het tweede (index \'e\'en).
+\begin{prooftree}
+\LeftLabel{$[ass^s_{ns}]$:\quad}
+\AxiomC{$\langle \&, s(\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow s'(\sigma, AV(\sigma) \mapsto \theta(1), \rho, \theta(2..), O)$}
+\end{prooftree}
+
+De $push^i)_{ns}$ regel pusht een letterlijke, direct opvolgende numerieke waarde op de stack.
+De waarde wordt geconcateneerd met de gegeven stack, zodat deze bovenaan komt te staan, en gepopt kan worden.
+\begin{prooftree}
+\LeftLabel{$[push^i_{ns}]$:\quad}
+\AxiomC{$\langle @, s(\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow s'(\sigma, AV(\sigma), \rho, i \| \theta, O)$}
+\end{prooftree}
+
+De $push^{AV}_{ns}$ regel pusht een waarde uit de huidige array-cel op de stack.
+Ook hier wordt de waarde geconcateneerd met de gegeven stack.
+\begin{prooftree}
+\LeftLabel{$[push^{AV}_{ns}]$:\quad}
+\AxiomC{$\langle @, s(\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow s'(\sigma, AV(\sigma), \rho, AV(\sigma) \| \theta, O)$}
 \end{prooftree}
 
 De pauzeerregel zoals hieronder staat beschreven is vergelijkbaar met de skipregel uit While. 
@@ -174,7 +214,7 @@ Het is niet mogelijk iets in de state te veranderen tijdens het pauzeren, waardo
 %#-REGEL, LABEL STAAT ER NIET !!!
 \begin{prooftree}
 \LeftLabel{$[\#_{ns}]$:\quad}
-\AxiomC{$\langle \#, s(\sigma,  AV(\sigma), \rho, \theta) \rangle \rightarrow s(\sigma,  AV(\sigma), \rho, \theta) $}
+\AxiomC{$\langle \#, s(\sigma,  AV(\sigma), \rho, \theta, O) \rangle \rightarrow s(\sigma,  AV(\sigma), \rho, \theta, O) $}
 \end{prooftree}
 
 %LOOP-REGELS:
@@ -187,9 +227,9 @@ De eerste regel geeft de situatie weer als er wel gebruik gemaakt wordt van de p
 \begin{prooftree}
 \LeftLabel{$[Loop_{ns}^{tt^1}]$:\quad}
 %\RightLabel{$if \beta_{[n \not= AV(\sigma)]s} = tt$}
-\AxiomC{$\langle (S), s(\sigma, AV(\sigma), \rho, \theta) \rangle \rightarrow s'(\sigma, AV(\sigma), \rho, \theta)$}
-\AxiomC{$\langle (n-1 S), s'(\sigma, AV(\sigma), \rho, \theta) \rangle \rightarrow s''(\sigma, AV(\sigma), \rho, \theta)$}
-\BinaryInfC{$\langle (nS), s(\sigma, AV(\sigma), \rho, \theta) \rangle \rightarrow  s''(\sigma, AV(\sigma), \rho, \theta)$}
+\AxiomC{$\langle (S), s(\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow s'(\sigma, AV(\sigma), \rho, \theta, O)$}
+\AxiomC{$\langle (n-1 S), s'(\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow s''(\sigma, AV(\sigma), \rho, \theta, O)$}
+\BinaryInfC{$\langle (nS), s(\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow  s''(\sigma, AV(\sigma), \rho, \theta, O)$}
 \end{prooftree}
 
 $if \beta_{[n \not= AV(\sigma)]s} = tt$
@@ -202,9 +242,9 @@ Hierbij wordt de loop uitgevoerd zolang de waarde van de cel ongelijk is aan nul
 \begin{prooftree}
 \LeftLabel{$[Loop_{ns}^{tt^2}]$:\quad}
 %\RightLabel{$if \beta_{[0 \not= AV(\sigma)]s} = tt$}
-\AxiomC{$\langle (S), s(\sigma, AV(\sigma), \rho, \theta) \rangle \rightarrow s'(\sigma, AV(\sigma), \rho, \theta)$}
-\AxiomC{$\langle (S), s'(\sigma, AV(\sigma), \rho, \theta) \rangle \rightarrow s''(\sigma, AV(\sigma), \rho, \theta)$}
-\BinaryInfC{$\langle (S), s(\sigma, AV(\sigma), \rho, \theta) \rangle \rightarrow  s''(\sigma, AV(\sigma), \rho, \theta)$}
+\AxiomC{$\langle (S), s(\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow s'(\sigma, AV(\sigma), \rho, \theta, O)$}
+\AxiomC{$\langle (S), s'(\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow s''(\sigma, AV(\sigma), \rho, \theta, O)$}
+\BinaryInfC{$\langle (S), s(\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow  s''(\sigma, AV(\sigma), \rho, \theta, O)$}
 \end{prooftree}
 
 $if \beta_{[0 \not= AV(\sigma)]s} = tt$
@@ -217,14 +257,14 @@ Beide regels stoppen de uitvoering van de loop als de paramater of 0 gelijk aan 
 \begin{prooftree}
 \LeftLabel{$[Loop_{ns}^{ff}]$:\quad}
 \RightLabel{$if \beta_{[n \not= AV(\sigma)]s} = ff$}
-\AxiomC{$\langle (nS), s(\sigma, AV(\sigma), \rho, \theta) \rangle \rightarrow  s(\sigma, AV(\sigma), \rho, \theta)$}
+\AxiomC{$\langle (nS), s(\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow  s(\sigma, AV(\sigma), \rho, \theta, O)$}
 \end{prooftree}
 
 %LOOP FF 2
 \begin{prooftree}
 \LeftLabel{$[Loop_{ns}^{ff}]$:\quad}
 \RightLabel{$if \beta_{[n \not= Av(\sigma)]s} = ff$}
-\AxiomC{$\langle (S), s(\sigma, AV(\sigma), \rho, \theta) \rangle \rightarrow  s(\sigma, AV(\sigma), \rho, \theta)$}
+\AxiomC{$\langle (S), s(\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow  s(\sigma, AV(\sigma), \rho, \theta, O)$}
 \end{prooftree}
 
 %Aritmetische expressies
@@ -238,48 +278,88 @@ Hiervoor moet dus twee aparte regels opgesteld worden.
 
 De + regel wordt gebruikt om een opgegeven waarde op te tellen bij de huidige waarde in de cel.
 \begin{prooftree}
-\AxiomC{$\langle +a, s(\sigma, AV(\sigma), \rho, \theta) \rangle \rightarrow  s'(\sigma, AV(\sigma)+a, \rho, \theta)$}
+\AxiomC{$\langle +a, s(\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow  s'(\sigma, AV(\sigma)+a, \rho, \theta, O)$}
 \end{prooftree}
 
 \begin{prooftree}
-\AxiomC{$\langle +, s(\sigma, AV(\sigma), \rho, \theta) \rangle \rightarrow  s'(\sigma, AV(\sigma)+ \theta(1), \rho, \theta-1)$}
+\AxiomC{$\langle +, s(\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow  s'(\sigma, AV(\sigma)+ \theta(1), \rho, \theta-1, O)$}
 \end{prooftree}
 
 De - regel wordt gebruikt om een opgegeven waarde af te trekken van de huidige waarde in de cel.
 \begin{prooftree}
-\AxiomC{$\langle -a, s(\sigma, AV(\sigma), \rho, \theta) \rangle \rightarrow  s'(\sigma, AV(\sigma)-a, \rho, \theta)$}
+\AxiomC{$\langle -a, s(\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow  s'(\sigma, AV(\sigma)-a, \rho, \theta, O)$}
 \end{prooftree}
 
 \begin{prooftree}
-\AxiomC{$\langle -, s(\sigma, AV(\sigma), \rho, \theta) \rangle \rightarrow  s'(\sigma, AV(\sigma)- \theta(1), \rho, \theta-1)$}
+\AxiomC{$\langle -, s(\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow  s'(\sigma, AV(\sigma)- \theta(1), \rho, \theta-1, O)$}
 \end{prooftree}
-
 De * regel wordt gebruikt om een opgegeven waarde te vermenigvuldigen met de huidige waarde in de cel.
 \begin{prooftree}
-\AxiomC{$\langle *a, s(\sigma, AV(\sigma), \rho, \theta) \rangle \rightarrow  s'(\sigma, AV(\sigma)*a, \rho, \theta)$}
+\AxiomC{$\langle *a, s(\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow  s'(\sigma, AV(\sigma)*a, \rho, \theta, O)$}
 \end{prooftree}
 
 \begin{prooftree}
-\AxiomC{$\langle *, s(\sigma, AV(\sigma), \rho, \theta) \rangle \rightarrow  s'(\sigma, AV(\sigma)*\theta(1), \rho, \theta-1)$}
+\AxiomC{$\langle *, s(\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow  s'(\sigma, AV(\sigma)*\theta(1), \rho, \theta-1, O)$}
 \end{prooftree}
 
 De / regel wordt gebruikt om de huidige waarde in de cel te delen met de opgegeven waarde.
 \begin{prooftree}
-\AxiomC{$\langle /a, s(\sigma, AV(\sigma), \rho, \theta) \rangle \rightarrow  s'(\sigma, AV(\sigma)/a, \rho, \theta)$}
+\AxiomC{$\langle /a, s(\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow  s'(\sigma, AV(\sigma)/a, \rho, \theta, O)$}
 \end{prooftree}
 
 \begin{prooftree}
-\AxiomC{$\langle /, s(\sigma, AV(\sigma), \rho, \theta) \rangle \rightarrow  s'(\sigma, AV(\sigma)/\theta(1), \rho, \theta-1)$}
+\AxiomC{$\langle /, s(\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow  s'(\sigma, AV(\sigma)/\theta(1), \rho, \theta-1, O)$}
 \end{prooftree}
 
 De \% regel wordt gebruikt om de modulo te bereken van de huidige waarde in de cel met de opgegeven waarde.
 \begin{prooftree}
-\AxiomC{$\langle \%a, s(\sigma, AV(\sigma), \rho, \theta) \rangle \rightarrow  s'(\sigma, AV(\sigma) \%a, \rho, \theta)$}
+\AxiomC{$\langle \%a, s(\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow  s'(\sigma, AV(\sigma) \%a, \rho, \theta, O)$}
 \end{prooftree}
 
 \begin{prooftree}
-\AxiomC{$\langle \%, s(\sigma, AV(\sigma), \rho, \theta) \rangle \rightarrow  s'(\sigma, AV(\sigma) \% \theta(1), \rho, \theta-1)$}
+\AxiomC{$\langle \%, s(\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow  s'(\sigma, AV(\sigma) \% \theta(1), \rho, \theta-1, O)$}
 \end{prooftree}
+
+% Standard output regels
+%Vanaf hier hebben we een extra state-element, een standaard output stream \(O\) nodig.
+
+
+De $stdout_{ns}$ regel wordt gebruikt om een letterlijke string op de standard output te zetten door middel van concatenatie.
+\begin{prooftree}
+\AxiomC{$\langle "<str>", s(\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow  s'(\sigma, AV(\sigma), \rho, \theta, O \| <str>)$}
+\end{prooftree}
+
+
+De $print^c_{ns}$ regel print de huidige waarde uit de array als letterlijk 'character' naar de standard output.
+\begin{prooftree}
+\AxiomC{$\langle \$i, s(\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow  s'(\sigma, AV(\sigma), \rho, \theta, O \| AV(\sigma)$}
+\end{prooftree}
+
+De $print^{ci}_{ns}$ regel print de direct opvolgende waarde als 'character' naar de standard output.
+\begin{prooftree}
+\AxiomC{$\langle \$in, s(\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow  s'(\sigma, AV(\sigma), \rho, \theta, O \| n$}
+\end{prooftree}
+
+De $print^i_{ns}$ regel print de ASCII-represenatie van de huidige waarde uit de array naar de standard output.
+\begin{prooftree}
+\AxiomC{$\langle \$i, s(\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow  s'(\sigma, AV(\sigma), \rho, \theta, O \| ascii(AV(\sigma))$}
+\end{prooftree}
+
+De $print^{in}_{ns}$ regel print de ASCII-represenatie van de direct opvolgende waarde naar de standard output.
+\begin{prooftree}
+\AxiomC{$\langle \$in, s(\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow  s'(\sigma, AV(\sigma), \rho, \theta, O \| ascii(n)$}
+\end{prooftree}
+
+De $print^h_{ns}$ regel print in ASCII de hexadecimale represenatie van de huidige waarde uit de array naar de standard output.
+\begin{prooftree}
+\AxiomC{$\langle \$i, s(\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow  s'(\sigma, AV(\sigma), \rho, \theta, O \| ascii(hex(AV(\sigma)))$}
+\end{prooftree}
+
+De $print^{hn}_{ns}$ regel print in ASCII de hexadecimale represenatie van de direct opvolgende waarde naar de standard output.
+\begin{prooftree}
+\AxiomC{$\langle \$in, s(\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow  s'(\sigma, AV(\sigma), \rho, \theta, O \| ascii(hex(n))$}
+\end{prooftree}
+
 
 
 \section{Structurele operationale semantiek van Foo}
