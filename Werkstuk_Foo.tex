@@ -106,7 +106,11 @@ Gebruikmakend van Structurele Operationele Semantiek zouden we wellicht deze ope
 
 Omdat in Foo geen parallele operaties mogelijk zijn is het onmogelijk om door deze operator het strikt logisch gedrag van een programma te veranderen.
 
-\subsection{Foutafhandeling}
+\subsection{Foutafhandeling} % Verdere uitleg nodig.
+
+Tijdens het gebruik van aritmatische expressies blijkt dat als er geen waarde wordt opgegeven, de eerste waarde van de stack wordt gebruikt. 
+Deze waarde wordt dan van de stack gepopped. 
+Als er niks op de stack staat wordt er een foutmelding gegenereerd, maar de berekening schijnt als nog te worden uitgevoerd.
 
 \section{Syntax van Foo}
 In dit hoofdstuk zullen we de operaties van Foo formeler maken door een syntax opstellen. 
