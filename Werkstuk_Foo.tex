@@ -135,14 +135,16 @@ In dit hoofdstuk zullen we de operaties van Foo inzichtelijker maken door semant
 We zullen hiervoor in eerste instantie gebruik maken van natuurlijke semantiek.
 Mocht blijken dat dit te beperkt is, dan zullen we ons richten op structurele operationele semantiek.
 Allereerst definieren we de volgende symbolen en functies:
+%DE AV FUNCTIE LEEST ALLEEN DE WAARDE VAN DE CEL UIT....MISSCHIEN MOET ER NOG EEN FUNCTIE KOMEN OM DE WAARDE VAN DE CEL OOK TE UPDATEN NA UITVOERING VAN EEN ARIMETSICHE EXPRESSIE EN NOG EEN STACK UPDATE FUNCTIE?
 \newline
 \newline
 \begin{tabular}{ | l | p{12cm} |}
     \hline
     Teken of functie & Betekenis \\ \hline
     \begin{math} \sigma \end{math} &  Dit verwijst naar de cel van de array en begint met de waarde 0. \\ \hline
-    \begin{math} AV(\sigma) \end{math} & Deze functie geeft de waarde terug die in de opegeven cel staat van de array. \\ \hline
+    \begin{math} AV(\sigma) \end{math} & Deze functie geeft de waarde terug die in de opgegeven cel staat van de array. \\ \hline
     \begin{math} \rho \end{math} &  Dit staat voor het aantal seconden dat het programma moet pauzeren. \\ \hline
+    \begin{math} \theta \end{math} &  Dit staat voor de stack. \begin{math}\theta\end{math} (1) staat voor de eerste waarde van de stack. \\ \hline
 
 \end{tabular}
 \newline
@@ -150,73 +152,129 @@ Allereerst definieren we de volgende symbolen en functies:
 \newline
 Hieronder beschrijven we de semantiekregels voor Foo:
 
+De compositieregel zorgt ervoor dat twee verschillende statements aan elkaar geschreven kunnen worden en is vergelijkbaar met de compositieregel uit While. 
+Bij Foo worden de statements direct aan elkaar geschreven zonder scheidingsteken, zoals de ; bij While.
+
 %COMP-REGEL
 \begin{prooftree}
 \LeftLabel{$[Comp_{ns}]$:\quad}
-\AxiomC{$\langle S_{1}, s(\sigma, AV(\sigma), \rho) \rangle \rightarrow s'(\sigma, AV(\sigma), \rho)$}
-\AxiomC{$\langle S_{2}, s'(\sigma, AV(\sigma), \rho) \rangle \rightarrow s''(\sigma, AV(\sigma), \rho)$}
-\BinaryInfC{$\langle S_{1}S_{2}, s(\sigma, AV(\sigma), \rho) \rangle \rightarrow  s''(\sigma, AV(\sigma), \rho)$}
+\AxiomC{$\langle S_{1}, s(\sigma, AV(\sigma), \rho, \theta) \rangle \rightarrow s'(\sigma, AV(\sigma), \rho, \theta)$}
+\AxiomC{$\langle S_{2}, s'(\sigma, AV(\sigma), \rho, \theta) \rangle \rightarrow s''(\sigma, AV(\sigma), \rho, \theta)$}
+\BinaryInfC{$\langle S_{1}S_{2}, s(\sigma, AV(\sigma), \rho, \theta) \rangle \rightarrow  s''(\sigma, AV(\sigma), \rho, \theta)$}
 \end{prooftree}
+
+De pauzeerregel zoals hieronder staat beschreven is vergelijkbaar met de skipregel uit While. 
+Als dit statement wordt uitgevoerd wordt er het opgeven aantal seconden gewacht met de uitvoering van de rest van het programma. 
+Het is niet mogelijk iets in de state te veranderen tijdens het pauzeren, waardoor de state na het pauzeren niet veranderd is op de verstreken tijd na.
 
 %#-REGEL, LABEL STAAT ER NIET !!!
 \begin{prooftree}
 \LeftLabel{$[\#_{ns}]$:\quad}
-\AxiomC{$\langle \#, s(\sigma,  AV(\sigma), \rho) \rangle \rightarrow s(\sigma,  AV(\sigma), \rho) $}
+\AxiomC{$\langle \#, s(\sigma,  AV(\sigma), \rho, \theta) \rangle \rightarrow s(\sigma,  AV(\sigma), \rho, \theta) $}
 \end{prooftree}
+
 %LOOP-REGELS:
+
+Het is mogelijk om loops te maken in Foo.
+De moeilijkheid wat betreft semantiekregels zit in het gebruiken van de parameter na de ''(" of het niet gebruiken ervan. 
+De eerste regel geeft de situatie weer als er wel gebruik gemaakt wordt van de parameter.
 
 %LOOP TT 1
 \begin{prooftree}
 \LeftLabel{$[Loop_{ns}^{tt^1}]$:\quad}
-\RightLabel{$if \beta_{[n \not= Av(\sigma)]s} = tt$}
-\AxiomC{$\langle S, s(\sigma, AV(\sigma), \rho) \rangle \rightarrow s'(\sigma, AV(\sigma), \rho)$}
-\AxiomC{$\langle nS, s'(\sigma, AV(\sigma), \rho) \rangle \rightarrow s''(\sigma, AV(\sigma), \rho)$}
-\BinaryInfC{$\langle nS, s(\sigma, AV(\sigma), \rho) \rangle \rightarrow  s''(\sigma, AV(\sigma), \rho)$}
+%\RightLabel{$if \beta_{[n \not= AV(\sigma)]s} = tt$}
+\AxiomC{$\langle (S), s(\sigma, AV(\sigma), \rho, \theta) \rangle \rightarrow s'(\sigma, AV(\sigma), \rho, \theta)$}
+\AxiomC{$\langle (n-1 S), s'(\sigma, AV(\sigma), \rho, \theta) \rangle \rightarrow s''(\sigma, AV(\sigma), \rho, \theta)$}
+\BinaryInfC{$\langle (nS), s(\sigma, AV(\sigma), \rho, \theta) \rangle \rightarrow  s''(\sigma, AV(\sigma), \rho, \theta)$}
 \end{prooftree}
 
-%LOOP TT 2
+$if \beta_{[n \not= AV(\sigma)]s} = tt$
+\newline
+\newline
+In de tweede regel wordt geen parameter opgegeven. 
+Hierbij wordt de loop uitgevoerd zolang de waarde van de cel ongelijk is aan nul.
+
+%LOOP TT 2 HIER KLOPT IETS NOG NIET HELEMAAL MET LOOP ITERATIE....WORDT HIER 1 VAN DE CEL WAARDE AFGETROKKEN EN WORDT DIE WAARDE GEUPDATE IN DE CEL OF NIET?
 \begin{prooftree}
 \LeftLabel{$[Loop_{ns}^{tt^2}]$:\quad}
-\RightLabel{$if \beta_{[0 \not= Av(\sigma)]s} = tt$}
-\AxiomC{$\langle S, s(\sigma, AV(\sigma), \rho) \rangle \rightarrow s'(\sigma, AV(\sigma), \rho)$}
-\AxiomC{$\langle S, s'(\sigma, AV(\sigma), \rho) \rangle \rightarrow s''(\sigma, AV(\sigma), \rho)$}
-\BinaryInfC{$\langle S, s(\sigma, AV(\sigma), \rho) \rangle \rightarrow  s''(\sigma, AV(\sigma), \rho)$}
+%\RightLabel{$if \beta_{[0 \not= AV(\sigma)]s} = tt$}
+\AxiomC{$\langle (S), s(\sigma, AV(\sigma), \rho, \theta) \rangle \rightarrow s'(\sigma, AV(\sigma), \rho, \theta)$}
+\AxiomC{$\langle (S), s'(\sigma, AV(\sigma), \rho, \theta) \rangle \rightarrow s''(\sigma, AV(\sigma), \rho, \theta)$}
+\BinaryInfC{$\langle (S), s(\sigma, AV(\sigma), \rho, \theta) \rangle \rightarrow  s''(\sigma, AV(\sigma), \rho, \theta)$}
 \end{prooftree}
+
+$if \beta_{[0 \not= AV(\sigma)]s} = tt$
+\newline
+\newline
+De axioma's voor de loopregels zijn nagenoeg gelijk.
+Beide regels stoppen de uitvoering van de loop als de paramater of 0 gelijk aan de waarde in de cel.
 
 %LOOP FF 1
 \begin{prooftree}
 \LeftLabel{$[Loop_{ns}^{ff}]$:\quad}
-\RightLabel{$if \beta_{[n \not= Av(\sigma)]s} = ff$}
-\AxiomC{$\langle nS, s(\sigma, AV(\sigma), \rho) \rangle \rightarrow  s(\sigma, AV(\sigma), \rho)$}
+\RightLabel{$if \beta_{[n \not= AV(\sigma)]s} = ff$}
+\AxiomC{$\langle (nS), s(\sigma, AV(\sigma), \rho, \theta) \rangle \rightarrow  s(\sigma, AV(\sigma), \rho, \theta)$}
 \end{prooftree}
 
 %LOOP FF 2
 \begin{prooftree}
 \LeftLabel{$[Loop_{ns}^{ff}]$:\quad}
 \RightLabel{$if \beta_{[n \not= Av(\sigma)]s} = ff$}
-\AxiomC{$\langle S, s(\sigma, AV(\sigma), \rho) \rangle \rightarrow  s(\sigma, AV(\sigma), \rho)$}
+\AxiomC{$\langle (S), s(\sigma, AV(\sigma), \rho, \theta) \rangle \rightarrow  s(\sigma, AV(\sigma), \rho, \theta)$}
 \end{prooftree}
 
-%Arimetische expressies
+%Aritmetische expressies
 
-\begin{prooftree}
-\AxiomC{$\langle +a, s(\sigma, AV(\sigma), \rho) \rangle \rightarrow  s'(\sigma, AV(\sigma)+a, \rho)$}
-\end{prooftree}
+Hieronder volgen de semantiekregels voor de aritmetische expressies die gebruikt kunnen worden in Foo.
+Ook hier zit een lastig punt met betrekking tot de semantiekregels.
+Als er namelijk een waarde wordt opgegeven dan wordt dit uitgevoerd in combinatie met de huidige waarde van de cel.
+Als er geen waarde wordt opgegeven wordt er een waarde van de stack gepopped en gebruikt.
+Hiervoor moet dus twee aparte regels opgesteld worden. 
+Één voor een opgegeven waarde te herkennen aan de ''a" en één voor het gebruik van de stack.
 
+De + regel wordt gebruikt om een opgegeven waarde op te tellen bij de huidige waarde in de cel.
 \begin{prooftree}
-\AxiomC{$\langle -a, s(\sigma, AV(\sigma), \rho) \rangle \rightarrow  s'(\sigma, AV(\sigma)-a, \rho)$}
-\end{prooftree}
-
-\begin{prooftree}
-\AxiomC{$\langle *a, s(\sigma, AV(\sigma), \rho) \rangle \rightarrow  s'(\sigma, AV(\sigma)*a, \rho)$}
-\end{prooftree}
-
-\begin{prooftree}
-\AxiomC{$\langle /a, s(\sigma, AV(\sigma), \rho) \rangle \rightarrow  s'(\sigma, AV(\sigma)/a, \rho)$}
+\AxiomC{$\langle +a, s(\sigma, AV(\sigma), \rho, \theta) \rangle \rightarrow  s'(\sigma, AV(\sigma)+a, \rho, \theta)$}
 \end{prooftree}
 
 \begin{prooftree}
-\AxiomC{$\langle \%a, s(\sigma, AV(\sigma), \rho) \rangle \rightarrow  s'(\sigma, AV(\sigma) \%a, \rho)$}
+\AxiomC{$\langle +, s(\sigma, AV(\sigma), \rho, \theta) \rangle \rightarrow  s'(\sigma, AV(\sigma)+ \theta(1), \rho, \theta-1)$}
+\end{prooftree}
+
+De - regel wordt gebruikt om een opgegeven waarde af te trekken van de huidige waarde in de cel.
+\begin{prooftree}
+\AxiomC{$\langle -a, s(\sigma, AV(\sigma), \rho, \theta) \rangle \rightarrow  s'(\sigma, AV(\sigma)-a, \rho, \theta)$}
+\end{prooftree}
+
+\begin{prooftree}
+\AxiomC{$\langle -, s(\sigma, AV(\sigma), \rho, \theta) \rangle \rightarrow  s'(\sigma, AV(\sigma)- \theta(1), \rho, \theta-1)$}
+\end{prooftree}
+
+De * regel wordt gebruikt om een opgegeven waarde te vermenigvuldigen met de huidige waarde in de cel.
+\begin{prooftree}
+\AxiomC{$\langle *a, s(\sigma, AV(\sigma), \rho, \theta) \rangle \rightarrow  s'(\sigma, AV(\sigma)*a, \rho, \theta)$}
+\end{prooftree}
+
+\begin{prooftree}
+\AxiomC{$\langle *, s(\sigma, AV(\sigma), \rho, \theta) \rangle \rightarrow  s'(\sigma, AV(\sigma)*\theta(1), \rho, \theta-1)$}
+\end{prooftree}
+
+De / regel wordt gebruikt om de huidige waarde in de cel te delen met de opgegeven waarde.
+\begin{prooftree}
+\AxiomC{$\langle /a, s(\sigma, AV(\sigma), \rho, \theta) \rangle \rightarrow  s'(\sigma, AV(\sigma)/a, \rho, \theta)$}
+\end{prooftree}
+
+\begin{prooftree}
+\AxiomC{$\langle /, s(\sigma, AV(\sigma), \rho, \theta) \rangle \rightarrow  s'(\sigma, AV(\sigma)/\theta(1), \rho, \theta-1)$}
+\end{prooftree}
+
+De \% regel wordt gebruikt om de modulo te bereken van de huidige waarde in de cel met de opgegeven waarde.
+\begin{prooftree}
+\AxiomC{$\langle \%a, s(\sigma, AV(\sigma), \rho, \theta) \rangle \rightarrow  s'(\sigma, AV(\sigma) \%a, \rho, \theta)$}
+\end{prooftree}
+
+\begin{prooftree}
+\AxiomC{$\langle \%, s(\sigma, AV(\sigma), \rho, \theta) \rangle \rightarrow  s'(\sigma, AV(\sigma) \% \theta(1), \rho, \theta-1)$}
 \end{prooftree}
 
 
