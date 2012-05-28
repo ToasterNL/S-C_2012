@@ -140,9 +140,10 @@ De syntax van Foo ziet er als volgt uit:
 
 \section{Natuurlijke semantiek van Foo}
 In dit hoofdstuk zullen we de operaties van Foo inzichtelijker maken door semantiekregels op te stellen.
-
 We zullen hiervoor in eerste instantie gebruik maken van natuurlijke semantiek.
 Mocht blijken dat dit te beperkt is, dan zullen we ons richten op structurele operationele semantiek.
+
+\subsection{Transities}
 Allereerst defini\"eren we de volgende symbolen en functies:
 %DE AV FUNCTIE LEEST ALLEEN DE WAARDE VAN DE CEL UIT....MISSCHIEN MOET ER NOG EEN FUNCTIE KOMEN OM DE WAARDE VAN DE CEL OOK TE UPDATEN NA UITVOERING VAN EEN ARIMETSICHE EXPRESSIE EN NOG EEN STACK UPDATE FUNCTIE?
 \newline
@@ -160,6 +161,21 @@ Allereerst defini\"eren we de volgende symbolen en functies:
 \newline
 \newline
 \newline
+
+Onze transitie van states zal er als volgt uit zien:
+
+\begin{prooftree}
+\AxiomC{$\langle S,  s(\sigma, \rho, \theta, O) \rangle \rightarrow s'( \sigma, \rho, \theta, O)$}
+\end{prooftree}
+
+Afhankelijk van statement $S$ zullen de waardes in $s'$ veranderen. 
+$s'$ bevat dus veranderde waardes van $\sigma,\rho, \theta, O$. 
+In de onderstaande semantiekregels zullen we alleen de veranderde waardes in de state $s'$ opnemen.
+Op deze manier blijft het overzichtelijk wat er precies veranderd in een transitie.
+Als het nog niet duidelijk is wat er precies tijdens een transitie veranderd, omdat dit afhankelijk is van nog uit te voeren states, zullen we dit aangeven met alleen $s'$.
+
+
+\subsection{Semantiekregels}
 Hieronder beschrijven we de semantiekregels voor Foo:
 
 De compositieregel zorgt ervoor dat twee verschillende statements aan elkaar geschreven kunnen worden en is vergelijkbaar met de compositieregel uit While. 
@@ -168,9 +184,9 @@ Bij Foo worden de statements direct aan elkaar geschreven zonder scheidingsteken
 %COMP-REGEL
 \begin{prooftree}
 \LeftLabel{$[Comp_{ns}]$:\quad}
-\AxiomC{$\langle S_{1}, s(\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow s'(\sigma, AV(\sigma), \rho, \theta, O)$}
-\AxiomC{$\langle S_{2}, s'(\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow s''(\sigma, AV(\sigma), \rho, \theta, O)$}
-\BinaryInfC{$\langle S_{1}S_{2}, s(\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow  s''(\sigma, AV(\sigma), \rho, \theta, O)$}
+\AxiomC{$\langle S_{1}, s \rangle \rightarrow s'$}
+\AxiomC{$\langle S_{2}, s' \rangle \rightarrow s''$}
+\BinaryInfC{$\langle S_{1}S_{2}, s \rangle \rightarrow  s''$}
 \end{prooftree}
 
 De $nav^R_{ns}$ regel verhoogt de index voor de huidige cel in de array met \'e\'en.
@@ -218,8 +234,8 @@ Het is niet mogelijk iets in de state te veranderen tijdens het pauzeren, waardo
 
 %#-REGEL, LABEL STAAT ER NIET !!!
 \begin{prooftree}
-\LeftLabel{$[\#_{ns}]$:\quad}
-\AxiomC{$\langle \#, s(\sigma,  AV(\sigma), \rho, \theta, O) \rangle \rightarrow s(\sigma,  AV(\sigma), \rho, \theta, O) $}
+\LeftLabel{$[\#n_{ns}]$:\quad}
+\AxiomC{$\langle \#n, s(\rho) \rangle \rightarrow s(\rho + n) $}
 \end{prooftree}
 
 %LOOP-REGELS:
@@ -237,7 +253,7 @@ De eerste regel geeft de situatie weer als er wel gebruik gemaakt wordt van de p
 \BinaryInfC{$\langle (nS), s(\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow  s''(\sigma, AV(\sigma), \rho, \theta, O)$}
 \end{prooftree}
 
-$if \beta_{[n \not= AV(\sigma)]s} = tt$
+$if {\cal B} _{[ n \not= AV(\sigma)]s} = tt$
 \newline
 \newline
 In de tweede regel wordt geen parameter opgegeven. 
@@ -251,7 +267,6 @@ Hierbij wordt de loop uitgevoerd zolang de waarde van de cel ongelijk is aan nul
 \AxiomC{$\langle (S), s'(\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow s''(\sigma, AV(\sigma), \rho, \theta, O)$}
 \BinaryInfC{$\langle (S), s(\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow  s''(\sigma, AV(\sigma), \rho, \theta, O)$}
 \end{prooftree}
-
 $if \beta_{[0 \not= AV(\sigma)]s} = tt$
 \newline
 \newline
