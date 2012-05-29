@@ -62,24 +62,23 @@ Foo maakt dus gebruik van hetzelfde principe als een turingmachine met drie tape
 Programma's in Foo stoppen als de interpreter aan het einde van het de programmacode komt (EOF).
 
 \begin{center}
-    \begin{tabular}{ | l | p{12cm} | c |}
+    \begin{tabular}{ | l | c | p{12cm} | }
     \hline
-    Teken & Betekenis & ariteit \\ \hline
-    \verb|" "| & Alle invoer tussen deze tekens wordt afgedrukt naar stdout. & 1 \\ \hline
-    \&n & Zet de waarde van de geselecteerde cel in de array om naar een andere waarde. Gevolgd door een numerieke waarde (\&55) levert dit de waarde 55 in de cel. Zonder numerieke waarde wordt er een waarde van de stack gepopped om in de cel te zetten. & 1\\ \hline
-    \& & Zonder numerieke waarde wordt er een waarde van de stack gepopped om in de cel te zetten. & 0\\ \hline
-    @n & Vergelijkbaar met '\&' alleen wordt de numerieke waarde op de stack gepusht. & 1\\ \hline
-    @ & Zonder numerieke waarde wordt de waarde van de geselecteerde cel op de stack gepushed. & 0\\ \hline
-    \(<\) & Verlaagt de array pointer met \'e\'en. & 0 \\ \hline
-    \(>\) & Verhoogt de array pointer met \'e\'en. & 0 \\ \hline
-    \$i, \$c, \$h & Drukt een enkele waarde af. Er zijn drie mogelijkheden: druk af als integer (i), druk af als hexadecimaal integer (h) en als ASCII karakter (c). Als er niet zo een `format string' wordt gespecificeerd wordt er een foutmelding gegeven door de interpreter. & 1 \\ \hline %hier moet nog naar gekeken worden
-    +n, -n, *n, /n, \%n & Rekenkundige operatoren, deze werken zoals verwacht, namelijk optellen, aftrekken, vermenigvuldigen, delen en modulo, respectievelijk. Deze operators worden links toegepast op het huidige element in de array met standard input en gebruiken van rechts de numerieke waarde die op de operator volgt. & 2\\ \hline
-    \#n & Pauzeert de uitvoering van het programma voor een opgegeven aantal seconden. & 1\\ \hline %wat gebeurd er als er niks wordt opgegeven
-    (n & Specificeert het begin van een loop: als dit gevolgd wordt door een natuurlijk getal dan wordt deze loop uitgevoerd zolang de waarde in de huidige cel van de array met standard input  ongelijk is aan de opgegeven waarde. & 1 \\ \hline
-    ( & Als er geen waarde is opgegeven dan wordt de loop uitgevoerd zolang de waarde die in de cel van de array met standard input staat ongelijk is aan nul. & 0 \\ \hline
-    ) & Specificeert het einde van een loop: er wordt teruggesprongen naar de laatste '(' tenzij de waarde van de huidige cel in de array met standard input gelijk is aan het eerder opgegeven nummer, dan wordt verder gegaan met de rest van code. & 0 \\ \hline
-  
-
+    Teken                                   & ariteit & Betekenis \\ \hline
+    \verb|" "| & 1                          & Alle invoer tussen deze tekens wordt afgedrukt naar standard output. \\ \hline
+    \(<\)                                   & 0 & Verlaagt de array pointer met \'e\'en. \\ \hline
+    \(>\)                                   & 0 & Verhoogt de array pointer met \'e\'en. \\ \hline
+    \&\(n\)                                 & 1 & Zet de gegeven waarde \(n\) (het argument) in de huidige cel in de array met standard input. \\ \hline
+    \&                                      & 0 & Pop de laatste stack-waarde en zet deze in de huidige cel in de array met standard input. \\ \hline
+    @\(n\)                                  & 1 & Pusht de gegeven waarde \(n\) (het argument) op de stack. \\ \hline
+    @                                       & 0 & Pusht de waarde in de huidige cel in de array met standard input op de stack. \\ \hline
+    \$i, \$c, \$h                           & 1 & Drukt een enkele waarde af. Er zijn drie mogelijkheden: druk af als integer (i), druk af als hexadecimaal integer (h) en als ASCII karakter (c). Als er niet zo een `format string' wordt gespecificeerd wordt er een foutmelding gegeven door de interpreter. \\ \hline %hier moet nog naar gekeken worden
+    +\(n\), -\(n\), *\(n\), /\(n\), \%\(n\) & 1 & Rekenkundige operatoren, deze werken zoals verwacht, namelijk optellen, aftrekken, vermenigvuldigen, delen en modulo, respectievelijk. Deze operators worden links toegepast op het huidige element in de array met standard input en gebruiken van rechts de numerieke waarde \(n\) (argument) die op de operator volgt. \\ \hline
+    +, -, *, /, \%                          & 0 & Rekenkundige operatoren, deze werken zoals verwacht, namelijk optellen, aftrekken, vermenigvuldigen, delen en modulo, respectievelijk. Deze operators worden links toegepast op het huidige element in de array met standard input en gebruiken van rechts de laatste stack-waarde. \\ \hline
+    \#\(n\)                                 & 1 & Pauzeert de uitvoering van het programma voor een opgegeven aantal seconden. \\ \hline %wat gebeurd er als er niks wordt opgegeven
+    (\(n\)                                  & 1 & Specificeert het begin van een loop: deze loop wordt uitgevoerd zolang de waarde in de huidige cel van de array met standard input ongelijk is aan de opgegeven waarde \(n\) (het argument). \\ \hline
+    (                                       & 0 & Specificeert het begin van een loop: deze loop wordt uitgevoerd zolang de waarde in de huidige cel van de array met standard input ongelijk is aan nul. \\ \hline
+    )                                       & 0 & Specificeert het einde van een loop: er wordt teruggesprongen naar de laatste '(' tenzij de waarde van de huidige cel in de array met standard input gelijk is aan het eerder opgegeven nummer, danwel nul afhankelijk van de gekozen loop-opening. Dan wordt verder gegaan met de rest van code. \\ \hline
     \hline
     \end{tabular}
 \end{center}
@@ -153,11 +152,11 @@ Allereerst defini\"eren we de volgende symbolen en functies:
 \begin{tabular}{ | l | p{12cm} |}
     \hline
     Teken of functie & Betekenis \\ \hline
-    \begin{math} \sigma \end{math} &  Dit verwijst naar de index van de array en begint met de waarde 0. \\ \hline
-    \begin{math} AV(\sigma) \end{math} & Deze functie geeft de waarde terug die in de opgegeven cel staat van de array. \\ \hline
-    \begin{math} \rho \end{math} &  Dit staat voor het aantal seconden dat het programma moet pauzeren. \\ \hline
-    \begin{math} \theta \end{math} &  Dit staat voor de stack. \begin{math}\theta\end{math} (1) staat voor de eerste waarde van de stack. \\ \hline
-    \begin{math} O \end{math} &  Dit staat voor de stream standard output. Hieraan kunnen waardes worden geconcateneerd. \\ \hline
+    \begin{math} \sigma \end{math} &  Dit symbool verwijst naar de index van de array en wordt geinitialiseerd met de waarde 0. \\ \hline
+    \begin{math} AV \end{math} & Dit symbool staat voor de valuatie van de array met standard input. \\ \hline
+    \begin{math} \rho \end{math} &  Dit symbool staat voor het aantal seconden dat het programma moet pauzeren alvorens de volgende instructie te evalueren. \\ \hline
+    \begin{math} \theta \end{math} & Dit symbool staat voor de stack. \begin{math}\theta(0)\end{math} staat voor de eerste waarde van de stack. \\ \hline
+    \begin{math} O \end{math} &  Dit symbool staat voor de stream standard output. Hieraan kunnen waardes worden geconcateneerd. \\ \hline
 
 \end{tabular}
 \newline
@@ -220,7 +219,7 @@ De $ass^s_{ns}$ regel zet een waarde die van de stack gepopt wordt in de huidige
 Het eerste (index nul) element van de stack wordt gebruikt, en in de volgende state wordt de stack gegeven vanaf het tweede (index \'e\'en).
 \begin{prooftree}
 \LeftLabel{$[ass^s_{ns}]$:\quad}
-\AxiomC{$\langle \&, (\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow (\sigma, AV(\sigma) \mapsto \theta(1), \rho, \theta(2..), O)$}
+\AxiomC{$\langle \&, (\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow (\sigma, AV(\sigma) \mapsto \theta(0), \rho, \theta(1...), O)$}
 \end{prooftree}
 
 De $push^i)_{ns}$ regel pusht een letterlijke, direct opvolgende numerieke waarde op de stack.
@@ -311,7 +310,7 @@ De + regel wordt gebruikt om een opgegeven waarde op te tellen bij de huidige wa
 \end{prooftree}
 
 \begin{prooftree}
-	\AxiomC{$\langle +, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma] + \theta(1), \rho, \theta-1, O)$}
+	\AxiomC{$\langle +, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma] + \theta(0), \rho, \theta(1...), O)$}
 \end{prooftree}
 
 De - regel wordt gebruikt om een opgegeven waarde af te trekken van de huidige waarde in de cel.
@@ -320,7 +319,7 @@ De - regel wordt gebruikt om een opgegeven waarde af te trekken van de huidige w
 \end{prooftree}
 
 \begin{prooftree}
-	\AxiomC{$\langle -, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma] - \theta(1), \rho, \theta-1, O)$}
+	\AxiomC{$\langle -, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma] - \theta(0), \rho, \theta(1...), O)$}
 \end{prooftree}
 De * regel wordt gebruikt om een opgegeven waarde te vermenigvuldigen met de huidige waarde in de cel.
 \begin{prooftree}
@@ -328,7 +327,7 @@ De * regel wordt gebruikt om een opgegeven waarde te vermenigvuldigen met de hui
 \end{prooftree}
 
 \begin{prooftree}
-	\AxiomC{$\langle *, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma]*\theta(1), \rho, \theta-1, O)$}
+	\AxiomC{$\langle *, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma]*\theta(0), \rho, \theta(1...), O)$}
 \end{prooftree}
 
 De / regel wordt gebruikt om de huidige waarde in de cel te delen met de opgegeven waarde.
@@ -337,7 +336,7 @@ De / regel wordt gebruikt om de huidige waarde in de cel te delen met de opgegev
 \end{prooftree}
 
 \begin{prooftree}
-	\AxiomC{$\langle /, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma]/\theta(1), \rho, \theta-1, O)$}
+	\AxiomC{$\langle /, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma]/\theta(0), \rho, \theta(1...), O)$}
 \end{prooftree}
 
 De \% regel wordt gebruikt om de modulus te bereken van de huidige waarde in de cel met de opgegeven waarde.
@@ -346,7 +345,7 @@ De \% regel wordt gebruikt om de modulus te bereken van de huidige waarde in de 
 \end{prooftree}
 
 \begin{prooftree}
-	\AxiomC{$\langle \%, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma] \% \theta(1), \rho, \theta-1, O)$}
+	\AxiomC{$\langle \%, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma] \% \theta(0), \rho, \theta(1...), O)$}
 \end{prooftree}
 
 % Standard output regels
