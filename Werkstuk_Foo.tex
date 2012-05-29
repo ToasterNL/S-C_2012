@@ -68,16 +68,16 @@ Programma's in Foo stoppen als de interpreter aan het einde van het de programma
     \verb|" "| & 1                          & Alle invoer tussen deze tekens wordt afgedrukt naar standard output. \\ \hline
     \(<\)                                   & 0 & Verlaagt de array pointer met \'e\'en. \\ \hline
     \(>\)                                   & 0 & Verhoogt de array pointer met \'e\'en. \\ \hline
-    \&\(i\)                                 & 1 & Zet de gegeven waarde \(i\) (het argument) in de huidige cel in de array met standard input. \\ \hline
+    \&\(n\)                                 & 1 & Zet de gegeven waarde \(n\) (het argument) in de huidige cel in de array met standard input. \\ \hline
     \&                                      & 0 & Pop de laatste stack-waarde en zet deze in de huidige cel in de array met standard input. \\ \hline
-    @\(i\)                                  & 1 & Pusht de gegeven waarde \(i\) (het argument) op de stack. \\ \hline
+    @\(n\)                                  & 1 & Pusht de gegeven waarde \(n\) (het argument) op de stack. \\ \hline
     @                                       & 0 & Pusht de waarde in de huidige cel in de array met standard input op de stack. \\ \hline
-    \$i$i$, \$c$i$, \$h$i$                  & 1 & Drukt een enkele waarde af. Er zijn drie mogelijkheden: druk af als integer (i), druk af als hexadecimaal integer (h) en als ASCII karakter (c). Als er niet zo een `format string' wordt gespecificeerd wordt er een foutmelding gegeven door de interpreter. Het argument \(i\) wordt afgedrukt. \\ \hline
+    \$i$n$, \$c$n$, \$h$n$                  & 1 & Drukt een enkele waarde af. Er zijn drie mogelijkheden: druk af als integer (i), druk af als hexadecimaal integer (h) en als ASCII karakter (c). Als er niet zo een `format string' wordt gespecificeerd wordt er een foutmelding gegeven door de interpreter. Het argument \(n\) wordt afgedrukt. \\ \hline
     \$i, \$c, \$h                           & 0 & Drukt een enkele waarde af. Er zijn drie mogelijkheden: druk af als integer (i), druk af als hexadecimaal integer (h) en als ASCII karakter (c). Als er niet zo een `format string' wordt gespecificeerd wordt er een foutmelding gegeven door de interpreter. De huidige waarde in de array met standard input wordt afgedrukt. \\ \hline 
-    +\(i\), -\(i\), *\(i\), /\(i\), \%\(i\) & 1 & Rekenkundige operatoren, deze werken zoals verwacht, namelijk optellen, aftrekken, vermenigvuldigen, delen en modulo, respectievelijk. Deze operators worden links toegepast op het huidige element in de array met standard input en gebruiken van rechts de numerieke waarde \(i\) (argument) die op de operator volgt. \\ \hline
+    +\(n\), -\(n\), *\(n\), /\(n\), \%\(n\) & 1 & Rekenkundige operatoren, deze werken zoals verwacht, namelijk optellen, aftrekken, vermenigvuldigen, delen en modulo, respectievelijk. Deze operators worden links toegepast op het huidige element in de array met standard input en gebruiken van rechts de numerieke waarde \(n\) (argument) die op de operator volgt. \\ \hline
     +, -, *, /, \%                          & 0 & Rekenkundige operatoren, deze werken zoals verwacht, namelijk optellen, aftrekken, vermenigvuldigen, delen en modulo, respectievelijk. Deze operators worden links toegepast op het huidige element in de array met standard input en gebruiken van rechts de laatste stack-waarde. \\ \hline
-    \#\(i\)                                 & 1 & Pauzeert de uitvoering van het programma voor een opgegeven \(i\) aantal seconden. \\ \hline %wat gebeurd er als er niks wordt opgegeven
-    (\(i\)                                  & 1 & Specificeert het begin van een loop: deze loop wordt uitgevoerd zolang de waarde in de huidige cel van de array met standard input ongelijk is aan de opgegeven waarde \(i\) (het argument). \\ \hline
+    \#\(n\)                                 & 1 & Pauzeert de uitvoering van het programma voor een opgegeven \(n\) aantal seconden. \\ \hline %wat gebeurd er als er niks wordt opgegeven
+    (\(n\)                                  & 1 & Specificeert het begin van een loop: deze loop wordt uitgevoerd zolang de waarde in de huidige cel van de array met standard input ongelijk is aan de opgegeven waarde \(n\) (het argument). \\ \hline
     (                                       & 0 & Specificeert het begin van een loop: deze loop wordt uitgevoerd zolang de waarde in de huidige cel van de array met standard input ongelijk is aan nul. \\ \hline
     )                                       & 0 & Specificeert het einde van een loop: er wordt teruggesprongen naar de laatste '(' tenzij de waarde van de huidige cel in de array met standard input gelijk is aan het eerder opgegeven nummer, danwel nul afhankelijk van de gekozen loop-opening. Dan wordt verder gegaan met de rest van code. \\ \hline
     \hline
@@ -124,16 +124,16 @@ De syntax van Foo ziet er als volgt uit:
 \newline
 
 \begin{math}
-{\bf S::= \verb|"c"| | \&n | \& | @n | @ | < | > | \$f | \#a | (iS) | (S) | S_{1}S_{2} }
+{\bf S::= \verb|"c"| | \&n | \& | @n | @ | < | > | \$f | \#a | (nS) | (S) | S_{1}S_{2} }
 \newline
 \newline
 \indent{\bf c::= ASCII-symbolen| \epsilon}
 \newline
-\indent{\bf a::= n | +a | -a | *a | /a | \%a}
+\indent{\bf a::= n | +n | -n | *n | /n | \%n}
 \newline 
 \indent{\bf f::= c | i | h}
 \newline
-\indent{\bf i::= 0..9n | \epsilon}
+\indent{\bf n::= 0..9n | \epsilon}
 \end{math}
 
 
@@ -200,20 +200,20 @@ Bij Foo worden de statements direct aan elkaar geschreven zonder scheidingsteken
 De $nav^R_{ns}$ regel verhoogt de index voor de huidige cel in de array met \'e\'en.
 \begin{prooftree}
 \LeftLabel{$[nav^R_{ns}]$:\quad}
-\AxiomC{$\langle $>$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow (\sigma+1, AV, \rho, \theta, O)$}
+\AxiomC{$\langle $\textgreater$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow (\sigma+1, AV, \rho, \theta, O)$}
 \
 \end{prooftree}
 
 De $nav^L_{ns}$ regel verlaagt de index voor de huidige cel in de array met \'e\'en.
 \begin{prooftree}
 \LeftLabel{$[nav^L_{ns}]$:\quad}
-\AxiomC{$\langle $<$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow (\sigma-1, AV, \rho, \theta, O)$}
+\AxiomC{$\langle $\textless$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow (\sigma-1, AV, \rho, \theta, O)$}
 \end{prooftree}
 
 De $ass^i_{ns}$ regel zet een waarde in de huidige arraycel die gegeven wordt door een letterlijke, direct opvolgende numerieke waarde.
 \begin{prooftree}
-\LeftLabel{$[ass^i_{ns}]$:\quad}
-\AxiomC{$\langle $\&$i, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow (\sigma, AV[\sigma] \mapsto i, \rho, \theta, O)$}
+\LeftLabel{$[ass^n_{ns}]$:\quad}
+\AxiomC{$\langle $\&$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow (\sigma, AV[\sigma] \mapsto n, \rho, \theta, O)$}
 \end{prooftree}
 
 De $ass^s_{ns}$ regel zet een waarde die van de stack gepopt wordt in de huidige arraycel.
@@ -223,11 +223,11 @@ Het eerste (index nul) element van de stack wordt gebruikt, en in de volgende st
 \AxiomC{$\langle $\&$, (\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow (\sigma, AV(\sigma) \mapsto \theta[0], \rho, \theta[1...], O)$}
 \end{prooftree}
 
-De $push^i)_{ns}$ regel pusht een letterlijke, direct opvolgende numerieke waarde op de stack.
+De $push^n)_{ns}$ regel pusht een letterlijke, direct opvolgende numerieke waarde op de stack.
 De waarde wordt geconcateneerd met de gegeven stack, zodat deze bovenaan komt te staan, en gepopt kan worden.
 \begin{prooftree}
-\LeftLabel{$[push^i_{ns}]$:\quad}
-\AxiomC{$\langle $@$i, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow (\sigma, AV, \rho, i \| \theta, O)$}
+\LeftLabel{$[push^n_{ns}]$:\quad}
+\AxiomC{$\langle $@$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow (\sigma, AV, \rho, n \| \theta, O)$}
 \end{prooftree}
 
 De $push^{AV}_{ns}$ regel pusht een waarde uit de huidige array-cel op de stack.
@@ -258,8 +258,8 @@ De eerste regel geeft de situatie weer als er wel gebruik gemaakt wordt van de p
 \LeftLabel{$[Loop_{ns}^{tt^1}]$:\quad}
 %\RightLabel{$if \beta_{[n \not= AV(\sigma)]s} = tt$}
 \AxiomC{$\langle $($S$)$, s \rangle \rightarrow s' $}
-\AxiomC{$\langle $($i-1 S$)$, s' \rangle \rightarrow s''$}
-\BinaryInfC{$\langle $($iS$)$, s \rangle \rightarrow  s''$}
+\AxiomC{$\langle $($n-1 S$)$, s' \rangle \rightarrow s''$}
+\BinaryInfC{$\langle $($nS$)$, s \rangle \rightarrow  s''$}
 \end{prooftree}
 
 $if {\cal B} _{[ n \not= AV[\sigma]]s} = tt$
@@ -305,9 +305,9 @@ Als er geen waarde wordt opgegeven wordt er een waarde van de stack gepopped en 
 Hiervoor moet dus twee aparte regels opgesteld worden. 
 Één voor een opgegeven waarde te herkennen aan de ''a" en één voor het gebruik van de stack.
 
-De $+^i_{ns}$ regel wordt gebruikt om het argument op te tellen bij de huidige waarde in de cel.
+De $+^n_{ns}$ regel wordt gebruikt om het argument op te tellen bij de huidige waarde in de cel.
 \begin{prooftree}
-\AxiomC{$\langle $+$i, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma]+i, \rho, \theta, O)$}
+\AxiomC{$\langle $+$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma]+n, \rho, \theta, O)$}
 \end{prooftree}
 
 De $+_{ns}$ regel wordt gebruikt om een waarde van de stack te poppen en op te tellen bij de huidige waarde in de cel.
@@ -315,9 +315,9 @@ De $+_{ns}$ regel wordt gebruikt om een waarde van de stack te poppen en op te t
 	\AxiomC{$\langle $+$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma] + \theta[0], \rho, \theta[1...], O)$}
 \end{prooftree}
 
-De $-^i_{ns}$ regel wordt gebruikt om een opgegeven waarde af te trekken van de huidige waarde in de cel.
+De $-^n_{ns}$ regel wordt gebruikt om een opgegeven waarde af te trekken van de huidige waarde in de cel.
 \begin{prooftree}
-	\AxiomC{$\langle $-$i, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma] -i, \rho, \theta, O)$}
+	\AxiomC{$\langle $-$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma] -n, \rho, \theta, O)$}
 \end{prooftree}
 
 De $-_{ns}$ regel wordt gebruikt om een waarde van de stack te poppen en af te trekken van de huidige waarde in de cel.
@@ -325,9 +325,9 @@ De $-_{ns}$ regel wordt gebruikt om een waarde van de stack te poppen en af te t
 	\AxiomC{$\langle $-$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma] - \theta[0], \rho, \theta[1...], O)$}
 \end{prooftree}
 
-De $*^i_{ns}$ regel wordt gebruikt om de huidige waarde in de cel te vermenigvuldigen met het argument.
+De $*^n_{ns}$ regel wordt gebruikt om de huidige waarde in de cel te vermenigvuldigen met het argument.
 \begin{prooftree}
-	\AxiomC{$\langle $*$i, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma] * i, \rho, \theta, O)$}
+	\AxiomC{$\langle $*$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma] * n, \rho, \theta, O)$}
 \end{prooftree}
 
 De $*_{ns}$ regel wordt gebruikt om een waarde van de stack te poppen en de huidige waarde in de cel hiermee te vermenigvuldigen.
@@ -335,9 +335,9 @@ De $*_{ns}$ regel wordt gebruikt om een waarde van de stack te poppen en de huid
 	\AxiomC{$\langle $*$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma]*\theta[0), \rho, \theta[1...], O)$}
 \end{prooftree}
 
-De $/^i_{ns}$ regel wordt gebruikt om de huidige waarde in de cel te delen met het argument.
+De $/^n_{ns}$ regel wordt gebruikt om de huidige waarde in de cel te delen met het argument.
 \begin{prooftree}
-	\AxiomC{$\langle $/$i, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma]/i, \rho, \theta, O)$}
+	\AxiomC{$\langle $/$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma]/n, \rho, \theta, O)$}
 \end{prooftree}
 
 De $/_{ns}$ regel wordt gebruikt om een waarde van de stack te poppen en de huidige waarde in de cel hiermee te delen.
@@ -345,9 +345,9 @@ De $/_{ns}$ regel wordt gebruikt om een waarde van de stack te poppen en de huid
 	\AxiomC{$\langle $/$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma]/\theta[0], \rho, \theta[1...], O)$}
 \end{prooftree}
 
-De $\%^i_{ns}$ regel wordt gebruikt om de huidige waarde in de cel te vervangen met zichzelf modulus het argument.
+De $\%^n_{ns}$ regel wordt gebruikt om de huidige waarde in de cel te vervangen met zichzelf modulus het argument.
 \begin{prooftree}
-	\AxiomC{$\langle $\%$i, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma] \%i, \rho, \theta, O)$}
+	\AxiomC{$\langle $\%$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma] \%n, \rho, \theta, O)$}
 \end{prooftree}
 
 De $\%_{ns}$ regel wordt gebruikt om de huidige waarde in de cel te vervangen met zichzelf modulus een waar de die van de stack wordt gepopt.
@@ -361,7 +361,7 @@ De $\%_{ns}$ regel wordt gebruikt om de huidige waarde in de cel te vervangen me
 
 De $stdout_{ns}$ regel wordt gebruikt om een letterlijke string op de standard output te zetten door middel van concatenatie.
 \begin{prooftree}
-\AxiomC{$\langle $"<str>"$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho, \theta, O \| <str>)$}
+\AxiomC{$\langle $"$<str>$"$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho, \theta, O \| <str>)$}
 \end{prooftree}
 
 
@@ -370,9 +370,9 @@ De $print^c_{ns}$ regel print de huidige waarde uit de array als letterlijk 'cha
 \AxiomC{$\langle $\$c$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho, \theta, O \| AV[\sigma])$}
 \end{prooftree}
 
-De $print^{ci}_{ns}$ regel print de direct opvolgende waarde als 'character' naar de standard output.
+De $print^{cn}_{ns}$ regel print de direct opvolgende waarde als 'character' naar de standard output.
 \begin{prooftree}
-\AxiomC{$\langle $\$ci$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho, \theta, O \| i)$}
+\AxiomC{$\langle $\$c$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho, \theta, O \| n)$}
 \end{prooftree}
 
 De $print^i_{ns}$ regel print de ASCII-represenatie van de huidige waarde uit de array naar de standard output.
@@ -380,9 +380,9 @@ De $print^i_{ns}$ regel print de ASCII-represenatie van de huidige waarde uit de
 \AxiomC{$\langle $\$i$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho, \theta, O \| ascii(AV[\sigma]))$}
 \end{prooftree}
 
-De $print^{ii}_{ns}$ regel print de ASCII-represenatie van de direct opvolgende waarde naar de standard output.
+De $print^{in}_{ns}$ regel print de ASCII-represenatie van de direct opvolgende waarde naar de standard output.
 \begin{prooftree}
-\AxiomC{$\langle $\$i$i, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho, \theta, O \| ascii(i))$}
+\AxiomC{$\langle $\$i$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho, \theta, O \| ascii(n))$}
 \end{prooftree}
 
 De $print^h_{ns}$ regel print in ASCII de hexadecimale represenatie van de huidige waarde uit de array naar de standard output.
@@ -390,9 +390,9 @@ De $print^h_{ns}$ regel print in ASCII de hexadecimale represenatie van de huidi
 \AxiomC{$\langle $\$h$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho, \theta, O \| ascii(hex(AV[\sigma])))$}
 \end{prooftree}
 
-De $print^{hi}_{ns}$ regel print in ASCII de hexadecimale represenatie van de direct opvolgende waarde naar de standard output.
+De $print^{hn}_{ns}$ regel print in ASCII de hexadecimale represenatie van de direct opvolgende waarde naar de standard output.
 \begin{prooftree}
-\AxiomC{$\langle $\$h$i, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho, \theta, O \| ascii(hex(i)))$}
+\AxiomC{$\langle $\$h$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho, \theta, O \| ascii(hex(n)))$}
 \end{prooftree}
 
 
