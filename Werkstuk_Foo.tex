@@ -155,7 +155,7 @@ Allereerst defini\"eren we de volgende symbolen en functies:
     \begin{math} \sigma \end{math} &  Dit symbool verwijst naar de index van de array en wordt geinitialiseerd met de waarde 0. \\ \hline
     \begin{math} AV \end{math} & Dit symbool staat voor de valuatie van de array met standard input. \\ \hline
     \begin{math} \rho \end{math} &  Dit symbool staat voor het aantal seconden dat het programma moet pauzeren alvorens de volgende instructie te evalueren. \\ \hline
-    \begin{math} \theta \end{math} & Dit symbool staat voor de stack. \begin{math}\theta(0)\end{math} staat voor de eerste waarde van de stack. \\ \hline
+    \begin{math} \theta \end{math} & Dit symbool staat voor de stack. \begin{math}\theta[0]\end{math} staat voor de eerste waarde van de stack. \\ \hline
     \begin{math} O \end{math} &  Dit symbool staat voor de stream standard output. Hieraan kunnen waardes worden geconcateneerd. \\ \hline
 
 \end{tabular}
@@ -166,7 +166,7 @@ Allereerst defini\"eren we de volgende symbolen en functies:
 Onze state zal er als volgt uit zien:
 
 \[
-(\sigma, \rho, \theta, O)
+(\sigma, AV, \rho, \theta, O)
 \]
 
 Onze transitie van states zal er als volgt uit zien:
@@ -175,9 +175,9 @@ Onze transitie van states zal er als volgt uit zien:
 \AxiomC{$\langle S,  s \rangle \rightarrow s'$}
 \end{prooftree}
 
-Afhankelijk van statement $S$ zullen de waardes in $s'$ veranderen. 
+Afhankelijk van statement $S$ zullen de waardes in de state veranderen. 
 $s'$ bevat dus veranderde waardes van $\sigma,\rho, \theta, O$. 
-In de onderstaande semantiekregels zullen we alleen de veranderde waardes in de state $s'$ opnemen.
+%In de onderstaande semantiekregels zullen we alleen de veranderde waardes in de state $s'$ opnemen.
 Op deze manier blijft het overzichtelijk wat er precies veranderd in een transitie.
 Als het nog niet duidelijk is wat er precies tijdens een transitie veranderd, omdat dit afhankelijk is van nog uit te voeren states, zullen we dit aangeven met alleen $s'$.
 
@@ -219,7 +219,7 @@ De $ass^s_{ns}$ regel zet een waarde die van de stack gepopt wordt in de huidige
 Het eerste (index nul) element van de stack wordt gebruikt, en in de volgende state wordt de stack gegeven vanaf het tweede (index \'e\'en).
 \begin{prooftree}
 \LeftLabel{$[ass^s_{ns}]$:\quad}
-\AxiomC{$\langle \&, (\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow (\sigma, AV(\sigma) \mapsto \theta(0), \rho, \theta(1...), O)$}
+\AxiomC{$\langle \&, (\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow (\sigma, AV(\sigma) \mapsto \theta[0], \rho, \theta[1...], O)$}
 \end{prooftree}
 
 De $push^i)_{ns}$ regel pusht een letterlijke, direct opvolgende numerieke waarde op de stack.
@@ -310,7 +310,7 @@ De + regel wordt gebruikt om een opgegeven waarde op te tellen bij de huidige wa
 \end{prooftree}
 
 \begin{prooftree}
-	\AxiomC{$\langle +, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma] + \theta(0), \rho, \theta(1...), O)$}
+	\AxiomC{$\langle +, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma] + \theta[0], \rho, \theta[1...], O)$}
 \end{prooftree}
 
 De - regel wordt gebruikt om een opgegeven waarde af te trekken van de huidige waarde in de cel.
@@ -319,7 +319,7 @@ De - regel wordt gebruikt om een opgegeven waarde af te trekken van de huidige w
 \end{prooftree}
 
 \begin{prooftree}
-	\AxiomC{$\langle -, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma] - \theta(0), \rho, \theta(1...), O)$}
+	\AxiomC{$\langle -, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma] - \theta[0], \rho, \theta[1...], O)$}
 \end{prooftree}
 De * regel wordt gebruikt om een opgegeven waarde te vermenigvuldigen met de huidige waarde in de cel.
 \begin{prooftree}
@@ -327,7 +327,7 @@ De * regel wordt gebruikt om een opgegeven waarde te vermenigvuldigen met de hui
 \end{prooftree}
 
 \begin{prooftree}
-	\AxiomC{$\langle *, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma]*\theta(0), \rho, \theta(1...), O)$}
+	\AxiomC{$\langle *, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma]*\theta[0), \rho, \theta[1...], O)$}
 \end{prooftree}
 
 De / regel wordt gebruikt om de huidige waarde in de cel te delen met de opgegeven waarde.
@@ -336,7 +336,7 @@ De / regel wordt gebruikt om de huidige waarde in de cel te delen met de opgegev
 \end{prooftree}
 
 \begin{prooftree}
-	\AxiomC{$\langle /, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma]/\theta(0), \rho, \theta(1...), O)$}
+	\AxiomC{$\langle /, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma]/\theta[0], \rho, \theta[1...], O)$}
 \end{prooftree}
 
 De \% regel wordt gebruikt om de modulus te bereken van de huidige waarde in de cel met de opgegeven waarde.
@@ -345,7 +345,7 @@ De \% regel wordt gebruikt om de modulus te bereken van de huidige waarde in de 
 \end{prooftree}
 
 \begin{prooftree}
-	\AxiomC{$\langle \%, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma] \% \theta(0), \rho, \theta(1...), O)$}
+	\AxiomC{$\langle \%, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma] \% \theta[0], \rho, \theta[1...], O)$}
 \end{prooftree}
 
 % Standard output regels
