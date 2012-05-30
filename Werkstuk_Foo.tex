@@ -1,6 +1,7 @@
 \documentclass[11pt]{article}
 \usepackage{a4wide, graphicx, fancyhdr, wrapfig, tabularx, amsmath, amssymb, hyperref, color, verbatim, nameref}
 \usepackage{bussproofs}
+\usepackage{pdflscape}
 \usepackage[english]{babel}
 \definecolor{linkcolour}{rgb}{0,0.2,0.6}
 \hypersetup{colorlinks,breaklinks,urlcolor=linkcolour, linkcolor=linkcolour}
@@ -29,11 +30,6 @@
 \renewcommand{\footrulewidth}{0pt}
 \newcommand{\tab}{\hspace*{2em}}
 
-\newcommand{\tocheck}[1]{{\bf !?: #1 :!?}}
-\newcommand{\OBA}{Online behavioural advertising }
-\newcommand{\oba}{online behavioural advertising }
-\newcommand{\ePD}{ePrivacy Directive }
-\newcommand{\DPD}{Data Protection Directive }
 
 \frenchspacing
 
@@ -96,7 +92,7 @@ Een aantal constructies die interessant zijn, zoals de pauzeer (\#) operatie, ee
 
 \subsection{Pauzeer-operatie (\#)}
 De pauzeer-operatie in Foo is het beste te vergelijken met een teller die de uitvoering van de rest van het programma het opgegeven aantal seconden uitstelt. 
-Dit is terug te zien in het Foo programma van de terugtellende loop: \verb|&10(#1-1$i$c10)"boom!"$c10|.
+Dit is terug te zien in het Foo programma van de terugtellende loop: \verb|&10(0#1-1$i$c10)"boom!"$c10|.
 
 {\bf \verb|#1|} betekent hier: pauzeer de rest van het programma \'e\'en seconde. 
 Pas dan wordt 1 van de huidige celwaarde afgehaald en de nieuwe waarde afgedrukt of, mocht al afgeteld zijn naar nul, komt er de string "boom" op de standard output te staan.
@@ -240,7 +236,7 @@ $[nav^L_{ns}]$	&	\AxiomC{$\langle $\textless$, (\sigma, AV, \rho, \theta, O) \ra
 \newline
 %\end{table}
 
-De $ass^i_{ns}$ regel zet het argument in de huidige arraycel.
+De $ass^n_{ns}$ regel zet het argument in de huidige arraycel.
 \newline
 \newline
 %\begin{table}[h]
@@ -684,8 +680,29 @@ $[print^{hn}_{ns}]$	&	\AxiomC{$\langle $\$h$n, (\sigma, AV, \rho, \theta, O) \ra
 \section{Analyse van de Foo semantiek}
 In dit hoofdstuk zullen we aan de hand van een aantal case studies, de bovenstaande semantiekregels toepassen.
 
+\newpage
+\begin{landscape}
 \subsection{Case Study: Countdown loop}
+In deze sectie zullen we gaan kijken naar het volgende programma: \verb|&10(#1-1$i$c10)"boom!"$c10| 
 
+\begin{prooftree}
+\AxiomC{$\langle \&10,  (\sigma = 0, AV, \rho = 0, \theta, O) \rangle \rightarrow (\sigma = 0, AV[\sigma] \mapsto 10, \rho = 0, \theta, O)$}
+
+									\AxiomC{$\langle (0, s \rangle \rightarrow s'$}
+														
+														\AxiomC{$\langle \#1, s \rangle \rightarrow s'$}
+
+																						\AxiomC{$\langle-1\$i\$c10)''boom!''\$c10, s \rangle \rightarrow s'$}
+
+																		\BinaryInfC{$\langle \#1-1\$i\$c10)''boom!''\$c10, s \rangle \rightarrow s'$}
+
+																\BinaryInfC{$\langle (0\#1-1\$i\$c10)''boom!''\$c10, (\sigma = 0, AV[\sigma] \mapsto 10, \rho = 0, \theta, O) \rangle \rightarrow s''$}
+
+							\BinaryInfC{$\langle \&10(0\#1-1\$i\$c10)''boom!''\$c10, (\sigma = 0, AV, \rho = 0, \theta, O) \rangle \rightarrow  s''$}
+\end{prooftree}
+\end{landscape}
+
+\newpage
 \subsection{Case Study: }
 
 
