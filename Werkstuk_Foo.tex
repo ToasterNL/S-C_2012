@@ -684,22 +684,23 @@ In dit hoofdstuk zullen we aan de hand van een aantal case studies, de bovenstaa
 \subsection{Case Study: Countdown loop}
 In deze sectie zullen we gaan kijken naar het volgende programma: \verb|&10(#1-1$i$c10)"boom!"$c10| 
 
-%\begin{landscape}
+\begin{landscape}
 \begin{prooftree}
-\AxiomC{$\langle \&10,  (\sigma = 0, AV, \rho = 0, \theta, O) \rangle \rightarrow (\sigma = 0, AV[\sigma] \mapsto 10, \rho = 0, \theta, O)$}
+	\AxiomC{$\langle \&10,  (\sigma, AV, \rho, \theta, O) \rangle \rightarrow (\sigma, AV[\sigma \mapsto 10], \rho, \theta, O)$}
+			\AxiomC{$\langle \#1-1\$i\$c10, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow (\sigma, AV[\sigma \mapsto AV[\sigma] - 1], \rho, \theta, O)$}
+					\AxiomC{$\langle \#1-1\$i\$c10, s \rangle \rightarrow s'$}								
+					\AxiomC{$\langle (0\#1-1\$i\$c10), s \rangle \rightarrow s'$}
+				\BinaryInfC{$\langle (0\#1-1\$i\$c10), s \rangle \rightarrow s'$}
 
-					\AxiomC{$\langle (0, s \rangle \rightarrow s'$}								
-											\AxiomC{$\langle \#1, s \rangle \rightarrow s'$}
+			\BinaryInfC{$\langle (0\#1-1\$i\$c10), (\sigma, AV, \rho, \theta, O) \rangle \rightarrow (\sigma, AV[\sigma \mapsto 0], \rho, \theta, O)$}
 
-							\BinaryInfC{$\langle (0, s \rangle \rightarrow s'$}
-														
-																		\AxiomC{$\langle ''boom!''\$c10, s \rangle \rightarrow s''$}
+			\AxiomC{$\langle ''boom!''\$c10, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow (\sigma, AV, \rho, \theta, O \| ``Boom!'')$}
 
-																\BinaryInfC{$\langle (0\#1-1\$i\$c10)''boom!''\$c10, (\sigma = 0, AV[\sigma] \mapsto 10, \rho = 0, \theta, O) \rangle \rightarrow s''$}
+		\BinaryInfC{$\langle (0\#1-1\$i\$c10)''boom!''\$c10, (\sigma , AV, \rho , \theta, O) \rangle \rightarrow (\sigma, AV, \rho, \theta, O \| ``Boom!'')$}
 
-							\BinaryInfC{$\langle \&10(0\#1-1\$i\$c10)''boom!''\$c10, (\sigma = 0, AV, \rho = 0, \theta, O) \rangle \rightarrow  s''$}
+	\BinaryInfC{$\langle \&10(0\#1-1\$i\$c10)''boom!''\$c10, (\sigma = 0, AV, \rho = 0, \theta, O) \rangle \rightarrow  (\sigma = 0, AV, \rho = 0, \theta, O \| ``Boom!'')$}
 \end{prooftree}
-%\end{landscape}
+\end{landscape}
 
 \newpage
 \subsection{Case Study: }
