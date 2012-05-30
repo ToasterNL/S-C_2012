@@ -690,6 +690,9 @@ De afleidingsboom voor dit programma ziet er als volgt uit:
 %
 \begin{landscape}
 
+\begin{figure}[h!]
+\caption{$S_1$}
+\centering
 \begin{prooftree}
 			\AxiomC{$\langle \$i\$c10, (\sigma, AV, \rho = 0, \theta, O) \rangle \rightarrow (\sigma, AV, \rho, \theta, O \| AV[\sigma] \| newline)$}
 			\UnaryInfC{$\langle -1\$i\$c10, (\sigma, AV, \rho+1, \theta, O) \rangle \rightarrow (\sigma, AV[\sigma \mapsto AV[\sigma] - 1], \rho, \theta, O \| AV[\sigma] \| newline)$}
@@ -699,7 +702,11 @@ De afleidingsboom voor dit programma ziet er als volgt uit:
 
 			\BinaryInfC{$\langle (0\#1-1\$i\$c10), s \rangle \rightarrow s'' $}
 \end{prooftree}
+\end{figure}
 
+\begin{figure}[h!]
+\caption{$Boom$}
+\centering
 \begin{prooftree}
 	\AxiomC{$\langle \&10,  (\sigma, AV, \rho, \theta, O) \rangle \rightarrow (\sigma, AV[\sigma \mapsto 10], \rho, \theta, O)$}
 			\AxiomC{$S_1$}
@@ -710,6 +717,7 @@ De afleidingsboom voor dit programma ziet er als volgt uit:
 
 	\BinaryInfC{$\langle \&10(0\#1-1\$i\$c10)''boom!''\$c10, (\sigma = 0, AV, \rho = 0, \theta, O) \rangle \rightarrow  (\sigma = 0, AV, \rho = 0, \theta, O \| ``Boom!'' \| newline)$}
 \end{prooftree}
+\end{figure}
 \end{landscape}
 
 In de onderste boom zien we de uitwerking van het hele programma, met uitzondering van de loop, die met een $comp^{inv}_{ns}$ regel is losgehaald uit de oorspronkelijke boom en in de bovenste boom ($S_1$) staat beschreven.
