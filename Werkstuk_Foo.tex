@@ -142,7 +142,7 @@ De syntax van Foo ziet er als volgt uit:
 
 \section{Natuurlijke semantiek van Foo}
 In dit hoofdstuk zullen we de operaties van Foo inzichtelijker maken door semantiekregels op te stellen.
-We zullen hiervoor in eerste instantie gebruik maken van natuurlijke semantiek.
+We zullen hiervoor gebruik maken van natuurlijke semantiek.
 Mocht blijken dat dit te beperkt is, dan zullen we ons richten op structurele operationele semantiek.
 
 \subsection{Transities}
@@ -189,63 +189,111 @@ Hieronder beschrijven we de semantiekregels voor Foo:
 De compositieregel zorgt ervoor dat twee verschillende statements aan elkaar geschreven kunnen worden en is vergelijkbaar met de compositieregel uit While. 
 Bij Foo worden de statements direct aan elkaar geschreven zonder scheidingsteken, zoals de ; bij While.
 
-%COMP-REGEL
-\begin{prooftree}
-\LeftLabel{$[Comp_{ns}]$:\quad}
-\AxiomC{$\langle S_{1}, s \rangle \rightarrow s'$}
-\AxiomC{$\langle S_{2}, s' \rangle \rightarrow s''$}
-\BinaryInfC{$\langle S_{1}S_{2}, s \rangle \rightarrow  s''$}
-\end{prooftree}
+\begin{table}[h]
+\begin{tabular}{c c}
+
+ $[Comp_{ns}]$ 	& 	\AxiomC{$\langle S_{1}, s \rangle \rightarrow s'$}
+				\AxiomC{$\langle S_{2}, s' \rangle \rightarrow s''$}
+				\BinaryInfC{$\langle S_{1}S_{2}, s \rangle \rightarrow  s''$}
+				\DisplayProof
+
+\end{tabular}
+\end{table}
+
+
+%\begin{prooftree}
+%\LeftLabel{$[Comp_{ns}]$:\quad}
+%\AxiomC{$\langle S_{1}, s \rangle \rightarrow s'$}
+%\AxiomC{$\langle S_{2}, s' \rangle \rightarrow s''$}
+%\BinaryInfC{$\langle S_{1}S_{2}, s \rangle \rightarrow  s''$}
+%\end{prooftree}
 
 De $nav^R_{ns}$ regel verhoogt de index voor de huidige cel in de array met \'e\'en.
-\begin{prooftree}
-\LeftLabel{$[nav^R_{ns}]$:\quad}
-\AxiomC{$\langle $\textgreater$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow (\sigma+1, AV, \rho, \theta, O)$}
-\
-\end{prooftree}
+
+\begin{table}[h]
+\begin{tabular}{c c}
+
+$[nav^R_{ns}]$	&	\AxiomC{$\langle $\textgreater$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow (\sigma+1, AV, \rho, \theta, O)$}
+				\DisplayProof
+
+\end{tabular}
+\end{table}
 
 De $nav^L_{ns}$ regel verlaagt de index voor de huidige cel in de array met \'e\'en.
-\begin{prooftree}
-\LeftLabel{$[nav^L_{ns}]$:\quad}
-\AxiomC{$\langle $\textless$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow (\sigma-1, AV, \rho, \theta, O)$}
-\end{prooftree}
+
+\begin{table}[h]
+\begin{tabular}{c c}
+
+$[nav^L_{ns}]$	&	\AxiomC{$\langle $\textless$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow (\sigma-1, AV, \rho, \theta, O)$}
+				\DisplayProof
+
+\end{tabular}
+\end{table}
 
 De $ass^i_{ns}$ regel zet een waarde in de huidige arraycel die gegeven wordt door een letterlijke, direct opvolgende numerieke waarde.
-\begin{prooftree}
-\LeftLabel{$[ass^n_{ns}]$:\quad}
-\AxiomC{$\langle $\&$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow (\sigma, AV[\sigma] \mapsto n, \rho, \theta, O)$}
-\end{prooftree}
+
+\begin{table}[h]
+\begin{tabular}{c c}
+
+$[ass^n_{ns}]$	&	\AxiomC{$\langle $\&$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow (\sigma, AV[\sigma] \mapsto n, \rho, \theta, O)$}
+				\DisplayProof
+
+\end{tabular}
+\end{table}
 
 De $ass^s_{ns}$ regel zet een waarde die van de stack gepopt wordt in de huidige arraycel.
 Het eerste (index nul) element van de stack wordt gebruikt, en in de volgende state wordt de stack gegeven vanaf het tweede (index \'e\'en).
-\begin{prooftree}
-\LeftLabel{$[ass^s_{ns}]$:\quad}
-\AxiomC{$\langle $\&$, (\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow (\sigma, AV(\sigma) \mapsto \theta[0], \rho, \theta[1...], O)$}
-\end{prooftree}
+
+\begin{table}[h]
+\begin{tabular}{c c}
+
+$[ass^s_{ns}]$	&	\AxiomC{$\langle $\&$, (\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow (\sigma, AV(\sigma) \mapsto \theta[0], \rho, \theta[1...], O)$}
+				\DisplayProof
+
+\end{tabular}
+\end{table}
 
 De $push^n)_{ns}$ regel pusht een letterlijke, direct opvolgende numerieke waarde op de stack.
 De waarde wordt geconcateneerd met de gegeven stack, zodat deze bovenaan komt te staan, en gepopt kan worden.
-\begin{prooftree}
-\LeftLabel{$[push^n_{ns}]$:\quad}
-\AxiomC{$\langle $@$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow (\sigma, AV, \rho, n \| \theta, O)$}
-\end{prooftree}
+
+\begin{table}[h]
+\begin{tabular}{c c}
+
+$[push^n_{ns}]$	&	\AxiomC{$\langle $@$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow (\sigma, AV, \rho, n \| \theta, O)$}
+				\DisplayProof
+
+\end{tabular}
+\end{table}
 
 De $push^{AV}_{ns}$ regel pusht een waarde uit de huidige array-cel op de stack.
 Ook hier wordt de waarde geconcateneerd met de gegeven stack.
-\begin{prooftree}
-\LeftLabel{$[push^{AV}_{ns}]$:\quad}
-\AxiomC{$\langle $@$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow (\sigma, AV, \rho, AV[\sigma] \| \theta, O)$}
-\end{prooftree}
+
+\begin{table}[h]
+\begin{tabular}{c c}
+
+$[push^{AV}_{ns}]$	&	\AxiomC{$\langle $@$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow (\sigma, AV, \rho, AV[\sigma] \| \theta, O)$}
+					\DisplayProof
+
+\end{tabular}
+\end{table}
+
+%\begin{prooftree}
+%\LeftLabel{$[push^{AV}_{ns}]$:\quad}
+%\AxiomC{$\langle $@$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow (\sigma, AV, \rho, AV[\sigma] \| \theta, O)$}
+%\end{prooftree}
 
 De pauzeerregel zoals hieronder staat beschreven is vergelijkbaar met de skipregel uit While. 
 Als dit statement wordt uitgevoerd wordt er het opgeven aantal seconden gewacht met de uitvoering van de rest van het programma. 
 Het is niet mogelijk iets in de state te veranderen tijdens het pauzeren, waardoor de state na het pauzeren niet veranderd is op de verstreken tijd na.
 
-%#-REGEL, LABEL STAAT ER NIET !!!
-\begin{prooftree}
-\LeftLabel{$[\#n_{ns}]$:\quad}
-\AxiomC{$\langle $\#$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow (\sigma, AV, \rho + n, \theta, O) $}
-\end{prooftree}
+\begin{table}[h]
+\begin{tabular}{c c}
+
+$[\#n_{ns}]$	&	\AxiomC{$\langle $\#$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow (\sigma, AV, \rho + n, \theta, O) $}
+				\DisplayProof
+
+\end{tabular}
+\end{table}
 
 %LOOP-REGELS:
 
@@ -254,40 +302,47 @@ De moeilijkheid wat betreft semantiekregels zit in het gebruiken van de paramete
 De eerste regel geeft de situatie weer als er wel gebruik gemaakt wordt van de parameter.
 
 %LOOP TT 1
-\begin{prooftree}
-\LeftLabel{$[Loop_{ns}^{tt^1}]$:\quad}
-%\RightLabel{$if \beta_{[n \not= AV(\sigma)]s} = tt$}
-\AxiomC{$\langle $($S$)$, s \rangle \rightarrow s' $}
-\AxiomC{$\langle $($n-1 S$)$, s' \rangle \rightarrow s''$}
-\BinaryInfC{$\langle $($nS$)$, s \rangle \rightarrow  s''$}
-\end{prooftree}
 
-$if {\cal B} _{[ n \not= AV[\sigma]]s} = tt$
-\newline
-\newline
+\begin{table}[h]
+\begin{tabular}{c c c}
+
+$[Loop_{ns}^{tt^1}]$	&	\AxiomC{$\langle $($S$)$, s \rangle \rightarrow s' $}
+					\AxiomC{$\langle $($n-1 S$)$, s' \rangle \rightarrow s''$}
+					\BinaryInfC{$\langle $($nS$)$, s \rangle \rightarrow  s''$}
+					\DisplayProof								& $if {\cal B} _{[ n \not= AV[\sigma]]s} = tt$
+
+\end{tabular}
+\end{table}
+
 In de tweede regel wordt geen parameter opgegeven. 
 Hierbij wordt de loop uitgevoerd zolang de waarde van de cel ongelijk is aan nul.
 
 %LOOP TT 2 HIER KLOPT IETS NOG NIET HELEMAAL MET LOOP ITERATIE....WORDT HIER 1 VAN DE CEL WAARDE AFGETROKKEN EN WORDT DIE WAARDE GEUPDATE IN DE CEL OF NIET?
-\begin{prooftree}
-\LeftLabel{$[Loop_{ns}^{tt^2}]$:\quad}
-%\RightLabel{$if \beta_{[0 \not= AV(\sigma)]s} = tt$}
-\AxiomC{$\langle $($S$)$, s \rangle \rightarrow s'$}
-\AxiomC{$\langle $($S$)$, s' \rangle \rightarrow s'' $}
-\BinaryInfC{$\langle $($S$)$, s \rangle \rightarrow  s'' $}
-\end{prooftree}
-$if {\cal B} _{[0 \not= AV[\sigma]]s} = tt$
-\newline
-\newline
+\begin{table}[h]
+\begin{tabular}{c c c}
+
+$[Loop_{ns}^{tt^2}]$	&	\AxiomC{$\langle $($S$)$, s \rangle \rightarrow s'$}
+					\AxiomC{$\langle $($S$)$, s' \rangle \rightarrow s'' $}
+					\BinaryInfC{$\langle $($S$)$, s \rangle \rightarrow  s'' $}
+					\DisplayProof								& $if {\cal B} _{[0 \not= AV[\sigma]]s} = tt$
+
+\end{tabular}
+\end{table}
+
 De axioma's voor de loopregels zijn nagenoeg gelijk.
 Beide regels stoppen de uitvoering van de loop als de paramater of 0 gelijk aan de waarde in de cel.
 
 %LOOP FF 1
-\begin{prooftree}
-\LeftLabel{$[Loop_{ns}^{ff}]$:\quad}
-\RightLabel{$if \beta_{[n \not= AV[\sigma]]s} = ff$}
-\AxiomC{$\langle $($iS$)$, s \rangle \rightarrow  s $}
-\end{prooftree}
+
+\begin{table}[h]
+\begin{tabular}{c c c}
+
+$[Loop_{ns}^{ff}]$	&	\AxiomC{$\langle $($iS$)$, s \rangle \rightarrow  s $}
+					\DisplayProof								& $if {\cal B}_{[n \not= AV[\sigma]]s} = ff$
+
+\end{tabular}
+\end{table}
+
 
 %LOOP FF 2
 \begin{prooftree}
