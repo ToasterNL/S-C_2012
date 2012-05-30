@@ -272,7 +272,7 @@ Het eerste (index nul) element van de stack wordt gebruikt, en in de volgende st
 \end{tabular}
 \newline
 
-De $push^n_{ns}$ regel pusht een letterlijke, direct opvolgende numerieke waarde op de stack.
+De $push^n_{ns}$ regel pusht het argument op de stack.
 De waarde wordt geconcateneerd met de gegeven stack, zodat deze bovenaan komt te staan, en gepopt kan worden.
 \newline
 \newline
@@ -317,8 +317,8 @@ $[\#n_{ns}]$	&	\AxiomC{$\langle $\#$n, (\sigma, AV, \rho, \theta, O) \rangle \ri
 %LOOP-REGELS:
 
 Het is mogelijk om loops te maken in Foo.
-De moeilijkheid wat betreft semantiekregels zit in het gebruiken van de parameter na de ''(" of het niet gebruiken ervan. 
-De eerste regel geeft de situatie weer als er wel gebruik gemaakt wordt van de parameter.
+De moeilijkheid wat betreft semantiekregels zit in het gebruiken van het argument na de ''(" of het niet gebruiken ervan. 
+De eerste regel geeft de situatie weer als er wel gebruik gemaakt wordt van het argument.
 \newline
 \newline
 %LOOP TT 1
@@ -352,7 +352,7 @@ $[Loop_{ns}^{tt^2}]$	&	\AxiomC{$\langle $($S$)$, s \rangle \rightarrow s'$}
 %\end{table}
 
 De axioma's voor de loopregels zijn nagenoeg gelijk.
-Beide regels stoppen de uitvoering van de loop als de waarde in de cel gelijk is aan de paramater of 0, afhankelijk van de gekozen loop-opening.
+Beide regels stoppen de uitvoering van de loop als de waarde in de cel gelijk is aan het argument of 0, afhankelijk van de gekozen loop-opening.
 \newline
 \newline
 %LOOP FF 1
@@ -610,7 +610,7 @@ $[print^c_{ns}]$	&	\AxiomC{$\langle $\$c$, (\sigma, AV, \rho, \theta, O) \rangle
 %\AxiomC{$\langle $\$c$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho, \theta, O \| AV[\sigma])$}
 %\end{prooftree}
 
-De $print^{cn}_{ns}$ regel print de direct opvolgende waarde als 'character' naar de standard output.
+De $print^{cn}_{ns}$ regel print het argument als 'character' naar de standard output.
 \newline
 \newline
 \begin{tabular}[h]{c c}
@@ -638,7 +638,7 @@ $[print^i_{ns}]$	&	\AxiomC{$\langle $\$i$, (\sigma, AV, \rho, \theta, O) \rangle
 %\AxiomC{$\langle $\$i$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho, \theta, O \| ascii(AV[\sigma]))$}
 %\end{prooftree}
 
-De $print^{in}_{ns}$ regel print de ASCII-represenatie van de direct opvolgende waarde naar de standard output.
+De $print^{in}_{ns}$ regel print de ASCII-represenatie van het argument naar de standard output.
 \newline
 \newline
 \begin{tabular}[h]{c c}
@@ -666,7 +666,7 @@ $[print^h_{ns}]$	&	\AxiomC{$\langle $\$h$, (\sigma, AV, \rho, \theta, O) \rangle
 %\AxiomC{$\langle $\$h$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho, \theta, O \| ascii(hex(AV[\sigma])))$}
 %\end{prooftree}
 
-De $print^{hn}_{ns}$ regel print in ASCII de hexadecimale represenatie van de direct opvolgende waarde naar de standard output.
+De $print^{hn}_{ns}$ regel print in ASCII de hexadecimale represenatie van het argument naar de standard output.
 \newline
 \newline
 \begin{tabular}[h]{c c}
