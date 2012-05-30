@@ -246,7 +246,7 @@ De $ass^i_{ns}$ regel zet het argument in de huidige arraycel.
 %\begin{table}[h]
 \begin{tabular}[h]{c c}
 
-$[ass^n_{ns}]$	&	\AxiomC{$\langle $\&$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow (\sigma, AV[\sigma] \mapsto n, \rho, \theta, O)$}
+$[ass^n_{ns}]$	&	\AxiomC{$\langle $\&$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow (\sigma, AV[\sigma \mapsto n], \rho, \theta, O)$}
 				\DisplayProof
 
 \end{tabular}
@@ -259,7 +259,7 @@ Het eerste (index nul) element van de stack wordt gebruikt, en in de volgende st
 %\begin{table}[h]
 \begin{tabular}[h]{l c r}
 
-	$[ass^s_{ns}]$	&	\AxiomC{$\langle $\&$, (\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow (\sigma, AV(\sigma) \mapsto \theta[0], \rho, \theta[1...], O)$}
+	$[ass^s_{ns}]$	&	\AxiomC{$\langle $\&$, (\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow (\sigma, AV[\sigma \mapsto \theta[0]], \rho, \theta[1...], O)$}
 		\DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined]s} == tt$
 
 \end{tabular}
@@ -398,7 +398,7 @@ De $+^n_{ns}$ regel wordt gebruikt om het argument op te tellen bij de huidige w
 %\begin{table}[h]
 \begin{tabular}[h]{c c}
 
-$[+^n_{ns}]$	&	\AxiomC{$\langle $+$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma]+n, \rho, \theta, O)$}
+	$[+^n_{ns}]$	&	\AxiomC{$\langle $+$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma \mapsto AV[\sigma]+n], \rho, \theta, O)$}
 				\DisplayProof
 
 \end{tabular}
@@ -411,7 +411,7 @@ De $+_{ns}$ regel wordt gebruikt om een waarde van de stack te poppen en op te t
 %\begin{table}[h]
 \begin{tabular}[h]{l c r}
 
-$[+_{ns}]$	&	\AxiomC{$\langle $+$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma] + \theta[0], \rho, \theta[1...], O)$}
+$[+_{ns}]$	&	\AxiomC{$\langle $+$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma \mapsto AV[\sigma] + \theta[0]], \rho, \theta[1...], O)$}
 		  \DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined]s} == tt $
 
 \end{tabular}
@@ -430,7 +430,7 @@ De $-^n_{ns}$ regel wordt gebruikt om een het argument af te trekken van de huid
 %\begin{table}[h]
 \begin{tabular}[h]{c c}
 
-$[-^n_{ns}]$	&	\AxiomC{$\langle $-$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma] -n, \rho, \theta, O)$}
+$[-^n_{ns}]$	&	\AxiomC{$\langle $-$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma \mapsto AV[\sigma] -n], \rho, \theta, O)$}
 				\DisplayProof
 
 \end{tabular}
@@ -446,7 +446,7 @@ De $-_{ns}$ regel wordt gebruikt om een waarde van de stack te poppen en af te t
 \newline
 \begin{tabular}[h]{l c r}
 
-$[-_{ns}]$	&	\AxiomC{$\langle $-$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma] - \theta[0], \rho, \theta[1...], O)$}
+$[-_{ns}]$	&	\AxiomC{$\langle $-$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma \mapsto AV[\sigma] - \theta[0]], \rho, \theta[1...], O)$}
 		  \DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined]s} == tt $
 
 \end{tabular}
@@ -468,7 +468,7 @@ De $*^n_{ns}$ regel wordt gebruikt om de huidige waarde in de cel te vermenigvul
 %\begin{table}[h]
 \begin{tabular}[h]{c c}
 
-$[*^n_{ns}]$	&	\AxiomC{$\langle $*$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma] * n, \rho, \theta, O)$}
+$[*^n_{ns}]$	&	\AxiomC{$\langle $*$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma \mapsto AV[\sigma] * n], \rho, \theta, O)$}
 				\DisplayProof
 
 \end{tabular}
@@ -482,7 +482,7 @@ De $*_{ns}$ regel wordt gebruikt om een waarde van de stack te poppen en de huid
 \newline
 \begin{tabular}[h]{l c r}
 
-$[*_{ns}]$	&	\AxiomC{$\langle $*$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma]*\theta[0], \rho, \theta[1...], O)$}
+$[*_{ns}]$	&	\AxiomC{$\langle $*$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma \mapsto AV[\sigma]*\theta[0]], \rho, \theta[1...], O)$}
 		  \DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined]s} == tt $
 
 \end{tabular}
@@ -504,7 +504,7 @@ De $/^n_{ns}$ regel wordt gebruikt om de huidige waarde in de cel te delen met h
 %\begin{table}[h]
 \begin{tabular}[h]{c c}
 
-$[/^n_{ns}]$	&	\AxiomC{$\langle $/$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma]/n, \rho, \theta, O)$}
+$[/^n_{ns}]$	&	\AxiomC{$\langle $/$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma \mapsto AV[\sigma]/n], \rho, \theta, O)$}
 				\DisplayProof
 
 \end{tabular}
@@ -519,7 +519,7 @@ De $/_{ns}$ regel wordt gebruikt om een waarde van de stack te poppen en de huid
 \newline
 \begin{tabular}[h]{l c r}
 
-$[/_{ns}]$	&	\AxiomC{$\langle $/$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma]/\theta[0], \rho, \theta[1...], O)$}
+$[/_{ns}]$	&	\AxiomC{$\langle $/$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma \mapsto AV[\sigma]/\theta[0]], \rho, \theta[1...], O)$}
 		  \DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined]s} == tt $
 
 \end{tabular}
@@ -541,7 +541,7 @@ De $\%^n_{ns}$ regel wordt gebruikt om de huidige waarde in de cel te vervangen 
 %\begin{table}[h]
 \begin{tabular}[h]{c c}
 
-$[\%^n_{ns}]$	&	\AxiomC{$\langle $\%$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma] \%n, \rho, \theta, O)$}
+$[\%^n_{ns}]$	&	\AxiomC{$\langle $\%$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma \mapsto AV[\sigma] \%n], \rho, \theta, O)$}
 				\DisplayProof
 
 \end{tabular}
@@ -556,7 +556,7 @@ De $\%_{ns}$ regel wordt gebruikt om de huidige waarde in de cel te vervangen me
 \newline
 \begin{tabular}[h]{l c r}
 
-$[\%_{ns}]$	&	\AxiomC{$\langle $\%$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma] \% \theta[0], \rho, \theta[1...], O)$}
+$[\%_{ns}]$	&	\AxiomC{$\langle $\%$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma \mapsto AV[\sigma] \% \theta[0]], \rho, \theta[1...], O)$}
 		   \DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined]s} == tt $
 
 \end{tabular}
