@@ -75,7 +75,7 @@ Programma's in Foo stoppen als de interpreter aan het einde van het de programma
     \$i$n$, \$c$n$, \$h$n$                  & 1 & Drukt een enkele waarde af. Er zijn drie mogelijkheden: druk af als integer (i), druk af als hexadecimaal integer (h) en als ASCII karakter (c). Als er niet zo een `format string' wordt gespecificeerd wordt er een foutmelding gegeven door de interpreter. Het argument \(n\) wordt afgedrukt. \\ \hline
     \$i, \$c, \$h                           & 0 & Drukt een enkele waarde af. Er zijn drie mogelijkheden: druk af als integer (i), druk af als hexadecimaal integer (h) en als ASCII karakter (c). Als er niet zo een `format string' wordt gespecificeerd wordt er een foutmelding gegeven door de interpreter. De huidige waarde in de array met standard input wordt afgedrukt. \\ \hline 
     +\(n\), -\(n\), *\(n\), /\(n\), \%\(n\) & 1 & Rekenkundige operatoren, deze werken zoals verwacht, namelijk optellen, aftrekken, vermenigvuldigen, delen en modulo, respectievelijk. Deze operators worden links toegepast op het huidige element in de array met standard input en gebruiken van rechts de numerieke waarde \(n\) (argument) die op de operator volgt. \\ \hline
-    +, -, *, /, \%                          & 0 & Rekenkundige operatoren, deze werken zoals verwacht, namelijk optellen, aftrekken, vermenigvuldigen, delen en modulo, respectievelijk. Deze operators worden links toegepast op het huidige element in de array met standard input en gebruiken van rechts de laatste stack-waarde. \\ \hline
+    +, -, *, /, \%                          & 0 & Rekenkundige operatoren, deze werken zoals verwacht, namelijk optellen, aftrekken, vermenigvuldigen, delen en modulo, respectievelijk. Deze operators worden links toegepast op het huidige element in de array met standard input en gebruiken van rechts de laatste stack-waarde, die hiervoor gepopt wordt. \\ \hline
     \#\(n\)                                 & 1 & Pauzeert de uitvoering van het programma voor een opgegeven \(n\) aantal seconden. \\ \hline %wat gebeurd er als er niks wordt opgegeven
     (\(n\)                                  & 1 & Specificeert het begin van een loop: deze loop wordt uitgevoerd zolang de waarde in de huidige cel van de array met standard input ongelijk is aan de opgegeven waarde \(n\) (het argument). \\ \hline
     (                                       & 0 & Specificeert het begin van een loop: deze loop wordt uitgevoerd zolang de waarde in de huidige cel van de array met standard input ongelijk is aan nul. \\ \hline
@@ -117,6 +117,9 @@ Omdat in Foo geen parallele operaties mogelijk zijn is het onmogelijk om door de
 Tijdens het gebruik van aritmetische expressies blijkt dat als er geen waarde wordt opgegeven, de eerste waarde van de stack wordt gebruikt. 
 Deze waarde wordt dan van de stack gepopt. 
 Als er niks op de stack staat wordt er een foutmelding gegenereerd, maar de berekening schijnt als nog te worden uitgevoerd.
+Door het nagaan van de referentie-implementatie van Foo hebben we geconstateerd dat deze gepopte waarde ongeinitialiseerd is (in tegenstelling tot een ongedefinieerde waarde in de array, die als 0 wordt geinitialiseerd).
+Deze lijkt in de regel de waarde 0 te bevatten op ons testplatform, maar dat is niet iets waar de Foo-programmeur op kan rekenen.
+We hebben het genereren van de foutmelding meegenomen in onze regels voor het gebruik van stackwaardes.
 
 \section{Syntax van Foo}
 In dit hoofdstuk zullen we de operaties van Foo formeler maken door een syntax op te stellen. 
@@ -349,7 +352,7 @@ $[Loop_{ns}^{tt^2}]$	&	\AxiomC{$\langle $($S$)$, s \rangle \rightarrow s'$}
 %\end{table}
 
 De axioma's voor de loopregels zijn nagenoeg gelijk.
-Beide regels stoppen de uitvoering van de loop als de paramater of 0 is gelijk aan de waarde in de cel.
+Beide regels stoppen de uitvoering van de loop als de waarde in de cel gelijk is aan de paramater of 0, afhankelijk van de gekozen loop-opening.
 \newline
 \newline
 %LOOP FF 1
@@ -374,6 +377,9 @@ $[Loop_{ns}^{ff^2}]$	&	\AxiomC{$\langle $($S$)$, s \rangle \rightarrow  s $}
 \end{tabular}
 \newline
 %\end{table}
+
+Een interessant gegeven in Foo is dat de waarde van de huidige cel in de array, waar de loop invariant check van gebruik maakt, te wijzigen is binnen de loop.
+De invariant-waarde waartegen vergeleken wordt (0 of een argument) is echter niet meer te wijzigen na het binnengaan van de loop.
 
 
 %Aritmetische expressies
@@ -568,6 +574,13 @@ $[\%_{ns}]$	&	\AxiomC{$\langle $\%$, (\sigma, AV, \rho, \theta, O) \rangle \righ
 
 % Standard output regels
 %Vanaf hier hebben we een extra state-element, een standaard output stream \(O\) nodig.
+
+\subsection{Standard output}
+In de referentie-implementatie van Foo hebben we ontdekt dat de standard output gebufferd word, zoals normaal in Unix-programma's.
+Dit maakt het gedrag van operaties op de standard output wat onvoorspelbaar, zeker in combinatie met loopen en het pauzeren van het programma.
+Bij het printen van strings in een loop bijvoorbeeld is het effect dat de standard output wordt gebuffered totdat het programma afgelopen is, of de buffergrootte van de standard output wordt overschreven.
+Om bij een operatie op de standard output (ook bij loopen) direct resultaat te kunnen zien is het nodig het standard output buffer te `flushen' nadat er output gegenereerd is.
+We hebben voor ons onderzoek deze toevoeging in de referentieimplementatie gemaakt, en zijn van plan dit ook voor te leggen aan ``Feky'', de auteur van Foo.
 
 De $stdout_{ns}$ regel wordt gebruikt om een letterlijke string op de standard output te zetten door middel van concatenatie.
 \newline
