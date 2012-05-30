@@ -115,7 +115,7 @@ Omdat in Foo geen parallele operaties mogelijk zijn is het onmogelijk om door de
 \subsection{Foutafhandeling} % Verdere uitleg nodig. Hoe hebben we dit getest of blijkt dit uit de spec? en wat is het resultaat.
 
 Tijdens het gebruik van aritmetische expressies blijkt dat als er geen waarde wordt opgegeven, de eerste waarde van de stack wordt gebruikt. 
-Deze waarde wordt dan van de stack gepopped. 
+Deze waarde wordt dan van de stack gepopt. 
 Als er niks op de stack staat wordt er een foutmelding gegenereerd, maar de berekening schijnt als nog te worden uitgevoerd.
 
 \section{Syntax van Foo}
@@ -248,27 +248,31 @@ $[ass^n_{ns}]$	&	\AxiomC{$\langle $\&$n, (\sigma, AV, \rho, \theta, O) \rangle \
 
 \end{tabular}
 \newline
-%\end{table}
 
 De $ass^s_{ns}$ regel zet een waarde die van de stack gepopt wordt in de huidige arraycel.
 Het eerste (index nul) element van de stack wordt gebruikt, en in de volgende state wordt de stack gegeven vanaf het tweede (index \'e\'en).
 \newline
 \newline
 %\begin{table}[h]
-\begin{tabular}[h]{c c}
+\begin{tabular}[h]{l c r}
 
-$[ass^s_{ns}]$	&	\AxiomC{$\langle $\&$, (\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow (\sigma, AV(\sigma) \mapsto \theta[0], \rho, \theta[1...], O)$}
-				\DisplayProof
+	$[ass^s_{ns}]$	&	\AxiomC{$\langle $\&$, (\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow (\sigma, AV(\sigma) \mapsto \theta[0], \rho, \theta[1...], O)$}
+			      \DisplayProof & $if \theta[0] \neq undefined$
 
 \end{tabular}
 \newline
-%\end{table}
+\begin{tabular}[h]{l c r}
+
+	$[ass^s_{ns}]$	&	\AxiomC{$\langle $\&$, (\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow (\sigma, AV, \rho, \theta, O \| $"Stack is empty"$)$}
+			      \DisplayProof & $if \theta[0] = undefined $
+
+\end{tabular}
+\newline
 
 De $push^n_{ns}$ regel pusht een letterlijke, direct opvolgende numerieke waarde op de stack.
 De waarde wordt geconcateneerd met de gegeven stack, zodat deze bovenaan komt te staan, en gepopt kan worden.
 \newline
 \newline
-%\begin{table}[h]
 \begin{tabular}[h]{c c}
 
 $[push^n_{ns}]$	&	\AxiomC{$\langle $@$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow (\sigma, AV, \rho, n \| \theta, O)$}
@@ -276,13 +280,10 @@ $[push^n_{ns}]$	&	\AxiomC{$\langle $@$n, (\sigma, AV, \rho, \theta, O) \rangle \
 
 \end{tabular}
 \newline
-%\end{table}
 
 De $push^{AV}_{ns}$ regel pusht een waarde uit de huidige array-cel op de stack.
 Ook hier wordt de waarde geconcateneerd met de gegeven stack.
 \newline
-\newline
-%\begin{table}[h]
 \begin{tabular}[h]{c c}
 
 $[push^{AV}_{ns}]$	&	\AxiomC{$\langle $@$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow (\sigma, AV, \rho, AV[\sigma] \| \theta, O)$}
@@ -290,7 +291,6 @@ $[push^{AV}_{ns}]$	&	\AxiomC{$\langle $@$, (\sigma, AV, \rho, \theta, O) \rangle
 
 \end{tabular}
 \newline
-%\end{table}
 
 %\begin{prooftree}
 %\LeftLabel{$[push^{AV}_{ns}]$:\quad}
@@ -381,7 +381,7 @@ $[Loop_{ns}^{ff^2}]$	&	\AxiomC{$\langle $($S$)$, s \rangle \rightarrow  s $}
 Hieronder volgen de semantiekregels voor de aritmetische expressies die gebruikt kunnen worden in Foo.
 Ook hier zit een lastig punt met betrekking tot de semantiekregels.
 Als er namelijk een waarde wordt opgegeven dan wordt dit uitgevoerd in combinatie met de huidige waarde van de cel.
-Als er geen waarde wordt opgegeven wordt er een waarde van de stack gepopped en gebruikt.
+Als er geen waarde wordt opgegeven wordt er een waarde van de stack gepopt en gebruikt.
 Voor al deze gevallen moeten twee aparte regels opgesteld worden. 
 \'E\'en om een opgegeven waarde te herkennen in het argument en \'e\'en voor het gebruik van de stack.
 \newline
@@ -403,14 +403,20 @@ De $+_{ns}$ regel wordt gebruikt om een waarde van de stack te poppen en op te t
 \newline
 \newline
 %\begin{table}[h]
-\begin{tabular}[h]{c c}
+\begin{tabular}[h]{l c r}
 
 $[+_{ns}]$	&	\AxiomC{$\langle $+$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma] + \theta[0], \rho, \theta[1...], O)$}
-				\DisplayProof
+		  \DisplayProof & $if \theta[0] \neq undefined 0$
 
 \end{tabular}
 \newline
-%\end{table}
+\begin{tabular}[h]{l c r}
+
+$[+_{ns}]$	&	\AxiomC{$\langle $+$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho, \theta, O \|$"Stack is empty"$)$}
+		  \DisplayProof & $if \theta[0] = undefined 0$
+
+\end{tabular}
+\newline
 
 De $-^n_{ns}$ regel wordt gebruikt om een het argument af te trekken van de huidige waarde in de cel.
 \newline
@@ -432,15 +438,20 @@ $[-^n_{ns}]$	&	\AxiomC{$\langle $-$n, (\sigma, AV, \rho, \theta, O) \rangle \rig
 De $-_{ns}$ regel wordt gebruikt om een waarde van de stack te poppen en af te trekken van de huidige waarde in de cel.
 \newline
 \newline
-%\begin{table}[h]
-\begin{tabular}[h]{c c}
+\begin{tabular}[h]{l c r}
 
 $[-_{ns}]$	&	\AxiomC{$\langle $-$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma] - \theta[0], \rho, \theta[1...], O)$}
-				\DisplayProof
+		  \DisplayProof & $if \theta[0] \neq undefined 0$
 
 \end{tabular}
 \newline
-%\end{table}
+\begin{tabular}[h]{l c r}
+
+$[-_{ns}]$	&	\AxiomC{$\langle $-$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho, \theta, O \| $"Stack is empty"$)$}
+		  \DisplayProof & $if \theta[0] = undefined 0$
+
+\end{tabular}
+\newline
 
 %\begin{prooftree}
 %	\AxiomC{$\langle $-$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma] - \theta[0], \rho, \theta[1...], O)$}
@@ -456,7 +467,6 @@ $[*^n_{ns}]$	&	\AxiomC{$\langle $*$n, (\sigma, AV, \rho, \theta, O) \rangle \rig
 
 \end{tabular}
 \newline
-%\end{table}
 
 %\begin{prooftree}
 %	\AxiomC{$\langle $*$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma] * n, \rho, \theta, O)$}
@@ -464,15 +474,20 @@ $[*^n_{ns}]$	&	\AxiomC{$\langle $*$n, (\sigma, AV, \rho, \theta, O) \rangle \rig
 De $*_{ns}$ regel wordt gebruikt om een waarde van de stack te poppen en de huidige waarde in de cel hiermee te vermenigvuldigen.
 \newline
 \newline
-%\begin{table}[h]
-\begin{tabular}[h]{c c}
+\begin{tabular}[h]{l c r}
 
-$[*_{ns}]$	&	\AxiomC{$\langle $*$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma]*\theta[0), \rho, \theta[1...], O)$}
-				\DisplayProof
+$[*_{ns}]$	&	\AxiomC{$\langle $*$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma]*\theta[0], \rho, \theta[1...], O)$}
+		  \DisplayProof & $if \theta[0] \neq undefined$
 
 \end{tabular}
 \newline
-%\end{table}
+\begin{tabular}[h]{l c r}
+
+$[*_{ns}]$	&	\AxiomC{$\langle $*$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho, \theta, O \| $"Stack is empty"$)$}
+		  \DisplayProof & $if \theta[0] \neq undefined$
+
+\end{tabular}
+\newline
 %\begin{prooftree}
 %	\AxiomC{$\langle $*$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma]*\theta[0), \rho, \theta[1...], O)$}
 %\end{prooftree}
@@ -496,15 +511,20 @@ $[/^n_{ns}]$	&	\AxiomC{$\langle $/$n, (\sigma, AV, \rho, \theta, O) \rangle \rig
 De $/_{ns}$ regel wordt gebruikt om een waarde van de stack te poppen en de huidige waarde in de cel hiermee te delen.
 \newline
 \newline
-%\begin{table}[h]
-\begin{tabular}[h]{c c}
+\begin{tabular}[h]{l c r}
 
 $[/_{ns}]$	&	\AxiomC{$\langle $/$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma]/\theta[0], \rho, \theta[1...], O)$}
-				\DisplayProof
+		  \DisplayProof & $if \theta[0] \neq undefined$
 
 \end{tabular}
 \newline
-%\end{table}
+\begin{tabular}[h]{l c r}
+
+$[/_{ns}]$	&	\AxiomC{$\langle $/$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho, \theta, O \| $"Stack is empty"$)$}
+		  \DisplayProof & $if \theta[0] = undefined$
+
+\end{tabular}
+\newline
 %\begin{prooftree}
 %	\AxiomC{$\langle $/$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma]/\theta[0], \rho, \theta[1...], O)$}
 %\end{prooftree}
@@ -528,10 +548,17 @@ $[\%^n_{ns}]$	&	\AxiomC{$\langle $\%$n, (\sigma, AV, \rho, \theta, O) \rangle \r
 De $\%_{ns}$ regel wordt gebruikt om de huidige waarde in de cel te vervangen met zichzelf modulus een waar de die van de stack wordt gepopt.
 \newline
 \newline
-\begin{tabular}[h]{c c}
+\begin{tabular}[h]{l c r}
 
 $[\%_{ns}]$	&	\AxiomC{$\langle $\%$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma] \% \theta[0], \rho, \theta[1...], O)$}
-				\DisplayProof
+		   \DisplayProof & $if \theta[0] \neq undefined$
+
+\end{tabular}
+\newline
+\begin{tabular}[h]{l c r}
+
+$[\%_{ns}]$	&	\AxiomC{$\langle $\%$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho, \theta, O \| $"Stack is empty"$)$}
+		   \DisplayProof & $if \theta[0] \neq undefined$
 
 \end{tabular}
 \newline
