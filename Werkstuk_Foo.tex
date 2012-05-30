@@ -321,9 +321,9 @@ De eerste regel geeft de situatie weer als er wel gebruik gemaakt wordt van het 
 %\begin{table}[h]
 \begin{tabular}[h]{c c c}
 
-$[Loop_{ns}^{tt^1}]$	&	\AxiomC{$\langle $S$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma]-1, \rho, \theta, O)  $}
-					\AxiomC{$\langle $($ S$)$,  (\sigma, AV[\sigma]-1, \rho, \theta, O) \rangle \rightarrow (\sigma, AV[\sigma]-1, \rho, \theta, O)$}
-					\BinaryInfC{$\langle $($nS$)$, s \rangle \rightarrow  (\sigma, AV[\sigma]-1, \rho, \theta, O)$}
+$[Loop_{ns}^{tt^1}]$	&	\AxiomC{$\langle S, s \rangle \rightarrow  s'  $}
+					\AxiomC{$\langle $($S$)$, s' \rangle \rightarrow s''$}
+					\BinaryInfC{$\langle $($nS$)$, s \rangle \rightarrow s''$}
 					\DisplayProof								& $if {\cal B} _{[ n \not= AV[\sigma]]s} = tt$
 
 \end{tabular}
@@ -338,7 +338,7 @@ Hierbij wordt de loop uitgevoerd zolang de waarde van de cel ongelijk is aan nul
 %\begin{table}[h]
 \begin{tabular}[h]{c c c}
 
-$[Loop_{ns}^{tt^2}]$	&	\AxiomC{$\langle $($S$)$, s \rangle \rightarrow s'$}
+$[Loop_{ns}^{tt^2}]$	&	\AxiomC{$\langle S, s \rangle \rightarrow s'$}
 					\AxiomC{$\langle $($S$)$, s' \rangle \rightarrow s'' $}
 					\BinaryInfC{$\langle $($S$)$, s \rangle \rightarrow  s'' $}
 					\DisplayProof								& $if {\cal B} _{[0 \not= AV[\sigma]]s} = tt$
@@ -684,7 +684,7 @@ In dit hoofdstuk zullen we aan de hand van een aantal case studies, de bovenstaa
 \subsection{Case Study: Countdown loop}
 In deze sectie zullen we gaan kijken naar het volgende programma: \verb|&10(#1-1$i$c10)"boom!"$c10| 
 
-\begin{landscape}
+%\begin{landscape}
 \begin{prooftree}
 \AxiomC{$\langle \&10,  (\sigma = 0, AV, \rho = 0, \theta, O) \rangle \rightarrow (\sigma = 0, AV[\sigma] \mapsto 10, \rho = 0, \theta, O)$}
 
@@ -703,7 +703,7 @@ In deze sectie zullen we gaan kijken naar het volgende programma: \verb|&10(#1-1
 
 							\BinaryInfC{$\langle \&10(0\#1-1\$i\$c10)''boom!''\$c10, (\sigma = 0, AV, \rho = 0, \theta, O) \rangle \rightarrow  s''$}
 \end{prooftree}
-\end{landscape}
+%\end{landscape}
 
 \newpage
 \subsection{Case Study: }
