@@ -683,6 +683,10 @@ In dit hoofdstuk zullen we aan de hand van een aantal case studies, de bovenstaa
 \newpage
 \subsection{Case Study: Countdown loop}
 In deze sectie zullen we gaan kijken naar het volgende programma: \verb|&10(#1-1$i$c10)"boom!"$c10| 
+Dit programma telt in een loop van 10 af naar nul, terwijl het bij iedere stap pauzeert en de huidige waarde uitprint naar de standard output.
+Als de loop afgewerkt is wordt de string ``Boom!'' geprint naar de standard output.
+
+De afleidingsboom voor dit programma ziet er als volgt uit:
 %
 \begin{landscape}
 
@@ -707,6 +711,11 @@ In deze sectie zullen we gaan kijken naar het volgende programma: \verb|&10(#1-1
 	\BinaryInfC{$\langle \&10(0\#1-1\$i\$c10)''boom!''\$c10, (\sigma = 0, AV, \rho = 0, \theta, O) \rangle \rightarrow  (\sigma = 0, AV, \rho = 0, \theta, O \| ``Boom!'' \| newline)$}
 \end{prooftree}
 \end{landscape}
+
+In de onderste boom zien we de uitwerking van het hele programma, met uitzondering van de loop, die met een $comp^{inv}_{ns}$ regel is losgehaald uit de oorspronkelijke boom en in de bovenste boom ($S_1$) staat beschreven.
+De loop is recursief beschreven, en het gedrag dat gemodeleerd wordt is het aftellen, printen en wachten.
+Na het uivoeren van een iteratie in de loop kan (met de gewijzigde state) de loop weer ingegaan worden totdat \(AV[\sigma] = 0\), waarmee we verdergaan bovenaan de onderste boom.
+Als preconditie aan de Foo-interpreter is verbonden dat het \(\rho\) seconden pauzeert alvorens het volgende statement uit te voeren, zoals te zien is bovenaan de boom $S_1$.
 
 \newpage
 \subsection{Case Study: }
