@@ -321,9 +321,9 @@ De eerste regel geeft de situatie weer als er wel gebruik gemaakt wordt van het 
 %\begin{table}[h]
 \begin{tabular}[h]{c c c}
 
-$[Loop_{ns}^{tt^1}]$	&	\AxiomC{$\langle $($nS$)$, s \rangle \rightarrow s' $}
-					\AxiomC{$\langle $($n-1 S$)$, s' \rangle \rightarrow s''$}
-					\BinaryInfC{$\langle $($nS$)$, s \rangle \rightarrow  s''$}
+$[Loop_{ns}^{tt^1}]$	&	\AxiomC{$\langle $S$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma]-1, \rho, \theta, O)  $}
+					\AxiomC{$\langle $($ S$)$,  (\sigma, AV[\sigma]-1, \rho, \theta, O) \rangle \rightarrow (\sigma, AV[\sigma]-1, \rho, \theta, O)$}
+					\BinaryInfC{$\langle $($nS$)$, s \rangle \rightarrow  (\sigma, AV[\sigma]-1, \rho, \theta, O)$}
 					\DisplayProof								& $if {\cal B} _{[ n \not= AV[\sigma]]s} = tt$
 
 \end{tabular}
@@ -688,7 +688,10 @@ In deze sectie zullen we gaan kijken naar het volgende programma: \verb|&10(#1-1
 \begin{prooftree}
 \AxiomC{$\langle \&10,  (\sigma = 0, AV, \rho = 0, \theta, O) \rangle \rightarrow (\sigma = 0, AV[\sigma] \mapsto 10, \rho = 0, \theta, O)$}
 
-									\AxiomC{$\langle (0, s \rangle \rightarrow s'$}
+					\AxiomC{$\langle (0, s \rangle \rightarrow s'$}								
+											\AxiomC{$\langle \#1, s \rangle \rightarrow s'$}
+
+							\BinaryInfC{$\langle (0, s \rangle \rightarrow s'$}
 														
 														\AxiomC{$\langle \#1, s \rangle \rightarrow s'$}
 
