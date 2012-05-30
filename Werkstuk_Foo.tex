@@ -687,7 +687,7 @@ In deze sectie zullen we gaan kijken naar het volgende programma: \verb|&10(#1-1
 \begin{landscape}
 
 \begin{prooftree}
-			\AxiomC{$\langle \$i\$c10, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow (\sigma, AV, \rho, \theta, O \| AV[\sigma] \| newline)$}
+			\AxiomC{$\langle \$i\$c10, (\sigma, AV, \rho = 0, \theta, O) \rangle \rightarrow (\sigma, AV, \rho, \theta, O \| AV[\sigma] \| newline)$}
 			\UnaryInfC{$\langle -1\$i\$c10, (\sigma, AV, \rho+1, \theta, O) \rangle \rightarrow (\sigma, AV[\sigma \mapsto AV[\sigma] - 1], \rho, \theta, O \| AV[\sigma] \| newline)$}
 			\UnaryInfC{$\langle \#1-1\$i\$c10, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow (\sigma, AV[\sigma \mapsto AV[\sigma] - 1], \rho, \theta, O \| AV[\sigma] \| newline)$}
 			\UnaryInfC{$\langle \#1-1\$i\$c10, s \rangle \rightarrow s'$}
