@@ -257,14 +257,14 @@ Het eerste (index nul) element van de stack wordt gebruikt, en in de volgende st
 \begin{tabular}[h]{l c r}
 
 	$[ass^s_{ns}]$	&	\AxiomC{$\langle $\&$, (\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow (\sigma, AV(\sigma) \mapsto \theta[0], \rho, \theta[1...], O)$}
-			      \DisplayProof & $if \theta[0] \neq undefined$
+		\DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined]s} == tt$
 
 \end{tabular}
 \newline
 \begin{tabular}[h]{l c r}
 
 	$[ass^s_{ns}]$	&	\AxiomC{$\langle $\&$, (\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow (\sigma, AV, \rho, \theta, O \| $"Stack is empty"$)$}
-			      \DisplayProof & $if \theta[0] = undefined $
+		\DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined]s} == ff $
 
 \end{tabular}
 \newline
@@ -406,14 +406,14 @@ De $+_{ns}$ regel wordt gebruikt om een waarde van de stack te poppen en op te t
 \begin{tabular}[h]{l c r}
 
 $[+_{ns}]$	&	\AxiomC{$\langle $+$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma] + \theta[0], \rho, \theta[1...], O)$}
-		  \DisplayProof & $if \theta[0] \neq undefined 0$
+		  \DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined]s} == tt $
 
 \end{tabular}
 \newline
 \begin{tabular}[h]{l c r}
 
 $[+_{ns}]$	&	\AxiomC{$\langle $+$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho, \theta, O \|$"Stack is empty"$)$}
-		  \DisplayProof & $if \theta[0] = undefined 0$
+		  \DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined]s} == ff $
 
 \end{tabular}
 \newline
@@ -441,14 +441,14 @@ De $-_{ns}$ regel wordt gebruikt om een waarde van de stack te poppen en af te t
 \begin{tabular}[h]{l c r}
 
 $[-_{ns}]$	&	\AxiomC{$\langle $-$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma] - \theta[0], \rho, \theta[1...], O)$}
-		  \DisplayProof & $if \theta[0] \neq undefined 0$
+		  \DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined]s} == tt $
 
 \end{tabular}
 \newline
 \begin{tabular}[h]{l c r}
 
 $[-_{ns}]$	&	\AxiomC{$\langle $-$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho, \theta, O \| $"Stack is empty"$)$}
-		  \DisplayProof & $if \theta[0] = undefined 0$
+		  \DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined]s} == tt $
 
 \end{tabular}
 \newline
@@ -477,14 +477,14 @@ De $*_{ns}$ regel wordt gebruikt om een waarde van de stack te poppen en de huid
 \begin{tabular}[h]{l c r}
 
 $[*_{ns}]$	&	\AxiomC{$\langle $*$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma]*\theta[0], \rho, \theta[1...], O)$}
-		  \DisplayProof & $if \theta[0] \neq undefined$
+		  \DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined]s} == tt $
 
 \end{tabular}
 \newline
 \begin{tabular}[h]{l c r}
 
 $[*_{ns}]$	&	\AxiomC{$\langle $*$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho, \theta, O \| $"Stack is empty"$)$}
-		  \DisplayProof & $if \theta[0] \neq undefined$
+		  \DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined]s} == ff $
 
 \end{tabular}
 \newline
@@ -514,14 +514,14 @@ De $/_{ns}$ regel wordt gebruikt om een waarde van de stack te poppen en de huid
 \begin{tabular}[h]{l c r}
 
 $[/_{ns}]$	&	\AxiomC{$\langle $/$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma]/\theta[0], \rho, \theta[1...], O)$}
-		  \DisplayProof & $if \theta[0] \neq undefined$
+		  \DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined]s} == tt $
 
 \end{tabular}
 \newline
 \begin{tabular}[h]{l c r}
 
 $[/_{ns}]$	&	\AxiomC{$\langle $/$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho, \theta, O \| $"Stack is empty"$)$}
-		  \DisplayProof & $if \theta[0] = undefined$
+		  \DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined]s} == ff $
 
 \end{tabular}
 \newline
@@ -551,14 +551,14 @@ De $\%_{ns}$ regel wordt gebruikt om de huidige waarde in de cel te vervangen me
 \begin{tabular}[h]{l c r}
 
 $[\%_{ns}]$	&	\AxiomC{$\langle $\%$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma] \% \theta[0], \rho, \theta[1...], O)$}
-		   \DisplayProof & $if \theta[0] \neq undefined$
+		   \DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined]s} == tt $
 
 \end{tabular}
 \newline
 \begin{tabular}[h]{l c r}
 
 $[\%_{ns}]$	&	\AxiomC{$\langle $\%$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho, \theta, O \| $"Stack is empty"$)$}
-		   \DisplayProof & $if \theta[0] \neq undefined$
+		   \DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined]s} == ff $
 
 \end{tabular}
 \newline
