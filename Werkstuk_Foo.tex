@@ -388,8 +388,8 @@ Hieronder volgen de semantiekregels voor de aritmetische expressies die gebruikt
 Ook hier zit een lastig punt met betrekking tot de semantiekregels.
 Als er namelijk een waarde wordt opgegeven dan wordt dit uitgevoerd in combinatie met de huidige waarde van de cel.
 Als er geen waarde wordt opgegeven wordt er een waarde van de stack gepopt en gebruikt.
-Voor al deze gevallen moeten twee aparte regels opgesteld worden. 
-\'E\'en om een opgegeven waarde te herkennen in het argument en \'e\'en voor het gebruik van de stack.
+Voor al deze gevallen moeten drie aparte regels opgesteld worden. 
+\'E\'en om een opgegeven waarde te herkennen in het argument en twee voor het gebruik van de stack: \'e\'en waarin de stack leeg is (foutafhandeling) en \'e\'en waarin de stack niet leeg is en er een waarde gepopt kan worden.
 \newline
 
 De $+^n_{ns}$ regel wordt gebruikt om het argument op te tellen bij de huidige waarde in de cel.
