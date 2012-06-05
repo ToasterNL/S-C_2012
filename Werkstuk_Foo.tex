@@ -691,7 +691,7 @@ De afleidingsboom voor dit programma ziet er als volgt uit:
 \begin{landscape}
 
 \begin{figure}[h!]
-\caption{$S_1$}
+\caption{$T_1$}
 \centering
 \begin{prooftree}
 			\AxiomC{$\langle \$i\$c10, (\sigma, AV, \rho = 0, \theta, O) \rangle \rightarrow (\sigma, AV, \rho, \theta, O \| AV[\sigma] \| newline)$}
@@ -700,7 +700,7 @@ De afleidingsboom voor dit programma ziet er als volgt uit:
 			\UnaryInfC{$\langle \#1-1\$i\$c10, s \rangle \rightarrow s'$}
 				\AxiomC{$\langle (0\#1-1\$i\$c10), s' \rangle \rightarrow s''$}
 
-			\BinaryInfC{$\langle (0\#1-1\$i\$c10), s \rangle \rightarrow s'' $}
+			\BinaryInfC{$\langle \#1-1\$i\$c10, (\sigma, AV[\sigma \mapsto 3], \rho, \theta, O) \rangle \rightarrow (s= nog niet bekend 2) $}
 \end{prooftree}
 \end{figure}
 
@@ -708,14 +708,19 @@ De afleidingsboom voor dit programma ziet er als volgt uit:
 \caption{$Boom$}
 \centering
 \begin{prooftree}
-	\AxiomC{$\langle \&10,  (\sigma, AV, \rho, \theta, O) \rangle \rightarrow (\sigma, AV[\sigma \mapsto 10], \rho, \theta, O)$}
-			\AxiomC{$S_1$}
+	\AxiomC{}
+	\LeftLabel{$[Ass_{ns}^n]$}
+	\UnaryInfC{$\langle \&3,  (\sigma, AV, \rho, \theta, O) \rangle \rightarrow (\sigma, AV[\sigma \mapsto 3], \rho, \theta, O)$}
+			
+			
+			\AxiomC{$T_1$}
 
-			\AxiomC{$\langle ''boom!''\$c10, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow (\sigma, AV, \rho, \theta, O \| ``Boom!'' \| newline)$}
-
-		\BinaryInfC{$\langle (0\#1-1\$i\$c10)''boom!''\$c10, (\sigma , AV, \rho , \theta, O) \rangle \rightarrow (\sigma, AV, \rho, \theta, O \| ``Boom!'' \| newline)$}
-
-	\BinaryInfC{$\langle \&10(0\#1-1\$i\$c10)''boom!''\$c10, (\sigma = 0, AV, \rho = 0, \theta, O) \rangle \rightarrow  (\sigma = 0, AV, \rho = 0, \theta, O \| ``Boom!'' \| newline)$}
+			\AxiomC{$\langle (0\#1-1\$i\$c10)''boom!''\$c10, (s= nog niet bekend 2) \rangle \rightarrow (s = nog niet bekend)$}
+		
+		\RightLabel{$[Loop_{ns}^{tt^1}]$}
+		\BinaryInfC{$\langle (0\#1-1\$i\$c10)''boom!''\$c10, (\sigma , AV, \rho , \theta, O) \rangle \rightarrow (s=nog niet bekend)$}
+	\RightLabel{$[Comp_{ns}]$}
+	\BinaryInfC{$\langle \&3(0\#1-1\$i\$c10)''boom!''\$c10, (\sigma = 0, AV, \rho = 0, \theta, O) \rangle \rightarrow  (s= nog niet bekend)$}
 \end{prooftree}
 \end{figure}
 \end{landscape}
