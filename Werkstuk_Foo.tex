@@ -2,6 +2,7 @@
 \usepackage{a4wide, graphicx, fancyhdr, wrapfig, tabularx, amsmath, amssymb, hyperref, color, verbatim, nameref}
 \usepackage{bussproofs}
 \usepackage{pdflscape}
+\usepackage{caption}
 \usepackage[english]{babel}
 \definecolor{linkcolour}{rgb}{0,0.2,0.6}
 \hypersetup{colorlinks,breaklinks,urlcolor=linkcolour, linkcolor=linkcolour}
@@ -691,21 +692,43 @@ De afleidingsboom voor dit programma ziet er als volgt uit:
 \begin{landscape}
 
 \begin{figure}[h!]
-\caption{$T_1$}
+\caption{$T_1$  
+		\\$s_1: (\sigma, AV[\sigma \mapsto 3], \rho + 1, \theta, O)$
+		\\$s_2: (\sigma, AV[\sigma \mapsto 2], \rho + 1, \theta, O)$
+		\\$s_3: (\sigma, AV[\sigma \mapsto 2], \rho+1, \theta, O||2)$
+		\\$s_4: (\sigma, AV[\sigma \mapsto 2], \rho+1, \theta, O||2||newline)$}
 \centering
 \begin{prooftree}
-			\AxiomC{$\langle \$i\$c10, (\sigma, AV, \rho = 0, \theta, O) \rangle \rightarrow (\sigma, AV, \rho, \theta, O \| AV[\sigma] \| newline)$}
-			\UnaryInfC{$\langle -1\$i\$c10, (\sigma, AV, \rho+1, \theta, O) \rangle \rightarrow (\sigma, AV[\sigma \mapsto AV[\sigma] - 1], \rho, \theta, O \| AV[\sigma] \| newline)$}
-			\UnaryInfC{$\langle \#1-1\$i\$c10, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow (\sigma, AV[\sigma \mapsto AV[\sigma] - 1], \rho, \theta, O \| AV[\sigma] \| newline)$}
-			\UnaryInfC{$\langle \#1-1\$i\$c10, s \rangle \rightarrow s'$}
-				\AxiomC{$\langle (0\#1-1\$i\$c10), s' \rangle \rightarrow s''$}
+			\AxiomC{}
+			\LeftLabel{$[\#_{ns}^n]$}
+			\UnaryInfC{$\langle \#1, -1\$i\$c10, (\sigma, AV[\sigma \mapsto 3], \rho, \theta, O) \rangle \rightarrow s_1$}
+				
+				\AxiomC{}	
+				\LeftLabel{$[-_{ns}^n]$}
+				\UnaryInfC{$\langle -1, s_1 \rangle \rightarrow s_2 $} 
+					
+					\AxiomC{}
+					\LeftLabel{$[print_{ns}^i]$}
+					\UnaryInfC{$\langle \$i, s_2 \rangle \rightarrow s_3$}					
+					
+						\AxiomC{}
+						\RightLabel{$[print_{ns}^{cn}]$}
+						\UnaryInfC{$\langle \$c10, s_3 \rangle \rightarrow s_4  $}
 
-			\BinaryInfC{$\langle \#1-1\$i\$c10, (\sigma, AV[\sigma \mapsto 3], \rho, \theta, O) \rangle \rightarrow (s= nog niet bekend 2) $}
+					\RightLabel{$[Comp_{ns}]$}
+					\BinaryInfC{$\langle\$i\$c10, s_2 \rangle \rightarrow s_4 $ }
+
+				\RightLabel{$[Comp_{ns}]$}								
+				\BinaryInfC{$\langle -1\$i\$c10), s_1 \rangle \rightarrow s_4$}
+
+			\RightLabel{$[Comp_{ns}]$}
+			\BinaryInfC{$\langle \#1-1\$i\$c10, (\sigma, AV[\sigma \mapsto 3], \rho, \theta, O) \rangle \rightarrow s_4$}
 \end{prooftree}
 \end{figure}
 
 \begin{figure}[h!]
-\caption{$Boom$}
+\caption{$Boom$
+		\\$s_4: (\sigma, AV[\sigma \mapsto 2], \rho+1, \theta, O||2||newline)$, uit Figure 1.}
 \centering
 \begin{prooftree}
 	\AxiomC{}
@@ -714,8 +737,10 @@ De afleidingsboom voor dit programma ziet er als volgt uit:
 			
 			
 			\AxiomC{$T_1$}
-
-			\AxiomC{$\langle (0\#1-1\$i\$c10)''boom!''\$c10, (s= nog niet bekend 2) \rangle \rightarrow (s = nog niet bekend)$}
+				
+				\AxiomC{$T_2$}
+				\RightLabel{$[Comp_{ns}]$}
+				\UnaryInfC{$\langle (0\#1-1\$i\$c10)''boom!''\$c10, s_4 \rangle \rightarrow (s = nog niet bekend)$}
 		
 		\RightLabel{$[Loop_{ns}^{tt^1}]$}
 		\BinaryInfC{$\langle (0\#1-1\$i\$c10)''boom!''\$c10, (\sigma , AV, \rho , \theta, O) \rangle \rightarrow (s=nog niet bekend)$}
