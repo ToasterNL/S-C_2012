@@ -369,7 +369,7 @@ $[Loop_{ns}^{ff^1}]$	&	\AxiomC{$\langle $($nS$)$, s \rangle \rightarrow  s $}
 \begin{tabular}[h]{c c c}
 
 $[Loop_{ns}^{ff^2}]$	&	\AxiomC{$\langle $($S$)$, s \rangle \rightarrow  s $}
-					\DisplayProof								& $if {\cal B}_{[0 \not= Av(\sigma)]s} = ff$
+					\DisplayProof								& $if {\cal B}_{[0 \not= AV(\sigma)]s} = ff$
 
 \end{tabular}
 \newline
@@ -690,7 +690,7 @@ Als de loop afgewerkt is wordt de string ``Boom!'' geprint naar de standard outp
 De afleidingsboom voor dit programma ziet er als volgt uit:
 %
 \begin{landscape}
-
+%FIGUUR 1
 \begin{figure}[h!]
 \caption{$T_1$  
 		\\$s_1: (\sigma, AV[\sigma \mapsto 3], \rho + 1, \theta, O)$
@@ -726,24 +726,118 @@ De afleidingsboom voor dit programma ziet er als volgt uit:
 \end{prooftree}
 \end{figure}
 
+
+%FIGUUR 2
+\begin{figure}[h!]
+\caption{$T_2$  
+		\\$s_5: (\sigma, AV[\sigma \mapsto 2], \rho + 2, \theta, O||2||newline)$
+		\\$s_6: (\sigma, AV[\sigma \mapsto 1], \rho + 2, \theta, O||2||newline)$
+		\\$s_7: (\sigma, AV[\sigma \mapsto 1], \rho+2, \theta, O||2||newline||1)$
+		\\$s_8: (\sigma, AV[\sigma \mapsto 1], \rho+2, \theta, O||2||newline||1||newline)$}
+\centering
+\begin{prooftree}
+			\AxiomC{}
+			\LeftLabel{$[\#_{ns}^n]$}
+			\UnaryInfC{$\langle \#1, -1\$i\$c10, (\sigma, AV[\sigma \mapsto 2], \rho+1, \theta, O||2||newline) \rangle \rightarrow s_5$}
+				
+				\AxiomC{}	
+				\LeftLabel{$[-_{ns}^n]$}
+				\UnaryInfC{$\langle -1, s_5 \rangle \rightarrow s_6 $} 
+					
+					\AxiomC{}
+					\LeftLabel{$[print_{ns}^i]$}
+					\UnaryInfC{$\langle \$i, s_6 \rangle \rightarrow s_7$}					
+					
+						\AxiomC{}
+						\RightLabel{$[print_{ns}^{cn}]$}
+						\UnaryInfC{$\langle \$c10, s_7 \rangle \rightarrow s_8  $}
+
+					\RightLabel{$[Comp_{ns}]$}
+					\BinaryInfC{$\langle\$i\$c10, s_6 \rangle \rightarrow s_8 $ }
+
+				\RightLabel{$[Comp_{ns}]$}								
+				\BinaryInfC{$\langle -1\$i\$c10), s_5 \rangle \rightarrow s_8$}
+
+			\RightLabel{$[Comp_{ns}]$}
+			\BinaryInfC{$\langle \#1-1\$i\$c10, (\sigma, AV[\sigma \mapsto 2], \rho+1, \theta, O||2||newline) \rangle \rightarrow s_8$}
+\end{prooftree}
+\end{figure}
+
+%FIGUUR 3
+\begin{figure}[h!]
+\caption{$T_3$
+		\\$s_8: (\sigma, AV[\sigma \mapsto 1], \rho+2, \theta, O||2||newline||1||newline)$, uit Figure 2  
+		\\$s_9: (\sigma, AV[\sigma \mapsto 1], \rho+3, \theta, O||2||newline||1||newline)$
+		\\$s_{10}:  (\sigma, AV[\sigma \mapsto 0], \rho+3, \theta, O||2||newline||1||newline)$
+		\\$s_{11}:  (\sigma, AV[\sigma \mapsto 0], \rho+3, \theta, O||2||newline||1||newline||0)$
+		\\$s_{12}:  (\sigma, AV[\sigma \mapsto 0], \rho+3, \theta, O||2||newline||1||newline||0||newline)$}
+\centering
+\begin{prooftree}
+			\AxiomC{}
+			\LeftLabel{$[\#_{ns}^n]$}
+			\UnaryInfC{$\langle \#1, -1\$i\$c10, s_8 \rangle \rightarrow s_9$}
+				
+				\AxiomC{}	
+				\LeftLabel{$[-_{ns}^n]$}
+				\UnaryInfC{$\langle -1, s_9 \rangle \rightarrow s_{10} $} 
+					
+					\AxiomC{}
+					\LeftLabel{$[print_{ns}^i]$}
+					\UnaryInfC{$\langle \$i, s_{10} \rangle \rightarrow s_{11}$}					
+					
+						\AxiomC{}
+						\RightLabel{$[print_{ns}^{cn}]$}
+						\UnaryInfC{$\langle \$c10, s_{11} \rangle \rightarrow s_{12}$}
+
+					\RightLabel{$[Comp_{ns}]$}
+					\BinaryInfC{$\langle\$i\$c10, s_{10} \rangle \rightarrow s_{12}$ }
+
+				\RightLabel{$[Comp_{ns}]$}								
+				\BinaryInfC{$\langle -1\$i\$c10), s_9 \rangle \rightarrow s_{12}$}
+
+			\RightLabel{$[Comp_{ns}]$}
+			\BinaryInfC{$\langle \#1-1\$i\$c10,s_8 \rangle \rightarrow s_{12}$}
+\end{prooftree}
+\end{figure}
+
 \begin{figure}[h!]
 \caption{$Boom$
-		\\$s_4: (\sigma, AV[\sigma \mapsto 2], \rho+1, \theta, O||2||newline)$, uit Figure 1.}
+		\\$s_4: (\sigma, AV[\sigma \mapsto 2], \rho+1, \theta, O||2||newline)$, uit Figure 1.
+		\\$s_8: (\sigma, AV[\sigma \mapsto 1], \rho+2, \theta, O||2||newline||1||newline)$, uit Figure 2.
+		\\$s_{12}:  (\sigma, AV[\sigma \mapsto 0], \rho+3, \theta, O||2||newline||1||newline||0||newline)$, uit Figure 3.}
 \centering
 \begin{prooftree}
 	\AxiomC{}
 	\LeftLabel{$[Ass_{ns}^n]$}
 	\UnaryInfC{$\langle \&3,  (\sigma, AV, \rho, \theta, O) \rangle \rightarrow (\sigma, AV[\sigma \mapsto 3], \rho, \theta, O)$}
-			
-			
-			\AxiomC{$T_1$}
-				
-				\AxiomC{$T_2$}
-				\RightLabel{$[Comp_{ns}]$}
-				\UnaryInfC{$\langle (0\#1-1\$i\$c10)''boom!''\$c10, s_4 \rangle \rightarrow (s = nog niet bekend)$}
-		
+		\AxiomC{$T_1$}		
+			\AxiomC{$T_2$}
+				\AxiomC{$T_3$}
+
+					\AxiomC{}
+					\UnaryInfC{$\langle (0\#1-1\$i\$c10), s_{12} \rangle \rightarrow (s = nog niet bekend)$}
+			\RightLabel{$[Loop_{ns}^{tt^1}]$}			
+			\BinaryInfC{$\langle (0\#1-1\$i\$c10), s_8 \rangle \rightarrow (s = nog niet bekend)$}
 		\RightLabel{$[Loop_{ns}^{tt^1}]$}
-		\BinaryInfC{$\langle (0\#1-1\$i\$c10)''boom!''\$c10, (\sigma , AV, \rho , \theta, O) \rangle \rightarrow (s=nog niet bekend)$}
+		\BinaryInfC{$\langle (0\#1-1\$i\$c10), s_4 \rangle \rightarrow (s = nog niet bekend)$}	
+		\BinaryInfC{$\langle (0\#1-1\$i\$c10),  (\sigma, AV[\sigma \mapsto 3], \rho, \theta, O) \rangle \rightarrow (s = nog niet bekend)$}	
+			%\AxiomC{$T_1$}
+				
+				%
+						
+					%\AxiomC{$T_3$}	
+
+
+
+										
+							
+				%\AxiomC{bla2}
+					\AxiomC{bla1}
+					\AxiomC{bla3}
+				\BinaryInfC{$\langle ''boom!''\$c10, s_{loop}  \rangle \rightarrow (s=nog niet bekend) $}
+
+		\RightLabel{$[Comp_{ns}]$}
+		\BinaryInfC{$\langle (0\#1-1\$i\$c10)''boom!''\$c10,  (\sigma, AV[\sigma \mapsto 3], \rho, \theta, O) \rangle \rightarrow (s=nog niet bekend)$}
 	\RightLabel{$[Comp_{ns}]$}
 	\BinaryInfC{$\langle \&3(0\#1-1\$i\$c10)''boom!''\$c10, (\sigma = 0, AV, \rho = 0, \theta, O) \rangle \rightarrow  (s= nog niet bekend)$}
 \end{prooftree}
