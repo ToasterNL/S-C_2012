@@ -113,7 +113,7 @@ Omdat in Foo geen parallele operaties mogelijk zijn is het onmogelijk om door de
 
 Tijdens het gebruik van aritmetische expressies blijkt dat als er geen waarde wordt opgegeven, de eerste waarde van de stack wordt gebruikt. 
 Deze waarde wordt dan van de stack gepopt. 
-Als er niks op de stack staat wordt er een foutmelding gegenereerd, maar de berekening schijnt als nog te worden uitgevoerd.
+Als er niks op de stack staat wordt er een foutmelding gegenereerd, maar de berekening wordt als nog uitgevoerd. %schijnt als nog te worden uitgevoerd.
 Door het nagaan van de referentie-implementatie van Foo hebben we geconstateerd dat deze gepopte waarde ongeinitialiseerd is (in tegenstelling tot een ongedefinieerde waarde in de array, die als 0 wordt geinitialiseerd).
 Deze lijkt in de regel de waarde 0 te bevatten op ons testplatform, maar dat is niet iets waar de Foo-programmeur op kan rekenen.
 We hebben het genereren van de foutmelding meegenomen in onze regels voor het gebruik van stackwaardes.
@@ -167,7 +167,7 @@ Allereerst defini\"eren we de volgende symbolen en functies:
 Onze state zal er als volgt uit zien:
 
 \[
-(\sigma, AV, \rho, \theta, O)
+s = (\sigma, AV, \rho, \theta, O)
 \]
 
 Onze transitie van states zal er als volgt uit zien:
@@ -180,7 +180,7 @@ Afhankelijk van statement $S$ zullen de waardes in de state veranderen.
 $s'$ bevat dus veranderde waardes van $\sigma, AV, \rho, \theta, O$. 
 %In de onderstaande semantiekregels zullen we alleen de veranderde waardes in de state $s'$ opnemen.
 %Op deze manier blijft het overzichtelijk wat er precies veranderd in een transitie.
-Als het nog niet duidelijk is wat er precies tijdens een transitie veranderd, omdat dit afhankelijk is van nog uit te voeren states, zullen we dit aangeven met alleen $s'$.
+Als het nog niet duidelijk is wat er precies tijdens een transitie verandert, omdat dit afhankelijk is van nog uit te voeren states, zullen we dit aangeven met alleen $s'$.
 
 
 \subsection{Semantiekregels}
@@ -348,8 +348,8 @@ $[Loop_{ns}^{tt^2}]$	&	\AxiomC{$\langle S, s \rangle \rightarrow s'$}
 \newline
 %\end{table}
 
-De axioma's voor de loopregels zijn nagenoeg gelijk.
-Beide regels stoppen de uitvoering van de loop als de waarde in de cel gelijk is aan het argument of 0, afhankelijk van de gekozen loop-opening.
+De axioma's voor de loopregels zijn nagenoeg gelijk aan elkaar. 
+Beide regels stoppen de uitvoering van de loop als de waarde in de cel gelijk is aan het argument, als gekozen is voor $[Loop_{ns}^{tt^1}]$, of nul als gekozen is voor $[Loop_{ns}^{tt^2}]$.
 \newline
 \newline
 %LOOP FF 1
@@ -362,9 +362,7 @@ $[Loop_{ns}^{ff^1}]$	&	\AxiomC{$\langle $($nS$)$, s \rangle \rightarrow  s $}
 \end{tabular}
 \newline
 %\end{table}
-
 %LOOP FF 2
-
 %\begin{table}[h]
 \begin{tabular}[h]{c c c}
 
@@ -573,7 +571,7 @@ $[\%_{ns}]$	&	\AxiomC{$\langle $\%$, (\sigma, AV, \rho, \theta, O) \rangle \righ
 %Vanaf hier hebben we een extra state-element, een standaard output stream \(O\) nodig.
 
 \subsection{Standard output}
-In de referentie-implementatie van Foo hebben we ontdekt dat de standard output gebufferd word, zoals normaal in Unix-programma's.
+In de referentie-implementatie van Foo hebben we ontdekt dat de standard output gebufferd wordt, zoals normaal in Unix-programma's.
 Dit maakt het gedrag van operaties op de standard output wat onvoorspelbaar, zeker in combinatie met loopen en het pauzeren van het programma.
 Bij het printen van strings in een loop bijvoorbeeld is het effect dat de standard output wordt gebuffered totdat het programma afgelopen is, of de buffergrootte van de standard output wordt overschreven.
 Om bij een operatie op de standard output (ook bij loopen) direct resultaat te kunnen zien is het nodig het standard output buffer te `flushen' nadat er output gegenereerd is.
@@ -682,12 +680,17 @@ $[print^{hn}_{ns}]$	&	\AxiomC{$\langle $\$h$n, (\sigma, AV, \rho, \theta, O) \ra
 In dit hoofdstuk zullen we aan de hand van een aantal case studies, de bovenstaande semantiekregels toepassen.
 
 \newpage
-\subsection{Case Study: Countdown loop}
-In deze sectie zullen we gaan kijken naar het volgende programma: \verb|&10(#1-1$i$c10)"boom!"$c10| 
+\subsection{Case Study: Countdown loop met de $[Loop_{ns}^{tt^1}]$ regel.}
+In deze sectie zullen we gaan kijken naar het volgende programma: \verb|&10(0#1-1$i$c10)"boom!"$c10| 
 Dit programma telt in een loop van 10 af naar nul, terwijl het bij iedere stap pauzeert en de huidige waarde uitprint naar de standard output.
 Als de loop afgewerkt is wordt de string ``Boom!'' geprint naar de standard output.
+Uit de code is af te lezen dat de loop tien keer zal itereren. 
+Hierdoor zal de afleidingsboom ook tien iteraties vertonen en zal daardoor erg groot worden.
+Om dat te voorkomen zullen we het programma zo aanpassen zodat we alsnog de regels kunnen laten zien en dat de afleidingsboom niet te groot wordt.
 
-De afleidingsboom voor dit programma ziet er als volgt uit:
+Het aangepaste programma ziet er als volgt uit: \verb|&3(0#1-1$i$c10)"boom!"$c10|.
+Hierbij wordt dus maar drie keer geitereerd.
+De afleidingsboom voor dit programma begint bij Figure 5 en maakt gebruik van Figure 1 t/m 4. 
 %
 \begin{landscape}
 %FIGUUR 1
@@ -697,7 +700,7 @@ De afleidingsboom voor dit programma ziet er als volgt uit:
 		\\$s_2: (\sigma, AV[\sigma \mapsto 2], \rho + 1, \theta, O)$
 		\\$s_3: (\sigma, AV[\sigma \mapsto 2], \rho+1, \theta, O||2)$
 		\\$s_4: (\sigma, AV[\sigma \mapsto 2], \rho+1, \theta, O||2||newline)$}
-\centering
+%\centering
 \begin{prooftree}
 			\AxiomC{}
 			\LeftLabel{$[\#_{ns}^n]$}
@@ -734,7 +737,7 @@ De afleidingsboom voor dit programma ziet er als volgt uit:
 		\\$s_6: (\sigma, AV[\sigma \mapsto 1], \rho + 2, \theta, O||2||newline)$
 		\\$s_7: (\sigma, AV[\sigma \mapsto 1], \rho+2, \theta, O||2||newline||1)$
 		\\$s_8: (\sigma, AV[\sigma \mapsto 1], \rho+2, \theta, O||2||newline||1||newline)$}
-\centering
+%\centering
 \begin{prooftree}
 			\AxiomC{}
 			\LeftLabel{$[\#_{ns}^n]$}
@@ -771,7 +774,7 @@ De afleidingsboom voor dit programma ziet er als volgt uit:
 		\\$s_{10}:  (\sigma, AV[\sigma \mapsto 0], \rho+3, \theta, O||2||newline||1||newline)$
 		\\$s_{11}:  (\sigma, AV[\sigma \mapsto 0], \rho+3, \theta, O||2||newline||1||newline||0)$
 		\\$s_{12}:  (\sigma, AV[\sigma \mapsto 0], \rho+3, \theta, O||2||newline||1||newline||0||newline)$}
-\centering
+%\centering
 \begin{prooftree}
 			\AxiomC{}
 			\LeftLabel{$[\#_{ns}^n]$}
@@ -806,7 +809,7 @@ De afleidingsboom voor dit programma ziet er als volgt uit:
 		\\$s_{12}: (\sigma, AV[\sigma \mapsto 0], \rho+3, \theta, O||2||newline||1||newline||0||newline)$, uit Figure 3
 		\\$s_{13}: (\sigma, AV[\sigma \mapsto 0], \rho+3, \theta, O||2||newline||1||newline||0||newline||boom!)$
 		\\$s_{14}: (\sigma, AV[\sigma \mapsto 0], \rho+3, \theta, O||2||newline||1||newline||0||newline||boom!||newline)$}
-\centering
+%\centering
 \begin{prooftree}
 			\AxiomC{}
 			\LeftLabel{$[stdout_{ns}]$}
@@ -829,7 +832,7 @@ De afleidingsboom voor dit programma ziet er als volgt uit:
 		\\$s_8: (\sigma, AV[\sigma \mapsto 1], \rho+2, \theta, O||2||newline||1||newline)$, uit Figure 2.
 		\\$s_{12}:  (\sigma, AV[\sigma \mapsto 0], \rho+3, \theta, O||2||newline||1||newline||0||newline)$, uit Figure 3.
 		\\$s_{14}: (\sigma, AV[\sigma \mapsto 0], \rho+3, \theta, O||2||newline||1||newline||0||newline||boom!||newline)$, uit Figure 4.}
-\centering
+%\centering
 \begin{prooftree}
 	\AxiomC{}
 	\LeftLabel{$[Ass_{ns}^n]$}
@@ -871,17 +874,33 @@ De afleidingsboom voor dit programma ziet er als volgt uit:
 \end{figure}
 \end{landscape}
 
-In de onderste boom zien we de uitwerking van het hele programma, met uitzondering van de loop, die met een $comp^{inv}_{ns}$ regel is losgehaald uit de oorspronkelijke boom en in de bovenste boom ($S_1$) staat beschreven.
-De loop is recursief beschreven, en het gedrag dat gemodeleerd wordt is het aftellen, printen en wachten.
-Na het uivoeren van een iteratie in de loop kan (met de gewijzigde state) de loop weer ingegaan worden totdat \(AV[\sigma] = 0\), waarmee we verdergaan bovenaan de onderste boom.
-Als preconditie aan de Foo-interpreter is verbonden dat het \(\rho\) seconden pauzeert alvorens het volgende statement uit te voeren, zoals te zien is bovenaan de boom $S_1$.
+%In de onderste boom zien we de uitwerking van het hele programma, met uitzondering van de loop, die met een $comp^{inv}_{ns}$ regel is losgehaald uit de oorspronkelijke boom en in de bovenste boom ($S_1$) staat beschreven.
+%De loop is recursief beschreven, en het gedrag dat gemodeleerd wordt is het aftellen, printen en wachten.
+%Na het uivoeren van een iteratie in de loop kan (met de gewijzigde state) de loop weer ingegaan worden totdat \(AV[\sigma] = 0\), waarmee we verdergaan bovenaan de onderste boom.
+%Als preconditie aan de Foo-interpreter is verbonden dat het \(\rho\) seconden pauzeert alvorens het volgende statement uit te voeren, zoals te zien is bovenaan de boom $S_1$.
 
 \newpage
-\subsection{Case Study: }
+\subsection{Case Study: Countdown loop met de $[Loop_{ns}^{tt^2}]$ regel.}
+In deze case study zullen we laten zien dat het mogelijk is hetzelfde te bereiken door gebruik te maken van de tweede loop regel.
+Bij deze regel wordt geen argument mee gegeven en er wordt net zolang geitereerd totdat de celwaarde gelijk is aan nul.
+Het programma ziet er als volgt uit: \verb|&3(0#1-1$i$c10)"boom!"$c10|.
+De afleidingsboom wordt weergegeven in Figure ...
+
+\newpage
+\subsection{Case Study: Navigatie regels in combinatie met foutafhandeling.}
+In dit voorbeeld zullen we nog twee interesante eigenschappen van Foo laten zien (ten opzichte van While), namelijk de navigatieregels voor het navigeren in de array en hoe Foo met fouten omgaat als er bijvoorbeeld een waarde van de stack wordt gepopt, terwijl deze leeg is.
 
 
+\section{Discussie}
+Aan de hand van de analyse hebben we aangetoond dat de natuurlijke semantiekregels, die we eerder hebben opgesteld, werken voor de taal Foo. 
+Het is echter mogelijk om oneindige loops in Foo te maken, bijvoorbeeld:
+\[(1)\]
 
-%\section{Structurele operationale semantiek van Foo}
+Het is niet mogelijk om dit te analyseren met onze semantiekregels, want het is niet mogelijk oneindige bomen te creeëren in natuurlijke semantiek. 
+Om dit wel te kunnen analyseren zouden we gebruik moeten maken Structurele Operationele Semantiek, want daar het is mogelijk om oneindige afleidingsrijen te maken. 
+Een SOS-regel die we zouden kunnen gebruiken om dit te analyseren ziet er als volgt uit: ...
+
+We hebben echter meer SOS-regels nodig om programma's volledig te analyseren. Dit valt buiten de scope van dit project en zal dus in een vervolg op dit project verder uitgewerkt moeten worden.
 
 %\bibliographystyle{plain} % amsalpha
 %\bibliography{}
