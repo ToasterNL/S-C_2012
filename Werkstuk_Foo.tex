@@ -719,7 +719,7 @@ De afleidingsboom voor dit programma ziet er als volgt uit:
 					\BinaryInfC{$\langle\$i\$c10, s_2 \rangle \rightarrow s_4 $ }
 
 				\RightLabel{$[Comp_{ns}]$}								
-				\BinaryInfC{$\langle -1\$i\$c10), s_1 \rangle \rightarrow s_4$}
+				\BinaryInfC{$\langle -1\$i\$c10, s_1 \rangle \rightarrow s_4$}
 
 			\RightLabel{$[Comp_{ns}]$}
 			\BinaryInfC{$\langle \#1-1\$i\$c10, (\sigma, AV[\sigma \mapsto 3], \rho, \theta, O) \rangle \rightarrow s_4$}
@@ -756,7 +756,7 @@ De afleidingsboom voor dit programma ziet er als volgt uit:
 					\BinaryInfC{$\langle\$i\$c10, s_6 \rangle \rightarrow s_8 $ }
 
 				\RightLabel{$[Comp_{ns}]$}								
-				\BinaryInfC{$\langle -1\$i\$c10), s_5 \rangle \rightarrow s_8$}
+				\BinaryInfC{$\langle -1\$i\$c10, s_5 \rangle \rightarrow s_8$}
 
 			\RightLabel{$[Comp_{ns}]$}
 			\BinaryInfC{$\langle \#1-1\$i\$c10, (\sigma, AV[\sigma \mapsto 2], \rho+1, \theta, O||2||newline) \rangle \rightarrow s_8$}
@@ -793,10 +793,33 @@ De afleidingsboom voor dit programma ziet er als volgt uit:
 					\BinaryInfC{$\langle\$i\$c10, s_{10} \rangle \rightarrow s_{12}$ }
 
 				\RightLabel{$[Comp_{ns}]$}								
-				\BinaryInfC{$\langle -1\$i\$c10), s_9 \rangle \rightarrow s_{12}$}
+				\BinaryInfC{$\langle -1\$i\$c10, s_9 \rangle \rightarrow s_{12}$}
 
 			\RightLabel{$[Comp_{ns}]$}
 			\BinaryInfC{$\langle \#1-1\$i\$c10,s_8 \rangle \rightarrow s_{12}$}
+\end{prooftree}
+\end{figure}
+
+%FIGUUR 4
+\begin{figure}[h!]
+\caption{$T_4$
+		\\$s_{12}: (\sigma, AV[\sigma \mapsto 0], \rho+3, \theta, O||2||newline||1||newline||0||newline)$, uit Figure 3
+		\\$s_{13}: (\sigma, AV[\sigma \mapsto 0], \rho+3, \theta, O||2||newline||1||newline||0||newline||boom!)$
+		\\$s_{14}: (\sigma, AV[\sigma \mapsto 0], \rho+3, \theta, O||2||newline||1||newline||0||newline||boom!||newline)$}
+\centering
+\begin{prooftree}
+			\AxiomC{}
+			\LeftLabel{$[stdout_{ns}]$}
+			\UnaryInfC{$\langle  ''boom!'', s_{12} \rangle \rightarrow s_{13}$}
+				
+				\AxiomC{}	
+				
+
+				\RightLabel{$[print_{ns}^{cn}]$}								
+				\UnaryInfC{$\langle \$c10, s_{13} \rangle \rightarrow s_{14}$}
+
+			\RightLabel{$[Comp_{ns}]$}
+			\BinaryInfC{$\langle ''boom!''\$c10, s_{12}  \rangle \rightarrow s_{14}$}
 \end{prooftree}
 \end{figure}
 
@@ -804,7 +827,8 @@ De afleidingsboom voor dit programma ziet er als volgt uit:
 \caption{$Boom$
 		\\$s_4: (\sigma, AV[\sigma \mapsto 2], \rho+1, \theta, O||2||newline)$, uit Figure 1.
 		\\$s_8: (\sigma, AV[\sigma \mapsto 1], \rho+2, \theta, O||2||newline||1||newline)$, uit Figure 2.
-		\\$s_{12}:  (\sigma, AV[\sigma \mapsto 0], \rho+3, \theta, O||2||newline||1||newline||0||newline)$, uit Figure 3.}
+		\\$s_{12}:  (\sigma, AV[\sigma \mapsto 0], \rho+3, \theta, O||2||newline||1||newline||0||newline)$, uit Figure 3.
+		\\$s_{14}: (\sigma, AV[\sigma \mapsto 0], \rho+3, \theta, O||2||newline||1||newline||0||newline||boom!||newline)$, uit Figure 4.}
 \centering
 \begin{prooftree}
 	\AxiomC{}
@@ -815,12 +839,14 @@ De afleidingsboom voor dit programma ziet er als volgt uit:
 				\AxiomC{$T_3$}
 
 					\AxiomC{}
-					\UnaryInfC{$\langle (0\#1-1\$i\$c10), s_{12} \rangle \rightarrow (s = nog niet bekend)$}
+					\RightLabel{$[Loop_{ns}^{ff^1}]$}
+					\UnaryInfC{$\langle (0\#1-1\$i\$c10), s_{12} \rangle \rightarrow s_{12}$}
 			\RightLabel{$[Loop_{ns}^{tt^1}]$}			
-			\BinaryInfC{$\langle (0\#1-1\$i\$c10), s_8 \rangle \rightarrow (s = nog niet bekend)$}
+			\BinaryInfC{$\langle (0\#1-1\$i\$c10), s_8 \rangle \rightarrow s_{12}$}
 		\RightLabel{$[Loop_{ns}^{tt^1}]$}
-		\BinaryInfC{$\langle (0\#1-1\$i\$c10), s_4 \rangle \rightarrow (s = nog niet bekend)$}	
-		\BinaryInfC{$\langle (0\#1-1\$i\$c10),  (\sigma, AV[\sigma \mapsto 3], \rho, \theta, O) \rangle \rightarrow (s = nog niet bekend)$}	
+		\BinaryInfC{$\langle (0\#1-1\$i\$c10), s_4 \rangle \rightarrow s_{12}$}
+		\RightLabel{$[Loop_{ns}^{tt^1}]$}	
+		\BinaryInfC{$\langle (0\#1-1\$i\$c10),  (\sigma, AV[\sigma \mapsto 3], \rho, \theta, O) \rangle \rightarrow s_{12}$}	
 			%\AxiomC{$T_1$}
 				
 				%
@@ -832,14 +858,15 @@ De afleidingsboom voor dit programma ziet er als volgt uit:
 										
 							
 				%\AxiomC{bla2}
-					\AxiomC{bla1}
-					\AxiomC{bla3}
-				\BinaryInfC{$\langle ''boom!''\$c10, s_{loop}  \rangle \rightarrow (s=nog niet bekend) $}
+					%\AxiomC{bla1}
+					%\AxiomC{bla3}
+				%\BinaryInfC{$\langle ''boom!''\$c10, s_{12}  \rangle \rightarrow (s) $}
+				\AxiomC{$T_4$}
 
 		\RightLabel{$[Comp_{ns}]$}
-		\BinaryInfC{$\langle (0\#1-1\$i\$c10)''boom!''\$c10,  (\sigma, AV[\sigma \mapsto 3], \rho, \theta, O) \rangle \rightarrow (s=nog niet bekend)$}
+		\BinaryInfC{$\langle (0\#1-1\$i\$c10)''boom!''\$c10,  (\sigma, AV[\sigma \mapsto 3], \rho, \theta, O) \rangle \rightarrow s_{14}$}
 	\RightLabel{$[Comp_{ns}]$}
-	\BinaryInfC{$\langle \&3(0\#1-1\$i\$c10)''boom!''\$c10, (\sigma = 0, AV, \rho = 0, \theta, O) \rangle \rightarrow  (s= nog niet bekend)$}
+	\BinaryInfC{$\langle \&3(0\#1-1\$i\$c10)''boom!''\$c10, (\sigma = 0, AV, \rho = 0, \theta, O) \rangle \rightarrow s_{14}$}
 \end{prooftree}
 \end{figure}
 \end{landscape}
