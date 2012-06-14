@@ -217,7 +217,7 @@ De $nav^R_{ns}$ regel verhoogt de index voor de huidige cel in de array met \'e\
 %\begin{table}[h]
 \begin{tabular}[h]{c c}
 
-$[nav^R_{ns}]$	&	\AxiomC{$\langle $\textgreater$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow (\sigma+1, AV, \rho, \theta, O)$}
+$[nav^R_{ns}]$	&	\AxiomC{$\langle $\textgreater$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow (\sigma+1, AV, \rho+\Delta, \theta, O)$}
 				\DisplayProof
 
 \end{tabular}
@@ -230,7 +230,7 @@ De $nav^L_{ns}$ regel verlaagt de index voor de huidige cel in de array met \'e\
 %\begin{table}[h]
 \begin{tabular}[h]{c c}
 
-$[nav^L_{ns}]$	&	\AxiomC{$\langle $\textless$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow (\sigma-1, AV, \rho, \theta, O)$}
+$[nav^L_{ns}]$	&	\AxiomC{$\langle $\textless$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow (\sigma-1, AV, \rho+\Delta, \theta, O)$}
 				\DisplayProof
 
 \end{tabular}
@@ -243,7 +243,7 @@ De $ass^n_{ns}$ regel zet het argument in de huidige arraycel.
 %\begin{table}[h]
 \begin{tabular}[h]{c c}
 
-$[ass^n_{ns}]$	&	\AxiomC{$\langle $\&$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow (\sigma, AV[\sigma \mapsto n], \rho, \theta, O)$}
+$[ass^n_{ns}]$	&	\AxiomC{$\langle $\&$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow (\sigma, AV[\sigma \mapsto n], \rho+\Delta, \theta, O)$}
 				\DisplayProof
 
 \end{tabular}
@@ -256,14 +256,14 @@ Het eerste (index nul) element van de stack wordt gebruikt, en in de volgende st
 %\begin{table}[h]
 \begin{tabular}[h]{l c r}
 
-	$[ass^s_{ns}]$	&	\AxiomC{$\langle $\&$, (\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow (\sigma, AV[\sigma \mapsto \theta[0]], \rho, \theta[1...], O)$}
+	$[ass^s_{ns}]$	&	\AxiomC{$\langle $\&$, (\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow (\sigma, AV[\sigma \mapsto \theta[0]], \rho+\Delta, \theta[1...], O)$}
 		\DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined]s} == tt$
 
 \end{tabular}
 \newline
 \begin{tabular}[h]{l c r}
 
-	$[ass^s_{ns}]$	&	\AxiomC{$\langle $\&$, (\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow (\sigma, AV, \rho, \theta, O \| $"Stack is empty"$)$}
+	$[ass^s_{ns}]$	&	\AxiomC{$\langle $\&$, (\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow (\sigma, AV, \rho+\Delta, \theta, O \| $"Stack is empty"$)$}
 		\DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined]s} == ff $
 
 \end{tabular}
@@ -275,7 +275,7 @@ De waarde wordt geconcateneerd met de gegeven stack, zodat deze bovenaan komt te
 \newline
 \begin{tabular}[h]{c c}
 
-$[push^n_{ns}]$	&	\AxiomC{$\langle $@$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow (\sigma, AV, \rho, n \| \theta, O)$}
+$[push^n_{ns}]$	&	\AxiomC{$\langle $@$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow (\sigma, AV, \rho+\Delta, n \| \theta, O)$}
 				\DisplayProof
 
 \end{tabular}
@@ -286,7 +286,7 @@ Ook hier wordt de waarde geconcateneerd met de gegeven stack.
 \newline
 \begin{tabular}[h]{c c}
 
-$[push^{AV}_{ns}]$	&	\AxiomC{$\langle $@$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow (\sigma, AV, \rho, AV[\sigma] \| \theta, O)$}
+$[push^{AV}_{ns}]$	&	\AxiomC{$\langle $@$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow (\sigma, AV, \rho+\Delta, AV[\sigma] \| \theta, O)$}
 					\DisplayProof
 
 \end{tabular}
@@ -304,7 +304,7 @@ Het is niet mogelijk iets in de state te veranderen tijdens het pauzeren, waardo
 %\begin{table}[h]
 \begin{tabular}[h]{c c}
 
-$[\#n_{ns}]$	&	\AxiomC{$\langle $\#$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow (\sigma, AV, \rho + n, \theta, O) $}
+$[\#n_{ns}]$	&	\AxiomC{$\langle $\#$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow (\sigma, AV, \rho + n + \Delta, \theta, O) $}
 				\DisplayProof
 
 \end{tabular}
@@ -393,7 +393,7 @@ De $+^n_{ns}$ regel wordt gebruikt om het argument op te tellen bij de huidige w
 %\begin{table}[h]
 \begin{tabular}[h]{c c}
 
-	$[+^n_{ns}]$	&	\AxiomC{$\langle $+$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma \mapsto AV[\sigma]+n], \rho, \theta, O)$}
+	$[+^n_{ns}]$	&	\AxiomC{$\langle $+$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma \mapsto AV[\sigma]+n], \rho+\Delta, \theta, O)$}
 				\DisplayProof
 
 \end{tabular}
@@ -406,14 +406,14 @@ De $+_{ns}$ regel wordt gebruikt om een waarde van de stack te poppen en op te t
 %\begin{table}[h]
 \begin{tabular}[h]{l c r}
 
-$[+_{ns}]$	&	\AxiomC{$\langle $+$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma \mapsto AV[\sigma] + \theta[0]], \rho, \theta[1...], O)$}
+$[+_{ns}]$	&	\AxiomC{$\langle $+$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma \mapsto AV[\sigma] + \theta[0]], \rho+\Delta, \theta[1...], O)$}
 		  \DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined]s} == tt $
 
 \end{tabular}
 \newline
 \begin{tabular}[h]{l c r}
 
-$[+_{ns}]$	&	\AxiomC{$\langle $+$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho, \theta, O \|$"Stack is empty"$)$}
+$[+_{ns}]$	&	\AxiomC{$\langle $+$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho+\Delta, \theta, O \|$"Stack is empty"$)$}
 		  \DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined]s} == ff $
 
 \end{tabular}
@@ -425,7 +425,7 @@ De $-^n_{ns}$ regel wordt gebruikt om een het argument af te trekken van de huid
 %\begin{table}[h]
 \begin{tabular}[h]{c c}
 
-$[-^n_{ns}]$	&	\AxiomC{$\langle $-$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma \mapsto AV[\sigma] -n], \rho, \theta, O)$}
+$[-^n_{ns}]$	&	\AxiomC{$\langle $-$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma \mapsto AV[\sigma] -n], \rho+\Delta, \theta, O)$}
 				\DisplayProof
 
 \end{tabular}
@@ -441,14 +441,14 @@ De $-_{ns}$ regel wordt gebruikt om een waarde van de stack te poppen en af te t
 \newline
 \begin{tabular}[h]{l c r}
 
-$[-_{ns}]$	&	\AxiomC{$\langle $-$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma \mapsto AV[\sigma] - \theta[0]], \rho, \theta[1...], O)$}
+$[-_{ns}]$	&	\AxiomC{$\langle $-$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma \mapsto AV[\sigma] - \theta[0]], \rho+\Delta, \theta[1...], O)$}
 		  \DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined]s} == tt $
 
 \end{tabular}
 \newline
 \begin{tabular}[h]{l c r}
 
-$[-_{ns}]$	&	\AxiomC{$\langle $-$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho, \theta, O \| $"Stack is empty"$)$}
+$[-_{ns}]$	&	\AxiomC{$\langle $-$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho+\Delta, \theta, O \| $"Stack is empty"$)$}
 		  \DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined]s} == tt $
 
 \end{tabular}
@@ -463,7 +463,7 @@ De $*^n_{ns}$ regel wordt gebruikt om de huidige waarde in de cel te vermenigvul
 %\begin{table}[h]
 \begin{tabular}[h]{c c}
 
-$[*^n_{ns}]$	&	\AxiomC{$\langle $*$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma \mapsto AV[\sigma] * n], \rho, \theta, O)$}
+$[*^n_{ns}]$	&	\AxiomC{$\langle $*$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma \mapsto AV[\sigma] * n], \rho+\Delta, \theta, O)$}
 				\DisplayProof
 
 \end{tabular}
@@ -477,14 +477,14 @@ De $*_{ns}$ regel wordt gebruikt om een waarde van de stack te poppen en de huid
 \newline
 \begin{tabular}[h]{l c r}
 
-$[*_{ns}]$	&	\AxiomC{$\langle $*$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma \mapsto AV[\sigma]*\theta[0]], \rho, \theta[1...], O)$}
+$[*_{ns}]$	&	\AxiomC{$\langle $*$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma \mapsto AV[\sigma]*\theta[0]], \rho+\Delta, \theta[1...], O)$}
 		  \DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined]s} == tt $
 
 \end{tabular}
 \newline
 \begin{tabular}[h]{l c r}
 
-$[*_{ns}]$	&	\AxiomC{$\langle $*$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho, \theta, O \| $"Stack is empty"$)$}
+$[*_{ns}]$	&	\AxiomC{$\langle $*$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho+\Delta, \theta, O \| $"Stack is empty"$)$}
 		  \DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined]s} == ff $
 
 \end{tabular}
@@ -499,7 +499,7 @@ De $/^n_{ns}$ regel wordt gebruikt om de huidige waarde in de cel te delen met h
 %\begin{table}[h]
 \begin{tabular}[h]{c c}
 
-$[/^n_{ns}]$	&	\AxiomC{$\langle $/$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma \mapsto AV[\sigma]/n], \rho, \theta, O)$}
+$[/^n_{ns}]$	&	\AxiomC{$\langle $/$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma \mapsto AV[\sigma]/n], \rho+\Delta, \theta, O)$}
 				\DisplayProof
 
 \end{tabular}
@@ -514,14 +514,14 @@ De $/_{ns}$ regel wordt gebruikt om een waarde van de stack te poppen en de huid
 \newline
 \begin{tabular}[h]{l c r}
 
-$[/_{ns}]$	&	\AxiomC{$\langle $/$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma \mapsto AV[\sigma]/\theta[0]], \rho, \theta[1...], O)$}
+$[/_{ns}]$	&	\AxiomC{$\langle $/$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma \mapsto AV[\sigma]/\theta[0]], \rho+\Delta, \theta[1...], O)$}
 		  \DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined]s} == tt $
 
 \end{tabular}
 \newline
 \begin{tabular}[h]{l c r}
 
-$[/_{ns}]$	&	\AxiomC{$\langle $/$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho, \theta, O \| $"Stack is empty"$)$}
+$[/_{ns}]$	&	\AxiomC{$\langle $/$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho+\Delta, \theta, O \| $"Stack is empty"$)$}
 		  \DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined]s} == ff $
 
 \end{tabular}
@@ -536,7 +536,7 @@ De $\%^n_{ns}$ regel wordt gebruikt om de huidige waarde in de cel te vervangen 
 %\begin{table}[h]
 \begin{tabular}[h]{c c}
 
-$[\%^n_{ns}]$	&	\AxiomC{$\langle $\%$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma \mapsto AV[\sigma] \%n], \rho, \theta, O)$}
+$[\%^n_{ns}]$	&	\AxiomC{$\langle $\%$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma \mapsto AV[\sigma] \%n], \rho+\Delta, \theta, O)$}
 				\DisplayProof
 
 \end{tabular}
@@ -551,14 +551,14 @@ De $\%_{ns}$ regel wordt gebruikt om de huidige waarde in de cel te vervangen me
 \newline
 \begin{tabular}[h]{l c r}
 
-$[\%_{ns}]$	&	\AxiomC{$\langle $\%$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma \mapsto AV[\sigma] \% \theta[0]], \rho, \theta[1...], O)$}
+$[\%_{ns}]$	&	\AxiomC{$\langle $\%$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma \mapsto AV[\sigma] \% \theta[0]], \rho+\Delta, \theta[1...], O)$}
 		   \DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined]s} == tt $
 
 \end{tabular}
 \newline
 \begin{tabular}[h]{l c r}
 
-$[\%_{ns}]$	&	\AxiomC{$\langle $\%$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho, \theta, O \| $"Stack is empty"$)$}
+$[\%_{ns}]$	&	\AxiomC{$\langle $\%$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho+\Delta, \theta, O \| $"Stack is empty"$)$}
 		   \DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined]s} == ff $
 
 \end{tabular}
@@ -582,7 +582,7 @@ De $stdout_{ns}$ regel wordt gebruikt om een letterlijke string op de standard o
 \newline
 \begin{tabular}[h]{c c}
 
-$[stdout_{ns}]$	&	\AxiomC{$\langle $"$<str>$"$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho, \theta, O \| <str>)$}
+$[stdout_{ns}]$	&	\AxiomC{$\langle $"$<str>$"$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho+\Delta, \theta, O \| <str>)$}
 				\DisplayProof
 
 \end{tabular}
@@ -596,7 +596,7 @@ De $print^c_{ns}$ regel print de huidige waarde uit de array als letterlijk 'cha
 \newline
 \begin{tabular}[h]{c c}
 
-$[print^c_{ns}]$	&	\AxiomC{$\langle $\$c$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho, \theta, O \| AV[\sigma])$}
+$[print^c_{ns}]$	&	\AxiomC{$\langle $\$c$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho+\Delta, \theta, O \| AV[\sigma])$}
 				\DisplayProof
 
 \end{tabular}
@@ -610,7 +610,7 @@ De $print^{cn}_{ns}$ regel print het argument als 'character' naar de standard o
 \newline
 \begin{tabular}[h]{c c}
 
-$[print^{cn}_{ns}]$	&	\AxiomC{$\langle $\$c$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho, \theta, O \| n)$}
+$[print^{cn}_{ns}]$	&	\AxiomC{$\langle $\$c$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho+\Delta, \theta, O \| n)$}
 				\DisplayProof
 
 \end{tabular}
@@ -624,7 +624,7 @@ De $print^i_{ns}$ regel print de ASCII-represenatie van de huidige waarde uit de
 \newline
 \begin{tabular}[h]{c c}
 
-$[print^i_{ns}]$	&	\AxiomC{$\langle $\$i$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho, \theta, O \| ascii(AV[\sigma]))$}
+$[print^i_{ns}]$	&	\AxiomC{$\langle $\$i$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho+\Delta, \theta, O \| ascii(AV[\sigma]))$}
 				\DisplayProof
 
 \end{tabular}
@@ -638,7 +638,7 @@ De $print^{in}_{ns}$ regel print de ASCII-represenatie van het argument naar de 
 \newline
 \begin{tabular}[h]{c c}
 
-$[print^{in}_{ns}]$	&	\AxiomC{$\langle $\$i$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho, \theta, O \| ascii(n))$}
+$[print^{in}_{ns}]$	&	\AxiomC{$\langle $\$i$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho+\Delta, \theta, O \| ascii(n))$}
 				\DisplayProof
 
 \end{tabular}
@@ -652,7 +652,7 @@ De $print^h_{ns}$ regel print in ASCII de hexadecimale represenatie van de huidi
 \newline
 \begin{tabular}[h]{c c}
 
-$[print^h_{ns}]$	&	\AxiomC{$\langle $\$h$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho, \theta, O \| ascii(hex(AV[\sigma])))$}
+$[print^h_{ns}]$	&	\AxiomC{$\langle $\$h$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho+\Delta, \theta, O \| ascii(hex(AV[\sigma])))$}
 				\DisplayProof
 
 \end{tabular}
@@ -666,7 +666,7 @@ De $print^{hn}_{ns}$ regel print in ASCII de hexadecimale represenatie van het a
 \newline
 \begin{tabular}[h]{c c}
 
-$[print^{hn}_{ns}]$	&	\AxiomC{$\langle $\$h$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho, \theta, O \| ascii(hex(n)))$}
+$[print^{hn}_{ns}]$	&	\AxiomC{$\langle $\$h$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho+\Delta, \theta, O \| ascii(hex(n)))$}
 					\DisplayProof
 
 \end{tabular}
@@ -1050,11 +1050,11 @@ In dit voorbeeld zullen we nog twee interesante eigenschappen van Foo laten zien
 \begin{figure}[h!]
 \caption{$T_6$
 		\\$s    : (\sigma = 0, AV, \rho = 0, \theta, O)$
-		\\$s_{1}: (\sigma, AV, \rho, 1\|\theta, O)$
-		\\$s_{2}: (\sigma+1, AV, \rho, 1\|\theta, O)$
-		\\$s_{3}: (\sigma+1, AV[\sigma \mapsto \theta[0]], \rho, \theta[1...], O)$
-		\\$s_{3}: (\sigma+1, AV[\sigma \mapsto 1], \rho, \theta, O)$
-		\\$s_{4}: (\sigma+1, AV[\sigma \mapsto 1], \rho, \theta, O \| $"Stack is empty"$)$
+		\\$s_{1}: (\sigma, AV, \rho+\Delta, 1\|\theta, O)$
+		\\$s_{2}: (\sigma+1, AV, \rho+2\Delta, 1\|\theta, O)$
+		\\$s_{3}: (\sigma+1, AV[\sigma \mapsto \theta[0]], \rho+3\Delta, \theta[1...], O)$
+		\\$s_{3}: (\sigma+1, AV[\sigma \mapsto 1], \rho+4\Delta, \theta, O)$
+		\\$s_{4}: (\sigma+1, AV[\sigma \mapsto 1], \rho+5\Delta, \theta, O \| $"Stack is empty"$)$
 }
 %\centering
 \begin{prooftree}
