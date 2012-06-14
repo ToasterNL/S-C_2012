@@ -731,15 +731,15 @@ De afleidingsboom voor dit programma begint bij Figure 5 en maakt gebruik van Fi
 %FIGUUR 1
 \begin{figure}[h!]
 \caption{$T_1$  
-		\\$s_1: (\sigma, AV[\sigma \mapsto 3], \rho + 1, \theta, O)$
-		\\$s_2: (\sigma, AV[\sigma \mapsto 2], \rho + 1, \theta, O)$
-		\\$s_3: (\sigma, AV[\sigma \mapsto 2], \rho+1, \theta, O||2)$
-		\\$s_4: (\sigma, AV[\sigma \mapsto 2], \rho+1, \theta, O||2||newline)$}
+		\\$s_1: (\sigma, AV[\sigma \mapsto 3], 2\Delta +1, \theta, O)$
+		\\$s_2: (\sigma, AV[\sigma \mapsto 2], 3\Delta +1, \theta, O)$
+		\\$s_3: (\sigma, AV[\sigma \mapsto 2], 4\Delta +1, \theta, O||2)$
+		\\$s_4: (\sigma, AV[\sigma \mapsto 2], 5\Delta +1, \theta, O||2||newline)$}
 %\centering
 \begin{prooftree}
 			\AxiomC{}
 			\LeftLabel{$[\#_{ns}^n]$}
-			\UnaryInfC{$\langle \#1, -1\$i\$c10, (\sigma, AV[\sigma \mapsto 3], \rho, \theta, O) \rangle \rightarrow s_1$}
+			\UnaryInfC{$\langle \#1, (\sigma, AV[\sigma \mapsto 3], \Delta, \theta, O) \rangle \rightarrow s_1$}
 				
 				\AxiomC{}	
 				\LeftLabel{$[-_{ns}^n]$}
@@ -760,7 +760,7 @@ De afleidingsboom voor dit programma begint bij Figure 5 en maakt gebruik van Fi
 				\BinaryInfC{$\langle -1\$i\$c10, s_1 \rangle \rightarrow s_4$}
 
 			\RightLabel{$[Comp_{ns}]$}
-			\BinaryInfC{$\langle \#1-1\$i\$c10, (\sigma, AV[\sigma \mapsto 3], \rho, \theta, O) \rangle \rightarrow s_4$}
+			\BinaryInfC{$\langle \#1-1\$i\$c10, (\sigma, AV[\sigma \mapsto 3], \Delta, \theta, O) \rangle \rightarrow s_4$}
 \end{prooftree}
 \end{figure}
 
@@ -768,15 +768,15 @@ De afleidingsboom voor dit programma begint bij Figure 5 en maakt gebruik van Fi
 %FIGUUR 2
 \begin{figure}[h!]
 \caption{$T_2$  
-		\\$s_5: (\sigma, AV[\sigma \mapsto 2], \rho + 2, \theta, O||2||newline)$
-		\\$s_6: (\sigma, AV[\sigma \mapsto 1], \rho + 2, \theta, O||2||newline)$
-		\\$s_7: (\sigma, AV[\sigma \mapsto 1], \rho+2, \theta, O||2||newline||1)$
-		\\$s_8: (\sigma, AV[\sigma \mapsto 1], \rho+2, \theta, O||2||newline||1||newline)$}
+		\\$s_5: (\sigma, AV[\sigma \mapsto 2], 6\Delta +2, \theta, O||2||newline)$
+		\\$s_6: (\sigma, AV[\sigma \mapsto 1], 7\Delta +2, \theta, O||2||newline)$
+		\\$s_7: (\sigma, AV[\sigma \mapsto 1], 8\Delta +2, \theta, O||2||newline||1)$
+		\\$s_8: (\sigma, AV[\sigma \mapsto 1], 9\Delta +2, \theta, O||2||newline||1||newline)$}
 %\centering
 \begin{prooftree}
 			\AxiomC{}
 			\LeftLabel{$[\#_{ns}^n]$}
-			\UnaryInfC{$\langle \#1, -1\$i\$c10, (\sigma, AV[\sigma \mapsto 2], \rho+1, \theta, O||2||newline) \rangle \rightarrow s_5$}
+			\UnaryInfC{$\langle \#1, (\sigma, AV[\sigma \mapsto 2],  5\Delta +1, \theta, O||2||newline) \rangle \rightarrow s_5$}
 				
 				\AxiomC{}	
 				\LeftLabel{$[-_{ns}^n]$}
@@ -797,23 +797,23 @@ De afleidingsboom voor dit programma begint bij Figure 5 en maakt gebruik van Fi
 				\BinaryInfC{$\langle -1\$i\$c10, s_5 \rangle \rightarrow s_8$}
 
 			\RightLabel{$[Comp_{ns}]$}
-			\BinaryInfC{$\langle \#1-1\$i\$c10, (\sigma, AV[\sigma \mapsto 2], \rho+1, \theta, O||2||newline) \rangle \rightarrow s_8$}
+			\BinaryInfC{$\langle \#1-1\$i\$c10, (\sigma, AV[\sigma \mapsto 2],  5\Delta +1, \theta, O||2||newline) \rangle \rightarrow s_8$}
 \end{prooftree}
 \end{figure}
 
 %FIGUUR 3
 \begin{figure}[h!]
 \caption{$T_3$
-		\\$s_8: (\sigma, AV[\sigma \mapsto 1], \rho+2, \theta, O||2||newline||1||newline)$, uit Figure 2  
-		\\$s_9: (\sigma, AV[\sigma \mapsto 1], \rho+3, \theta, O||2||newline||1||newline)$
-		\\$s_{10}:  (\sigma, AV[\sigma \mapsto 0], \rho+3, \theta, O||2||newline||1||newline)$
-		\\$s_{11}:  (\sigma, AV[\sigma \mapsto 0], \rho+3, \theta, O||2||newline||1||newline||0)$
-		\\$s_{12}:  (\sigma, AV[\sigma \mapsto 0], \rho+3, \theta, O||2||newline||1||newline||0||newline)$}
+		\\$s_8: (\sigma, AV[\sigma \mapsto 1], 9\Delta +2, \theta, O||2||newline||1||newline)$, uit Figure 2  
+		\\$s_9: (\sigma, AV[\sigma \mapsto 1], 10\Delta +3, \theta, O||2||newline||1||newline)$
+		\\$s_{10}:  (\sigma, AV[\sigma \mapsto 0], 11\Delta +3, \theta, O||2||newline||1||newline)$
+		\\$s_{11}:  (\sigma, AV[\sigma \mapsto 0], 12\Delta +3, \theta, O||2||newline||1||newline||0)$
+		\\$s_{12}:  (\sigma, AV[\sigma \mapsto 0], 13\Delta +3, \theta, O||2||newline||1||newline||0||newline)$}
 %\centering
 \begin{prooftree}
 			\AxiomC{}
 			\LeftLabel{$[\#_{ns}^n]$}
-			\UnaryInfC{$\langle \#1, -1\$i\$c10, s_8 \rangle \rightarrow s_9$}
+			\UnaryInfC{$\langle \#1, s_8 \rangle \rightarrow s_9$}
 				
 				\AxiomC{}	
 				\LeftLabel{$[-_{ns}^n]$}
@@ -841,9 +841,9 @@ De afleidingsboom voor dit programma begint bij Figure 5 en maakt gebruik van Fi
 %FIGUUR 4
 \begin{figure}[h!]
 \caption{$T_4$
-		\\$s_{12}: (\sigma, AV[\sigma \mapsto 0], \rho+3, \theta, O||2||newline||1||newline||0||newline)$, uit Figure 3
-		\\$s_{13}: (\sigma, AV[\sigma \mapsto 0], \rho+3, \theta, O||2||newline||1||newline||0||newline||boom!)$
-		\\$s_{14}: (\sigma, AV[\sigma \mapsto 0], \rho+3, \theta, O||2||newline||1||newline||0||newline||boom!||newline)$}
+		\\$s_{12}: (\sigma, AV[\sigma \mapsto 0], 13\Delta +3, \theta, O||2||newline||1||newline||0||newline)$, uit Figure 3
+		\\$s_{13}: (\sigma, AV[\sigma \mapsto 0], 14\Delta +3, \theta, O||2||newline||1||newline||0||newline||boom!)$
+		\\$s_{14}: (\sigma, AV[\sigma \mapsto 0], 15\Delta +3, \theta, O||2||newline||1||newline||0||newline||boom!||newline)$}
 %\centering
 \begin{prooftree}
 			\AxiomC{}
@@ -863,15 +863,15 @@ De afleidingsboom voor dit programma begint bij Figure 5 en maakt gebruik van Fi
 
 \begin{figure}[h!]
 \caption{$Boom$
-		\\$s_4: (\sigma, AV[\sigma \mapsto 2], \rho+1, \theta, O||2||newline)$, uit Figure 1.
-		\\$s_8: (\sigma, AV[\sigma \mapsto 1], \rho+2, \theta, O||2||newline||1||newline)$, uit Figure 2.
-		\\$s_{12}:  (\sigma, AV[\sigma \mapsto 0], \rho+3, \theta, O||2||newline||1||newline||0||newline)$, uit Figure 3.
-		\\$s_{14}: (\sigma, AV[\sigma \mapsto 0], \rho+3, \theta, O||2||newline||1||newline||0||newline||boom!||newline)$, uit Figure 4.}
+		\\$s_4: (\sigma, AV[\sigma \mapsto 2], 5\Delta +1, \theta, O||2||newline)$, uit Figure 1.
+		\\$s_8: (\sigma, AV[\sigma \mapsto 1], 9\Delta +2, \theta, O||2||newline||1||newline)$, uit Figure 2.
+		\\$s_{12}:  (\sigma, AV[\sigma \mapsto 0], 13\Delta +3, \theta, O||2||newline||1||newline||0||newline)$, uit Figure 3.
+		\\$s_{14}: (\sigma, AV[\sigma \mapsto 0], 15\Delta +3, \theta, O||2||newline||1||newline||0||newline||boom!||newline)$, uit Figure 4.}
 %\centering
 \begin{prooftree}
 	\AxiomC{}
 	\LeftLabel{$[Ass_{ns}^n]$}
-	\UnaryInfC{$\langle \&3,  (\sigma, AV, \rho, \theta, O) \rangle \rightarrow (\sigma, AV[\sigma \mapsto 3], \rho, \theta, O)$}
+	\UnaryInfC{$\langle \&3,  (\sigma, AV, \rho, \theta, O) \rangle \rightarrow (\sigma, AV[\sigma \mapsto 3], \Delta, \theta, O)$}
 		\AxiomC{$T_1$}		
 			\AxiomC{$T_2$}
 				\AxiomC{$T_3$}
@@ -884,12 +884,12 @@ De afleidingsboom voor dit programma begint bij Figure 5 en maakt gebruik van Fi
 		\RightLabel{$[Loop_{ns}^{tt^1}]$}
 		\BinaryInfC{$\langle (0\#1-1\$i\$c10), s_4 \rangle \rightarrow s_{12}$}
 		\RightLabel{$[Loop_{ns}^{tt^1}]$}	
-		\BinaryInfC{$\langle (0\#1-1\$i\$c10),  (\sigma, AV[\sigma \mapsto 3], \rho, \theta, O) \rangle \rightarrow s_{12}$}	
+		\BinaryInfC{$\langle (0\#1-1\$i\$c10),  (\sigma, AV[\sigma \mapsto 3], \Delta, \theta, O) \rangle \rightarrow s_{12}$}	
 			
 				\AxiomC{$T_4$}
 
 		\RightLabel{$[Comp_{ns}]$}
-		\BinaryInfC{$\langle (0\#1-1\$i\$c10)''boom!''\$c10,  (\sigma, AV[\sigma \mapsto 3], \rho, \theta, O) \rangle \rightarrow s_{14}$}
+		\BinaryInfC{$\langle (0\#1-1\$i\$c10)''boom!''\$c10,  (\sigma, AV[\sigma \mapsto 3], \Delta, \theta, O) \rangle \rightarrow s_{14}$}
 	\RightLabel{$[Comp_{ns}]$}
 	\BinaryInfC{$\langle \&3(0\#1-1\$i\$c10)''boom!''\$c10, (\sigma = 0, AV, \rho = 0, \theta, O) \rangle \rightarrow s_{14}$}
 \end{prooftree}
@@ -912,15 +912,15 @@ De afleidingsboom wordt weergegeven in Figure 10 en maakt verder gebruik van de 
 %FIGUUR 6
 \begin{figure}[h!]
 \caption{$T_5$  
-		\\$s_1: (\sigma, AV[\sigma \mapsto 3], \rho + 1, \theta, O)$
-		\\$s_2: (\sigma, AV[\sigma \mapsto 2], \rho + 1, \theta, O)$
-		\\$s_3: (\sigma, AV[\sigma \mapsto 2], \rho+1, \theta, O||2)$
-		\\$s_4: (\sigma, AV[\sigma \mapsto 2], \rho+1, \theta, O||2||newline)$}
+		\\$s_1: (\sigma, AV[\sigma \mapsto 3], 2\Delta +1, \theta, O)$
+		\\$s_2: (\sigma, AV[\sigma \mapsto 2], 3\Delta +1, \theta, O)$
+		\\$s_3: (\sigma, AV[\sigma \mapsto 2], 4\Delta +1, \theta, O||2)$
+		\\$s_4: (\sigma, AV[\sigma \mapsto 2], 5\Delta +1, \theta, O||2||newline)$}
 %\centering
 \begin{prooftree}
 			\AxiomC{}
 			\LeftLabel{$[\#_{ns}^n]$}
-			\UnaryInfC{$\langle \#1, -1\$i\$c10, (\sigma, AV[\sigma \mapsto 3], \rho, \theta, O) \rangle \rightarrow s_1$}
+			\UnaryInfC{$\langle \#1, (\sigma, AV[\sigma \mapsto 3], \rho, \theta, O) \rangle \rightarrow s_1$}
 				
 				\AxiomC{}	
 				\LeftLabel{$[-_{ns}^n]$}
@@ -949,15 +949,15 @@ De afleidingsboom wordt weergegeven in Figure 10 en maakt verder gebruik van de 
 %FIGUUR 7
 \begin{figure}[h!]
 \caption{$T_6$  
-		\\$s_5: (\sigma, AV[\sigma \mapsto 2], \rho + 2, \theta, O||2||newline)$
-		\\$s_6: (\sigma, AV[\sigma \mapsto 1], \rho + 2, \theta, O||2||newline)$
-		\\$s_7: (\sigma, AV[\sigma \mapsto 1], \rho+2, \theta, O||2||newline||1)$
-		\\$s_8: (\sigma, AV[\sigma \mapsto 1], \rho+2, \theta, O||2||newline||1||newline)$}
+		\\$s_5: (\sigma, AV[\sigma \mapsto 2], 6\Delta +2, \theta, O||2||newline)$
+		\\$s_6: (\sigma, AV[\sigma \mapsto 1], 7\Delta +2, \theta, O||2||newline)$
+		\\$s_7: (\sigma, AV[\sigma \mapsto 1], 8\Delta +2, \theta, O||2||newline||1)$
+		\\$s_8: (\sigma, AV[\sigma \mapsto 1], 9\Delta +2, \theta, O||2||newline||1||newline)$}
 %\centering
 \begin{prooftree}
 			\AxiomC{}
 			\LeftLabel{$[\#_{ns}^n]$}
-			\UnaryInfC{$\langle \#1, -1\$i\$c10, (\sigma, AV[\sigma \mapsto 2], \rho+1, \theta, O||2||newline) \rangle \rightarrow s_5$}
+			\UnaryInfC{$\langle \#1, (\sigma, AV[\sigma \mapsto 2], \rho+1, \theta, O||2||newline) \rangle \rightarrow s_5$}
 				
 				\AxiomC{}	
 				\LeftLabel{$[-_{ns}^n]$}
@@ -985,16 +985,16 @@ De afleidingsboom wordt weergegeven in Figure 10 en maakt verder gebruik van de 
 %FIGUUR 8
 \begin{figure}[h!]
 \caption{$T_7$
-		\\$s_8: (\sigma, AV[\sigma \mapsto 1], \rho+2, \theta, O||2||newline||1||newline)$, uit Figure 7  
-		\\$s_9: (\sigma, AV[\sigma \mapsto 1], \rho+3, \theta, O||2||newline||1||newline)$
-		\\$s_{10}:  (\sigma, AV[\sigma \mapsto 0], \rho+3, \theta, O||2||newline||1||newline)$
-		\\$s_{11}:  (\sigma, AV[\sigma \mapsto 0], \rho+3, \theta, O||2||newline||1||newline||0)$
-		\\$s_{12}:  (\sigma, AV[\sigma \mapsto 0], \rho+3, \theta, O||2||newline||1||newline||0||newline)$}
+		\\$s_8: (\sigma, AV[\sigma \mapsto 1], 9\Delta +2, \theta, O||2||newline||1||newline)$, uit Figure 7  
+		\\$s_9: (\sigma, AV[\sigma \mapsto 1], 10\Delta +3, \theta, O||2||newline||1||newline)$
+		\\$s_{10}:  (\sigma, AV[\sigma \mapsto 0], 11\Delta +3, \theta, O||2||newline||1||newline)$
+		\\$s_{11}:  (\sigma, AV[\sigma \mapsto 0], 12\Delta +3, \theta, O||2||newline||1||newline||0)$
+		\\$s_{12}:  (\sigma, AV[\sigma \mapsto 0], 13\Delta +3, \theta, O||2||newline||1||newline||0||newline)$}
 %\centering
 \begin{prooftree}
 			\AxiomC{}
 			\LeftLabel{$[\#_{ns}^n]$}
-			\UnaryInfC{$\langle \#1, -1\$i\$c10, s_8 \rangle \rightarrow s_9$}
+			\UnaryInfC{$\langle \#1, s_8 \rangle \rightarrow s_9$}
 				
 				\AxiomC{}	
 				\LeftLabel{$[-_{ns}^n]$}
@@ -1022,9 +1022,9 @@ De afleidingsboom wordt weergegeven in Figure 10 en maakt verder gebruik van de 
 %FIGUUR 9
 \begin{figure}[h!]
 \caption{$T_8$
-		\\$s_{12}: (\sigma, AV[\sigma \mapsto 0], \rho+3, \theta, O||2||newline||1||newline||0||newline)$, uit Figure 8
-		\\$s_{13}: (\sigma, AV[\sigma \mapsto 0], \rho+3, \theta, O||2||newline||1||newline||0||newline||boom!)$
-		\\$s_{14}: (\sigma, AV[\sigma \mapsto 0], \rho+3, \theta, O||2||newline||1||newline||0||newline||boom!||newline)$}
+		\\$s_{12}: (\sigma, AV[\sigma \mapsto 0], 13\Delta +3, \theta, O||2||newline||1||newline||0||newline)$, uit Figure 8
+		\\$s_{13}: (\sigma, AV[\sigma \mapsto 0], 14\Delta +3, \theta, O||2||newline||1||newline||0||newline||boom!)$
+		\\$s_{14}: (\sigma, AV[\sigma \mapsto 0], 15\Delta +3, \theta, O||2||newline||1||newline||0||newline||boom!||newline)$}
 %\centering
 \begin{prooftree}
 			\AxiomC{}
@@ -1044,10 +1044,10 @@ De afleidingsboom wordt weergegeven in Figure 10 en maakt verder gebruik van de 
 
 \begin{figure}[h!]
 \caption{$Boom$
-		\\$s_4: (\sigma, AV[\sigma \mapsto 2], \rho+1, \theta, O||2||newline)$, uit Figure 6.
-		\\$s_8: (\sigma, AV[\sigma \mapsto 1], \rho+2, \theta, O||2||newline||1||newline)$, uit Figure 7.
-		\\$s_{12}:  (\sigma, AV[\sigma \mapsto 0], \rho+3, \theta, O||2||newline||1||newline||0||newline)$, uit Figure 8.
-		\\$s_{14}: (\sigma, AV[\sigma \mapsto 0], \rho+3, \theta, O||2||newline||1||newline||0||newline||boom!||newline)$, uit Figure 9.}
+		\\$s_4: (\sigma, AV[\sigma \mapsto 2], 5\Delta +1, \theta, O||2||newline)$, uit Figure 6.
+		\\$s_8: (\sigma, AV[\sigma \mapsto 1], 9\Delta +2, \theta, O||2||newline||1||newline)$, uit Figure 7.
+		\\$s_{12}:  (\sigma, AV[\sigma \mapsto 0], 13\Delta +3, \theta, O||2||newline||1||newline||0||newline)$, uit Figure 8.
+		\\$s_{14}: (\sigma, AV[\sigma \mapsto 0], 15\Delta +3, \theta, O||2||newline||1||newline||0||newline||boom!||newline)$, uit Figure 9.}
 %\centering
 \begin{prooftree}
 	\AxiomC{}

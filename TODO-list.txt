@@ -1,13 +1,11 @@
 TODO S&C:
 
-- beschrijving fout in de interpreter met stacks
 - beschrijving fout in de interpreter met stdout flush op linux
-- omschrijving van rho / pauze regel beter omschrijven + iets bij de pauzeer laten doen.
+- chuck-norris regel + voorbeeldje
 - SOS regel bedenken voor de loop regel zodat oneindige afleidingsleidingsrij kan worden bedacht + bespreken in discussie
 - betere uitleg van theta[1...] notatie over stacks....dat er dus iets gepopped wordt en de rest wordt naar boven geschoven blz 5
 - uitleg van notatie van type B, blz 5
 - uitleg dat rho niet aangepast kan worden, maar dat loopconditie wel tijdens het uitvoeren van de loop aangepast kan worden, blz 5
 - typering van ascii/hex/int functies
-- pauzeer-regel kan ook de stack gebruiken
-- 
+- AV omschrijving checken met verschillende maps to situaties
 
