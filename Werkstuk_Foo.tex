@@ -113,9 +113,11 @@ Omdat in Foo geen parallele operaties mogelijk zijn is het onmogelijk om door de
 \subsection{Foutafhandeling} % Verdere uitleg nodig. Hoe hebben we dit getest of blijkt dit uit de spec? en wat is het resultaat.
 
 Tijdens het gebruik van aritmetische expressies blijkt dat als er geen waarde wordt opgegeven, de eerste waarde van de stack wordt gebruikt. 
-Deze waarde wordt dan van de stack gepopt. 
+Deze waarde wordt dan van de stack gepopt.
 Als er niks op de stack staat wordt er een foutmelding gegenereerd, maar de berekening wordt als nog uitgevoerd. %schijnt als nog te worden uitgevoerd.
-Door het nagaan van de referentie-implementatie van Foo hebben we geconstateerd dat deze gepopte waarde ongeinitialiseerd is (in tegenstelling tot een ongedefinieerde waarde in de array, die als 0 wordt geinitialiseerd).
+Door het nagaan van de referentie-implementatie van Foo hebben we geconstateerd dat in dit geval bij het poppen van de stack namelijk de waarde nul wordt teruggegeven.
+We hebben in deze foutafhandeling echter een inconsistentie in de referentie-implementatie ontdekt, die lijkt toe te staan dat een lege stack nog eenmaal gepopt kan worden zonder een fout te rapporteren.
+Naar onze mening is dat een fout (off-by-one error) in de interpreter.
 Deze lijkt in de regel de waarde 0 te bevatten op ons testplatform, maar dat is niet iets waar de Foo-programmeur op kan rekenen.
 We hebben het genereren van de foutmelding meegenomen in onze regels voor het gebruik van stackwaardes.
 
@@ -264,7 +266,7 @@ Het eerste (index nul) element van de stack wordt gebruikt, en in de volgende st
 \newline
 \begin{tabular}[h]{l c r}
 
-	$[ass^s_{ns}]$	&	\AxiomC{$\langle $\&$, (\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow (\sigma, AV, \rho+\Delta, \theta, O \| $"Stack is empty"$)$}
+	$[ass^s_{ns}]$	&	\AxiomC{$\langle $\&$, (\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow (\sigma, AV[\sigma \mapsto 0], \rho+\Delta, \theta, O \| $"Stack is empty"$ \| newline)$}
 		\DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined]s} == ff $
 
 \end{tabular}
@@ -300,19 +302,29 @@ $[push^{AV}_{ns}]$	&	\AxiomC{$\langle $@$, (\sigma, AV, \rho, \theta, O) \rangle
 De pauzeerregel zoals hieronder staat beschreven is vergelijkbaar met de skipregel uit While. 
 Als dit statement wordt uitgevoerd wordt er het opgeven aantal seconden gewacht met de uitvoering van de rest van het programma. 
 Het is niet mogelijk iets in de state te veranderen tijdens het pauzeren, waardoor de state na het pauzeren niet veranderd is op de verstreken tijd na.
+Net als andere operatoren kan de pauzeer-operatie met en zonder argument gebruikt worden, maar de documentatie van Foo conflicteert op dit punt met de referentie-implementatie.
+De documentatie beweert namelijk dat als deze operator geen argument \(n\) krijgt de waarde uit de huidige cel in de array moet worden gebruikt, terwijl de referentie-implementatie daarvoor een waarde van de stack popt.
+We hebben besloten in dit geval het gedrag van de interpreter aan te houden.
 \newline
 \newline
 %\begin{table}[h]
-\begin{tabular}[h]{l c r}
+\begin{tabular}[h]{c c}
 
 $[\#n_{ns}]$	&	\AxiomC{$\langle $\#$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow (\sigma, AV, \rho + n + \Delta, \theta, O) $}
-				\DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined]s} == tt $
+				\DisplayProof
 
 \end{tabular}
 \newline
 \begin{tabular}[h]{l c r}
 
-$[\#_{ns}]$	&	\AxiomC{$\langle $\#$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho+\Delta, \theta, O \|$"Stack is empty"$)$}
+$[\#_{ns}]$	&	\AxiomC{$\langle $\#$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho + \theta[0] + \Delta, \theta[1...], O)$}
+		  \DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined]s} == tt $
+
+\end{tabular}
+\newline
+\begin{tabular}[h]{l c r}
+
+$[\#_{ns}]$	&	\AxiomC{$\langle $\#$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho+\Delta, \theta, O \|$"Stack is empty"$ \| newline)$}
 		  \DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined]s} == ff $
 
 \end{tabular}
@@ -422,7 +434,7 @@ $[+_{ns}]$	&	\AxiomC{$\langle $+$, (\sigma, AV, \rho, \theta, O) \rangle \righta
 \newline
 \begin{tabular}[h]{l c r}
 
-$[+_{ns}]$	&	\AxiomC{$\langle $+$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho+\Delta, \theta, O \|$"Stack is empty"$)$}
+	$[+_{ns}]$	&	\AxiomC{$\langle $+$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho+\Delta, \theta, O \|$"Stack is empty"$ \| newline)$}
 		  \DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined]s} == ff $
 
 \end{tabular}
@@ -457,7 +469,7 @@ $[-_{ns}]$	&	\AxiomC{$\langle $-$, (\sigma, AV, \rho, \theta, O) \rangle \righta
 \newline
 \begin{tabular}[h]{l c r}
 
-$[-_{ns}]$	&	\AxiomC{$\langle $-$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho+\Delta, \theta, O \| $"Stack is empty"$)$}
+$[-_{ns}]$	&	\AxiomC{$\langle $-$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho+\Delta, \theta, O \| $"Stack is empty"$ \| newline)$}
 		  \DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined]s} == tt $
 
 \end{tabular}
@@ -493,7 +505,7 @@ $[*_{ns}]$	&	\AxiomC{$\langle $*$, (\sigma, AV, \rho, \theta, O) \rangle \righta
 \newline
 \begin{tabular}[h]{l c r}
 
-$[*_{ns}]$	&	\AxiomC{$\langle $*$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho+\Delta, \theta, O \| $"Stack is empty"$)$}
+$[*_{ns}]$	&	\AxiomC{$\langle $*$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma \mapsto 0], \rho+\Delta, \theta, O \| $"Stack is empty"$ \| newline)$}
 		  \DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined]s} == ff $
 
 \end{tabular}
@@ -506,10 +518,17 @@ De $/^n_{ns}$ regel wordt gebruikt om de huidige waarde in de cel te delen met h
 \newline
 \newline
 %\begin{table}[h]
-\begin{tabular}[h]{c c}
+\begin{tabular}[h]{l c r}
 
 $[/^n_{ns}]$	&	\AxiomC{$\langle $/$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma \mapsto AV[\sigma]/n], \rho+\Delta, \theta, O)$}
-				\DisplayProof
+				\DisplayProof & $if {\cal B} _{[n \neq 0]s} == tt $
+
+\end{tabular}
+\newline
+\begin{tabular}[h]{l c r}
+
+$[/^n_{ns}]$	&	\AxiomC{$\langle $/$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho+\Delta, \theta, O \| $"Only Chuck Norris can divide by zero"$ \| newline)$}
+				\DisplayProof & $if {\cal B} _{[n \neq 0]s} == ff $
 
 \end{tabular}
 \newline
@@ -524,14 +543,14 @@ De $/_{ns}$ regel wordt gebruikt om een waarde van de stack te poppen en de huid
 \begin{tabular}[h]{l c r}
 
 $[/_{ns}]$	&	\AxiomC{$\langle $/$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma \mapsto AV[\sigma]/\theta[0]], \rho+\Delta, \theta[1...], O)$}
-		  \DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined]s} == tt $
+	   \DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined \land \theta[0] \neq 0]s} == tt $
 
 \end{tabular}
 \newline
 \begin{tabular}[h]{l c r}
 
-$[/_{ns}]$	&	\AxiomC{$\langle $/$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho+\Delta, \theta, O \| $"Stack is empty"$)$}
-		  \DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined]s} == ff $
+$[/_{ns}]$	&	\AxiomC{$\langle $/$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho+\Delta, \theta, O \| $"Stack is empty"$ \| newline \| $"Only Chuck Norris can divide by zero"$ \| newline)$}
+		  \DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined \land n \neq 0]s} == ff $
 
 \end{tabular}
 \newline
@@ -543,10 +562,17 @@ De $\%^n_{ns}$ regel wordt gebruikt om de huidige waarde in de cel te vervangen 
 \newline
 \newline
 %\begin{table}[h]
-\begin{tabular}[h]{c c}
+\begin{tabular}[h]{l r c}
 
 $[\%^n_{ns}]$	&	\AxiomC{$\langle $\%$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma \mapsto AV[\sigma] \%n], \rho+\Delta, \theta, O)$}
-				\DisplayProof
+			    \DisplayProof & $if {\cal B} _{[n \neq 0]s} == tt $
+
+\end{tabular}
+\newline
+\begin{tabular}[h]{l r c}
+
+$[\%^n_{ns}]$	&	\AxiomC{$\langle $\%$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho+\Delta, \theta, O \| $"Only Chuck Norris can divide by zero"$ \| newline )$}
+			    \DisplayProof & $if {\cal B} _{[n \neq 0]s} == ff $
 
 \end{tabular}
 \newline
@@ -561,14 +587,14 @@ De $\%_{ns}$ regel wordt gebruikt om de huidige waarde in de cel te vervangen me
 \begin{tabular}[h]{l c r}
 
 $[\%_{ns}]$	&	\AxiomC{$\langle $\%$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma \mapsto AV[\sigma] \% \theta[0]], \rho+\Delta, \theta[1...], O)$}
-		   \DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined]s} == tt $
+		   \DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined \land n \neq 0]s} == tt $
 
 \end{tabular}
 \newline
 \begin{tabular}[h]{l c r}
 
-$[\%_{ns}]$	&	\AxiomC{$\langle $\%$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho+\Delta, \theta, O \| $"Stack is empty"$)$}
-		   \DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined]s} == ff $
+$[\%_{ns}]$	&	\AxiomC{$\langle $\%$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho+\Delta, \theta, O \| $"Stack is empty"$ \| newline \| $"Only Chuck Norris can divide by zero"$ \| newline)$}
+		   \DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined \land n \neq 0]s} == ff $
 
 \end{tabular}
 \newline
@@ -1062,7 +1088,7 @@ In dit voorbeeld zullen we nog twee interesante eigenschappen van Foo laten zien
 		\\$s_{1}: (\sigma, AV, \Delta, 1\|\theta, O)$
 		\\$s_{2}: (1, AV, 2\Delta, 1\|\theta, O)$
 		\\$s_{3}: (1, AV[\sigma \mapsto \theta[0]], 3\Delta, \theta[1...], O)$
-		\\$s_{4}: (1, AV[\sigma \mapsto 1], 4\Delta, \theta, O \| $"Stack is empty"$)$
+		\\$s_{4}: (1, AV[0 \mapsto 1, 1 \mapsto 0], 4\Delta, \theta, O \| $"Stack is empty"$ \| newline)$
 }
 %\centering
 \begin{prooftree}
