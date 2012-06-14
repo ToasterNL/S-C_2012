@@ -550,7 +550,7 @@ $[/_{ns}]$	&	\AxiomC{$\langle $/$, (\sigma, AV, \rho, \theta, O) \rangle \righta
 \begin{tabular}[h]{l c r}
 
 $[/_{ns}]$	&	\AxiomC{$\langle $/$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho+\Delta, \theta, O \| $"Stack is empty"$ \| newline \| $"Only Chuck Norris can divide by zero"$ \| newline)$}
-		  \DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined \land n \neq 0]s} == ff $
+		  \DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined \land \theta[0] \neq 0]s} == ff $
 
 \end{tabular}
 \newline
@@ -587,14 +587,14 @@ De $\%_{ns}$ regel wordt gebruikt om de huidige waarde in de cel te vervangen me
 \begin{tabular}[h]{l c r}
 
 $[\%_{ns}]$	&	\AxiomC{$\langle $\%$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma \mapsto AV[\sigma] \% \theta[0]], \rho+\Delta, \theta[1...], O)$}
-		   \DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined \land n \neq 0]s} == tt $
+		   \DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined \land \theta[0] \neq 0]s} == tt $
 
 \end{tabular}
 \newline
 \begin{tabular}[h]{l c r}
 
 $[\%_{ns}]$	&	\AxiomC{$\langle $\%$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho+\Delta, \theta, O \| $"Stack is empty"$ \| newline \| $"Only Chuck Norris can divide by zero"$ \| newline)$}
-		   \DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined \land n \neq 0]s} == ff $
+		   \DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined \land \theta[0] \neq 0]s} == ff $
 
 \end{tabular}
 \newline
