@@ -692,7 +692,7 @@ Het aangepaste programma ziet er als volgt uit: \verb|&3(0#1-1$i$c10)"boom!"$c10
 Hierbij wordt dus maar drie keer geitereerd.
 De afleidingsboom voor dit programma begint bij Figure 5 en maakt gebruik van Figure 1 t/m 4. 
 %
-\begin{landscape}
+%\begin{landscape}
 %FIGUUR 1
 \begin{figure}[h!]
 \caption{$T_1$  
@@ -872,7 +872,7 @@ De afleidingsboom voor dit programma begint bij Figure 5 en maakt gebruik van Fi
 	\BinaryInfC{$\langle \&3(0\#1-1\$i\$c10)''boom!''\$c10, (\sigma = 0, AV, \rho = 0, \theta, O) \rangle \rightarrow s_{14}$}
 \end{prooftree}
 \end{figure}
-\end{landscape}
+%\end{landscape}
 
 %In de onderste boom zien we de uitwerking van het hele programma, met uitzondering van de loop, die met een $comp^{inv}_{ns}$ regel is losgehaald uit de oorspronkelijke boom en in de bovenste boom ($S_1$) staat beschreven.
 %De loop is recursief beschreven, en het gedrag dat gemodeleerd wordt is het aftellen, printen en wachten.
@@ -889,6 +889,30 @@ De afleidingsboom wordt weergegeven in Figure ...
 \newpage
 \subsection{Case Study: Navigatie regels in combinatie met foutafhandeling.}
 In dit voorbeeld zullen we nog twee interesante eigenschappen van Foo laten zien (ten opzichte van While), namelijk de navigatieregels voor het navigeren in de array en hoe Foo met fouten omgaat als er bijvoorbeeld een waarde van de stack wordt gepopt, terwijl deze leeg is.
+
+\begin{figure}[h!]
+\caption{$T_6$
+		\\$s    : (\sigma = 0, AV, \rho = 0, \theta, O)$
+		\\$s_{1}: (\sigma, AV, \rho, 1\|\theta, O)$
+		\\$s_{2}: (\sigma+1, AV, \rho, 1\|\theta, O)$
+		\\$s_{3}: (\sigma+1, AV[\sigma \mapsto \theta[0]], \rho, 1\|\theta, O)$
+		\\$s_{4}: (\sigma+1, AV[\sigma \mapsto \theta[0]], \rho, 1\|\theta, O \| $"Stack is empty"$)$
+}
+%\centering
+\begin{prooftree}
+	\AxiomC{$\langle @1>\&\&, s \rangle \rightarrow s_1 $}
+		\AxiomC{$\langle >\&\&, s_1 \rangle \rightarrow s_2 $}
+			\AxiomC{$\langle \&\&, s_2 \rangle \rightarrow s_3 $}
+				\AxiomC{$\langle \&, s_3 \rangle \rightarrow s_4 $}
+				\RightLabel{$[Comp_{ns}]$}
+			\BinaryInfC{$\langle \&\&, s_2 \rangle \rightarrow s_4$}
+			\RightLabel{$[Comp_{ns}]$}
+		\BinaryInfC{$\langle >\&\&, s_1 \rangle \rightarrow s_4$}
+		\RightLabel{$[Comp_{ns}]$}
+	\BinaryInfC{$\langle @1>\&\&, s \rangle \rightarrow s_4$}
+	\LeftLabel{$[Push_{ns}^n]$}
+\end{prooftree}
+\end{figure}
 
 
 \section{Discussie}
