@@ -1,7 +1,6 @@
 TODO S&C:
 
 - beschrijving fout in de interpreter met stdout flush op linux
-- chuck-norris regel + voorbeeldje
 - SOS regel bedenken voor de loop regel zodat oneindige afleidingsleidingsrij kan worden bedacht + bespreken in discussie
 - betere uitleg van theta[1...] notatie over stacks....dat er dus iets gepopped wordt en de rest wordt naar boven geschoven blz 5
 - uitleg van notatie van type B, blz 5
