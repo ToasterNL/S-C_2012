@@ -121,6 +121,9 @@ Naar onze mening is dat een fout (off-by-one error) in de interpreter.
 Deze lijkt in de regel de waarde 0 te bevatten op ons testplatform, maar dat is niet iets waar de Foo-programmeur op kan rekenen.
 We hebben het genereren van de foutmelding meegenomen in onze regels voor het gebruik van stackwaardes.
 
+Een andere foutafhandeling is het delen door nul.
+Dit is niet mogelijk en als dit onverhoopt toch wordt gedaan, wordt de foutmelding gegenereerd ``Only Chuck Norris can divide by zero".
+
 \section{Syntax van Foo}
 In dit hoofdstuk zullen we de operaties van Foo formeler maken door een syntax op te stellen. 
 De syntax van Foo ziet er als volgt uit:
@@ -159,7 +162,7 @@ Allereerst defini\"eren we de volgende symbolen en functies:
     \begin{math} \sigma \end{math} &  Dit symbool verwijst naar de index van de array en wordt geinitialiseerd met de waarde 0. \\ \hline
     \begin{math} AV \end{math} & Dit symbool staat voor de valuatie van de array met standard input. \\ \hline
     \begin{math} \rho \end{math} &  Dit symbool staat voor de duratie van het programma in seconden. We gaan er hierbij van uit dat iedere operatie behalve het pauzeren, \begin{math}\Delta\end{math} tijd duurt. Waarbij \begin{math}\Delta\end{math} een zeer kleine tijd is, maar wel afhankelijk van de snelheid van het systeem waarop het Foo programma wordt gedraaid.  \\ \hline
-    \begin{math} \theta \end{math} & Dit symbool staat voor de stack. \begin{math}\theta[0]\end{math} staat voor de eerste waarde van de stack. \\ \hline
+    \begin{math} \theta \end{math} & Dit symbool staat voor de stack. \begin{math}\theta[0]\end{math} staat voor de eerste waarde van de stack. \\ \hline %MEER UITLEG OVER STACK GEBRUIK MET SYMBOLEN
     \begin{math} O \end{math} &  Dit symbool staat voor de stream standard output. Hieraan kunnen waardes worden geconcateneerd. \\ \hline
 
 \end{tabular}
@@ -189,6 +192,7 @@ Als het nog niet duidelijk is wat er precies tijdens een transitie verandert, om
 \subsection{Semantiekregels}
 Hieronder beschrijven we de semantiekregels voor Foo:
 
+\subsubsection{Compositieregel}
 De compositieregel zorgt ervoor dat twee verschillende statements aan elkaar geschreven kunnen worden en is vergelijkbaar met de compositieregel uit While. 
 Bij Foo worden de statements direct aan elkaar geschreven zonder scheidingsteken, zoals de ; bij While.
 \newline
@@ -202,18 +206,8 @@ Bij Foo worden de statements direct aan elkaar geschreven zonder scheidingsteken
 				\DisplayProof
 
 \end{tabular}
-\newline
 
-%\end{table}
-
-
-%\begin{prooftree}
-%\LeftLabel{$[Comp_{ns}]$:\quad}
-%\AxiomC{$\langle S_{1}, s \rangle \rightarrow s'$}
-%\AxiomC{$\langle S_{2}, s' \rangle \rightarrow s''$}
-%\BinaryInfC{$\langle S_{1}S_{2}, s \rangle \rightarrow  s''$}
-%\end{prooftree}
-
+\subsubsection{Navigatieregel}
 De $nav^R_{ns}$ regel verhoogt de index voor de huidige cel in de array met \'e\'en.
 \newline
 \newline
@@ -237,9 +231,8 @@ $[nav^L_{ns}]$	&	\AxiomC{$\langle $\textless$, (\sigma, AV, \rho, \theta, O) \ra
 				\DisplayProof
 
 \end{tabular}
-\newline
-%\end{table}
 
+\subsubsection{Assignmentregel}
 De $ass^n_{ns}$ regel zet het argument in de huidige arraycel.
 \newline
 \newline
@@ -264,14 +257,16 @@ Het eerste (index nul) element van de stack wordt gebruikt, en in de volgende st
 
 \end{tabular}
 \newline
+\newline
 \begin{tabular}[h]{l c r}
 
 	$[ass^s_{ns}]$	&	\AxiomC{$\langle $\&$, (\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow (\sigma, AV[\sigma \mapsto 0], \rho+\Delta, \theta, O \| $"Stack is empty"$ \| newline)$}
-		\DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined]s} == ff $
+		\DisplayProof & %$if {\cal B} _{[\theta[0] \neq undefined]s} == ff $
 
 \end{tabular}
-\newline
+\indent \indent \indent\indent $if {\cal B} _{[\theta[0] \neq undefined]s} == ff $
 
+\subsubsection{Pushregel}
 De $push^n_{ns}$ regel pusht het argument op de stack.
 De waarde wordt geconcateneerd met de gegeven stack, zodat deze bovenaan komt te staan, en gepopt kan worden.
 \newline
@@ -287,6 +282,7 @@ $[push^n_{ns}]$	&	\AxiomC{$\langle $@$n, (\sigma, AV, \rho, \theta, O) \rangle \
 De $push^{AV}_{ns}$ regel pusht een waarde uit de huidige array-cel op de stack.
 Ook hier wordt de waarde geconcateneerd met de gegeven stack.
 \newline
+\newline
 \begin{tabular}[h]{c c}
 
 $[push^{AV}_{ns}]$	&	\AxiomC{$\langle $@$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow (\sigma, AV, \rho+\Delta, AV[\sigma] \| \theta, O)$}
@@ -295,10 +291,7 @@ $[push^{AV}_{ns}]$	&	\AxiomC{$\langle $@$, (\sigma, AV, \rho, \theta, O) \rangle
 \end{tabular}
 \newline
 
-%\begin{prooftree}
-%\LeftLabel{$[push^{AV}_{ns}]$:\quad}
-%\AxiomC{$\langle $@$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow (\sigma, AV, \rho, AV[\sigma] \| \theta, O)$}
-%\end{prooftree}
+\subsubsection{Pauzeerregel}
 De pauzeerregel zoals hieronder staat beschreven is vergelijkbaar met de skipregel uit While. 
 Als dit statement wordt uitgevoerd wordt er het opgeven aantal seconden gewacht met de uitvoering van de rest van het programma. 
 Het is niet mogelijk iets in de state te veranderen tijdens het pauzeren, waardoor de state na het pauzeren niet veranderd is op de verstreken tijd na.
@@ -315,6 +308,7 @@ $[\#n_{ns}]$	&	\AxiomC{$\langle $\#$n, (\sigma, AV, \rho, \theta, O) \rangle \ri
 
 \end{tabular}
 \newline
+\newline
 \begin{tabular}[h]{l c r}
 
 $[\#_{ns}]$	&	\AxiomC{$\langle $\#$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho + \theta[0] + \Delta, \theta[1...], O)$}
@@ -322,18 +316,17 @@ $[\#_{ns}]$	&	\AxiomC{$\langle $\#$, (\sigma, AV, \rho, \theta, O) \rangle \righ
 
 \end{tabular}
 \newline
+\newline
 \begin{tabular}[h]{l c r}
 
 $[\#_{ns}]$	&	\AxiomC{$\langle $\#$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho+\Delta, \theta, O \|$"Stack is empty"$ \| newline)$}
-		  \DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined]s} == ff $
+		  \DisplayProof & %$if {\cal B} _{[\theta[0] \neq undefined]s} == ff $
 
 \end{tabular}
 \newline
-\newline
-%\end{table}
+\indent\indent\indent\indent$if {\cal B} _{[\theta[0] \neq undefined]s} == ff $
 
-%LOOP-REGELS:
-
+\subsubsection{Loopregel}
 Het is mogelijk om loops te maken in Foo.
 De moeilijkheid wat betreft semantiekregels zit in het gebruiken van het argument na de ''(" of het niet gebruiken ervan. 
 De eerste regel geeft de situatie weer als er wel gebruik gemaakt wordt van het argument.
@@ -399,7 +392,7 @@ De invariant-waarde waartegen vergeleken wordt (0 of een argument) is echter nie
 
 
 %Aritmetische expressies
-
+\subsection{Aritmetische expressies}
 Hieronder volgen de semantiekregels voor de aritmetische expressies die gebruikt kunnen worden in Foo.
 Ook hier zit een lastig punt met betrekking tot de semantiekregels.
 Als er namelijk een waarde wordt opgegeven dan wordt dit uitgevoerd in combinatie met de huidige waarde van de cel.
@@ -407,6 +400,7 @@ Als er geen waarde wordt opgegeven wordt er een waarde van de stack gepopt en ge
 Voor al deze gevallen moeten drie aparte regels opgesteld worden. 
 \'E\'en om een opgegeven waarde te herkennen in het argument en twee voor het gebruik van de stack: \'e\'en waarin de stack leeg is (foutafhandeling) en \'e\'en waarin de stack niet leeg is en er een waarde gepopt kan worden.
 \newline
+\subsubsection{+ regel}
 
 De $+^n_{ns}$ regel wordt gebruikt om het argument op te tellen bij de huidige waarde in de cel.
 \newline
@@ -428,18 +422,23 @@ De $+_{ns}$ regel wordt gebruikt om een waarde van de stack te poppen en op te t
 \begin{tabular}[h]{l c r}
 
 $[+_{ns}]$	&	\AxiomC{$\langle $+$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma \mapsto AV[\sigma] + \theta[0]], \rho+\Delta, \theta[1...], O)$}
-		  \DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined]s} == tt $
+		  \DisplayProof & %$if {\cal B} _{[\theta[0] \neq undefined]s} == tt $
 
 \end{tabular}
 \newline
+\indent\indent\indent\indent$if {\cal B} _{[\theta[0] \neq undefined]s} == tt $
+
+\subsubsection{- regel}
 \begin{tabular}[h]{l c r}
 
 	$[+_{ns}]$	&	\AxiomC{$\langle $+$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho+\Delta, \theta, O \|$"Stack is empty"$ \| newline)$}
-		  \DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined]s} == ff $
+		  \DisplayProof & %$if {\cal B} _{[\theta[0] \neq undefined]s} == ff $
 
 \end{tabular}
 \newline
-
+\indent\indent\indent\indent$if {\cal B} _{[\theta[0] \neq undefined]s} == ff $
+\newline
+\newline
 De $-^n_{ns}$ regel wordt gebruikt om een het argument af te trekken van de huidige waarde in de cel.
 \newline
 \newline
@@ -463,21 +462,25 @@ De $-_{ns}$ regel wordt gebruikt om een waarde van de stack te poppen en af te t
 \begin{tabular}[h]{l c r}
 
 $[-_{ns}]$	&	\AxiomC{$\langle $-$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma \mapsto AV[\sigma] - \theta[0]], \rho+\Delta, \theta[1...], O)$}
-		  \DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined]s} == tt $
+		  \DisplayProof & %$if {\cal B} _{[\theta[0] \neq undefined]s} == tt $
 
 \end{tabular}
+\newline
+\indent\indent\indent\indent $if {\cal B} _{[\theta[0] \neq undefined]s} == tt $
 \newline
 \begin{tabular}[h]{l c r}
 
 $[-_{ns}]$	&	\AxiomC{$\langle $-$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho+\Delta, \theta, O \| $"Stack is empty"$ \| newline)$}
-		  \DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined]s} == tt $
+		  \DisplayProof & %$if {\cal B} _{[\theta[0] \neq undefined]s} == tt $
 
 \end{tabular}
 \newline
+\indent\indent\indent\indent$if {\cal B} _{[\theta[0] \neq undefined]s} == tt $
 
 %\begin{prooftree}
 %	\AxiomC{$\langle $-$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma] - \theta[0], \rho, \theta[1...], O)$}
 %\end{prooftree}
+\subsubsection{* regel}
 De $*^n_{ns}$ regel wordt gebruikt om de huidige waarde in de cel te vermenigvuldigen met het argument.
 \newline
 \newline
@@ -503,17 +506,19 @@ $[*_{ns}]$	&	\AxiomC{$\langle $*$, (\sigma, AV, \rho, \theta, O) \rangle \righta
 
 \end{tabular}
 \newline
+\newline
 \begin{tabular}[h]{l c r}
 
 $[*_{ns}]$	&	\AxiomC{$\langle $*$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma \mapsto 0], \rho+\Delta, \theta, O \| $"Stack is empty"$ \| newline)$}
-		  \DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined]s} == ff $
+		  \DisplayProof & %$if {\cal B} _{[\theta[0] \neq undefined]s} == ff $
 
 \end{tabular}
 \newline
+\indent\indent\indent\indent$if {\cal B} _{[\theta[0] \neq undefined]s} == ff $
 %\begin{prooftree}
 %	\AxiomC{$\langle $*$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma]*\theta[0), \rho, \theta[1...], O)$}
 %\end{prooftree}
-
+\subsubsection{/ regel}
 De $/^n_{ns}$ regel wordt gebruikt om de huidige waarde in de cel te delen met het argument.
 \newline
 \newline
@@ -525,12 +530,15 @@ $[/^n_{ns}]$	&	\AxiomC{$\langle $/$n, (\sigma, AV, \rho, \theta, O) \rangle \rig
 
 \end{tabular}
 \newline
+\newline
 \begin{tabular}[h]{l c r}
 
 $[/^n_{ns}]$	&	\AxiomC{$\langle $/$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho+\Delta, \theta, O \| $"Only Chuck Norris can divide by zero"$ \| newline)$}
-				\DisplayProof & $if {\cal B} _{[n \neq 0]s} == ff $
+				\DisplayProof & %$if {\cal B} _{[n \neq 0]s} == ff $
 
 \end{tabular}
+\newline
+\indent\indent\indent\indent$if {\cal B} _{[n \neq 0]s} == ff $
 \newline
 %\end{table}
 %\begin{prooftree}
@@ -546,18 +554,21 @@ $[/_{ns}]$	&	\AxiomC{$\langle $/$, (\sigma, AV, \rho, \theta, O) \rangle \righta
 	   \DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined \land \theta[0] \neq 0]s} == tt $
 
 \end{tabular}
-\newline
+\newline\newline
 \begin{tabular}[h]{l c r}
 
-$[/_{ns}]$	&	\AxiomC{$\langle $/$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho+\Delta, \theta, O \| $"Stack is empty"$ \| newline \| $"Only Chuck Norris can divide by zero"$ \| newline)$}
-		  \DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined \land \theta[0] \neq 0]s} == ff $
+$[/_{ns}]$	&	\AxiomC{$\langle $/$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho+\Delta, \theta, O \| $"Stack is empty"$ \| newline \|$ }
+		  \DisplayProof & %$if {\cal B} _{[\theta[0] \neq undefined \land \theta[0] \neq 0]s} == ff $
 
 \end{tabular}
 \newline
+\indent\indent\indent\indent\indent\indent\indent\indent\indent"Only Chuck Norris can divide by zero"$ \| newline)$
+\newline
+\indent\indent\indent\indent$if {\cal B} _{[\theta[0] \neq undefined \land \theta[0] \neq 0]s} == ff $
 %\begin{prooftree}
 %	\AxiomC{$\langle $/$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma]/\theta[0], \rho, \theta[1...], O)$}
 %\end{prooftree}
-
+\subsubsection{\% regel}
 De $\%^n_{ns}$ regel wordt gebruikt om de huidige waarde in de cel te vervangen met zichzelf modulus het argument.
 \newline
 \newline
@@ -569,12 +580,15 @@ $[\%^n_{ns}]$	&	\AxiomC{$\langle $\%$n, (\sigma, AV, \rho, \theta, O) \rangle \r
 
 \end{tabular}
 \newline
+\newline
 \begin{tabular}[h]{l r c}
 
 $[\%^n_{ns}]$	&	\AxiomC{$\langle $\%$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho+\Delta, \theta, O \| $"Only Chuck Norris can divide by zero"$ \| newline )$}
-			    \DisplayProof & $if {\cal B} _{[n \neq 0]s} == ff $
+			    \DisplayProof & %$if {\cal B} _{[n \neq 0]s} == ff $
 
 \end{tabular}
+\newline
+\indent\indent\indent\indent$if {\cal B} _{[n \neq 0]s} == ff $
 \newline
 %\end{table}
 %\begin{prooftree}
@@ -587,17 +601,23 @@ De $\%_{ns}$ regel wordt gebruikt om de huidige waarde in de cel te vervangen me
 \begin{tabular}[h]{l c r}
 
 $[\%_{ns}]$	&	\AxiomC{$\langle $\%$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma \mapsto AV[\sigma] \% \theta[0]], \rho+\Delta, \theta[1...], O)$}
-		   \DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined \land \theta[0] \neq 0]s} == tt $
+		   \DisplayProof & %$if {\cal B} _{[\theta[0] \neq undefined \land \theta[0] \neq 0]s} == tt $
 
 \end{tabular}
+\newline
+\indent\indent\indent\indent$if {\cal B} _{[\theta[0] \neq undefined \land \theta[0] \neq 0]s} == tt $
+\newline
 \newline
 \begin{tabular}[h]{l c r}
 
-$[\%_{ns}]$	&	\AxiomC{$\langle $\%$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho+\Delta, \theta, O \| $"Stack is empty"$ \| newline \| $"Only Chuck Norris can divide by zero"$ \| newline)$}
-		   \DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined \land \theta[0] \neq 0]s} == ff $
+$[\%_{ns}]$	&	\AxiomC{$\langle $\%$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho+\Delta, \theta, O \| $"Stack is empty"$ \| newline \| $}
+		   \DisplayProof & %$if {\cal B} _{[\theta[0] \neq undefined \land \theta[0] \neq 0]s} == ff $
 
 \end{tabular}
 \newline
+\indent\indent\indent\indent\indent\indent\indent\indent\indent"Only Chuck Norris can divide by zero"$ \| newline)$
+\newline
+\indent\indent\indent\indent$if {\cal B} _{[\theta[0] \neq undefined \land \theta[0] \neq 0]s} == ff $
 %\begin{prooftree}
 %	\AxiomC{$\langle $\%$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma] \% \theta[0], \rho, \theta[1...], O)$}
 %\end{prooftree}
@@ -612,6 +632,7 @@ Bij het printen van strings in een loop bijvoorbeeld is het effect dat de standa
 Om bij een operatie op de standard output (ook bij loopen) direct resultaat te kunnen zien is het nodig het standard output buffer te `flushen' nadat er output gegenereerd is.
 We hebben voor ons onderzoek deze toevoeging in de referentieimplementatie gemaakt, en zijn van plan dit ook voor te leggen aan ``Feky'', de auteur van Foo.
 
+\subsubsection{stdout regel}
 De $stdout_{ns}$ regel wordt gebruikt om een letterlijke string op de standard output te zetten door middel van concatenatie.
 \newline
 \newline
@@ -621,11 +642,8 @@ $[stdout_{ns}]$	&	\AxiomC{$\langle $"$<str>$"$, (\sigma, AV, \rho, \theta, O) \r
 				\DisplayProof
 
 \end{tabular}
-\newline
-%\begin{prooftree}
-%\AxiomC{$\langle $"$<str>$"$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho, \theta, O \| <str>)$}
-%\end{prooftree}
 
+\subsubsection{printregel}
 De $print^c_{ns}$ regel print de huidige waarde uit de array als letterlijk 'character' naar de standard output.
 \newline
 \newline
@@ -714,7 +732,6 @@ $[print^{hn}_{ns}]$	&	\AxiomC{$\langle $\$h$n, (\sigma, AV, \rho, \theta, O) \ra
 \section{Analyse van de Foo semantiek}
 In dit hoofdstuk zullen we aan de hand van een aantal case studies, de bovenstaande semantiekregels toepassen.
 
-\newpage
 \subsection{Case Study: Countdown loop met de $[Loop_{ns}^{tt^1}]$ regel.}
 In deze sectie zullen we gaan kijken naar het volgende programma: \verb|&10(0#1-1$i$c10)"boom!"$c10| 
 Dit programma telt in een loop van 10 af naar nul, terwijl het bij iedere stap pauzeert en de huidige waarde uitprint naar de standard output.
@@ -1110,6 +1127,34 @@ In dit voorbeeld zullen we nog twee interesante eigenschappen van Foo laten zien
 		\BinaryInfC{$\langle >\&\&, s_1 \rangle \rightarrow s_4$}
 		\RightLabel{$[Comp_{ns}]$}
 	\BinaryInfC{$\langle @1>\&\&, s \rangle \rightarrow s_4$}
+\end{prooftree}
+\end{figure}
+
+\subsection{Case Study: Division by zero}
+Dit voorbeeld laat zien hoe Foo een deling door 0 afhandeld, door de foutmelding te geven ``Only Chuck Norris can divide by zero" en vervolgens de huidige array waarde af te drukken.
+
+\begin{figure}[h!]
+\caption{Division by zero
+		\\$s    : (\sigma = 0, AV, \rho = 0, \theta, O)$
+		\\$s_{1}: (\sigma, AV[\sigma \mapsto 10], \Delta, \theta, O)$
+		\\$s_{2}: (\sigma, AV[\sigma \mapsto 10], 2\Delta, \theta, O||$Only Chuck Norris can divide by zero.$||newline)$
+		\\$s_{3}: (\sigma, AV[\sigma \mapsto 10], 3\Delta, \theta, O||$Only Chuck Norris can divide by zero.$||newline||10)$
+}
+%\centering
+\begin{prooftree}
+	\AxiomC{}
+	\LeftLabel{$[ass_{ns}^n]$}
+	\UnaryInfC{$\langle \&10, s \rangle \rightarrow s_1 $}
+		\AxiomC{}
+		\LeftLabel{$[/^n_{ns}]$}
+		\UnaryInfC{$\langle /0, s_1 \rangle \rightarrow s_2 $}
+			\AxiomC{}
+			\RightLabel{$[Print^i_{ns}]$}
+			\UnaryInfC{$\langle \$i, s_2 \rangle \rightarrow s_3$}
+			\RightLabel{$[Comp_{ns}]$}
+		\BinaryInfC{$\langle /0\$i, s_1 \rangle \rightarrow s_3$}
+		\RightLabel{$[Comp_{ns}]$}
+	\BinaryInfC{$\langle \&10/0\$i, s \rangle \rightarrow s_3$}
 \end{prooftree}
 \end{figure}
 
