@@ -53,7 +53,7 @@ Foo is een esoterische taal gebaseerd op `turing-tarpit'-achtige talen zoals `Br
 Taalconstructies in Foo zijn ASCII-strings die een tape met instructies, het programma voor een Foo-machine, voorstellen.
 De operaties draaien om een eendimensionale array, de standard input, die genavigeerd en bewerkt kan worden.
 Verder zijn er rekenkundige, interne stack- en kopieeroperaties aanwezig.
-De standard input gedraagt zich als een tape in de zin dat als er geen standard input wordt gegeven er een lege invoer verondersteld wordt. 
+De standard input gedraagt zich als een tape in de zin dat als er geen standard input wordt gegeven, er een lege invoer verondersteld wordt. 
 %De stack wordt voornamelijk gebruikt voor rekenkundige operaties en loops.
 Foo maakt dus gebruik van hetzelfde principe als een turingmachine met drie tapes, waarbij \'e\'en van de tapes de standard input bevat, \'e\'en die als stack gebruikt wordt en de laatste die de programmacode bevat. %waar baseren we dit op?
 Programma's in Foo stoppen als de interpreter aan het einde van de programmacode komt (EOF).
@@ -78,7 +78,7 @@ Programma's in Foo stoppen als de interpreter aan het einde van de programmacode
     (\(n\)                                  & 1 & Specificeert het begin van een loop: deze loop wordt uitgevoerd zolang de waarde in de huidige cel van de array met standard input ongelijk is aan de opgegeven waarde \(n\) (het argument). \\ \hline
     (                                       & 0 & Specificeert het begin van een loop: deze loop wordt uitgevoerd zolang de waarde in de huidige cel van de array met standard input ongelijk is aan nul. \\ \hline
     )                                       & 0 & Specificeert het einde van een loop: er wordt teruggesprongen naar de laatste '(' tenzij de waarde van de huidige cel in de array met standard input gelijk is aan het eerder opgegeven nummer, danwel nul afhankelijk van de gekozen loop-opening. Dan wordt verder gegaan met de rest van code. \\ \hline
-    \hline
+   % \hline
     \end{tabular}
 \end{center}
 
@@ -89,7 +89,7 @@ In het werkstuk van Talen \& Automaten hebben we aangetoond dat Foo een niet-reg
 
 Foo bevat, net als de taal While, een beperkte instructieset. 
 Foo heeft een aantal constructies die niet voorkomen in While, wat Foo ten opzichte van While interessant maakt.
-Een aantal constructies die interessant zijn, zoals de pauzeer (\#) operatie, een standard input/output en operaties op de stack, zullen we in dit hoofdstuk bespreken. %als inherent taalonderdeel, in tegenstelling tot While dat stacks slechts als intern berekeningsmodel gebruikt.
+Een aantal constructies die interessant zijn, zoals de pauzeer (\#) operatie en foutafhandeling, zullen we in dit hoofdstuk bespreken. %als inherent taalonderdeel, in tegenstelling tot While dat stacks slechts als intern berekeningsmodel gebruikt.
 %In dit hoofdstuk zullen we deze constructies bespreken.
 
 \subsection{Pauzeer-operatie (\#)}
@@ -97,14 +97,15 @@ De pauzeer-operatie in Foo is het beste te vergelijken met een teller die de uit
 Dit is terug te zien in het Foo programma van de terugtellende loop: \verb|&10(0#1-1$i$c10)"boom!"$c10|.
 
 {\bf \verb|#1|} betekent hier: pauzeer de rest van het programma \'e\'en seconde. 
-Pas dan wordt 1 van de huidige celwaarde afgehaald en de nieuwe waarde afgedrukt of, mocht al afgeteld zijn naar nul, komt er de string "boom" op de standard output te staan, gevolgd door een newline karakter (ASCII waarde 10).
+Pas dan wordt 1 van de huidige celwaarde afgehaald en de nieuwe waarde afgedrukt op de standard output, gevolgd door een newline karakter (ASCII waarde 10).
 Dit programma is dus een teller opzich.
 Zouden we de waarde 10 achter de \#-operator zetten, dan zou het programma tien seconden wachten en in totaal 100 seconden duren.
 
 
 Dit lijkt in eerste instantie heel erg op de {\bf\verb|<skip>|} functie in While.
 Het enige wat veranderd is ten opzichte van de vorige state is de tijd.
-Om dit te simuleren moeten we de tijd op het moment van uitvoeren van de pauzeer operatie uitlezen, vervolgens de ingestelde tijd laten verlopen en in de nieuwe state de verstreken tijd vertegenwoordigen.
+Om dit te simuleren moeten we ervoor zorgen dat iedere operatie een bepaalde tijd kost, waarbij pauzeer-operatie een opgegeven aantal seconden duurt.
+%Om dit te simuleren moeten we de tijd op het moment van uitvoeren van de pauzeer operatie uitlezen, vervolgens de ingestelde tijd laten verlopen en in de nieuwe state de verstreken tijd vertegenwoordigen.
 %We zouden dit kunnen modeleren met een interne klok die in hele secondes telt, die eigenlijk los staat van de semantiek van de taal.
 %Gebruikmakend van Structurele Operationele Semantiek zouden we wellicht deze operator een postconditie kunnen laten hebben die een ongebonden variabele (`tijd') gebruikt om de huidige waarde van de klok op te slaan en een variabele (`x') voor het argument, en aan elk (opvolgend) statement de preconditie kunnen stellen dat de waarde van `tijd' met minstens `x' seconden van de klok verschilt.
 
@@ -115,7 +116,7 @@ Omdat in Foo geen parallele operaties mogelijk zijn is het onmogelijk om door de
 Tijdens het gebruik van aritmetische expressies blijkt dat als er geen waarde wordt opgegeven, de eerste waarde van de stack wordt gebruikt. 
 Deze waarde wordt dan van de stack gepopt.
 Als er niks op de stack staat wordt er een foutmelding gegenereerd, maar de berekening wordt als nog uitgevoerd. %schijnt als nog te worden uitgevoerd.
-Door het nagaan van de referentie-implementatie van Foo hebben we geconstateerd dat in dit geval bij het poppen van de stack namelijk de waarde nul wordt teruggegeven.
+Door het nagaan van de referentie-implementatie van Foo hebben we geconstateerd dat in dit geval, bij het poppen van de stack namelijk de waarde nul wordt teruggegeven.
 We hebben in deze foutafhandeling echter een inconsistentie in de referentie-implementatie ontdekt, die lijkt toe te staan dat een lege stack nog eenmaal gepopt kan worden zonder een fout te rapporteren.
 Naar onze mening is dat een fout (off-by-one error) in de interpreter.
 Deze lijkt in de regel de waarde 0 te bevatten op ons testplatform, maar dat is niet iets waar de Foo-programmeur op kan rekenen.
@@ -123,14 +124,14 @@ We hebben het genereren van de foutmelding meegenomen in onze regels voor het ge
 
 Een andere foutafhandeling is het delen door nul.
 Dit is niet mogelijk en als dit onverhoopt toch wordt gedaan, wordt de foutmelding gegenereerd ``Only Chuck Norris can divide by zero".
-
+\newpage
 \section{Syntax van Foo}
 In dit hoofdstuk zullen we de operaties van Foo formeler maken door een syntax op te stellen. 
 De syntax van Foo ziet er als volgt uit:
 \newline
 
 \begin{math}
-{\bf S::= \verb|"c"| | \&n | \& | @n | @ | < | > | \$f | \#a | \# | (nS) | (S) | S_{1}S_{2} }
+{\bf S::= \verb|"c"| | \&n | \& | @n | @ | < | > | \$fn | \#a | \# | (nS) | (S) | S_{1}S_{2} }
 \newline
 \newline
 \indent{\bf c::= ASCII-symbolen| \epsilon}
@@ -148,8 +149,8 @@ De syntax van Foo ziet er als volgt uit:
 
 \section{Natuurlijke semantiek van Foo}
 In dit hoofdstuk zullen we de operaties van Foo inzichtelijker maken door semantiekregels op te stellen.
-We zullen hiervoor gebruik maken van natuurlijke semantiek.
-Mocht blijken dat dit te beperkt is, dan zullen we ons richten op structurele operationele semantiek.
+Aangezien Foo een imperatieve taal is zullen we gebruik maken van operationele semantiek en dan met name van natuurlijke semantiek.
+%Mocht blijken dat dit te beperkt is, dan zullen we ons richten op structurele operationele semantiek.
 
 \subsection{Transities}
 Allereerst defini\"eren we de volgende symbolen en functies:
@@ -162,22 +163,21 @@ Allereerst defini\"eren we de volgende symbolen en functies:
     \begin{math} \sigma \end{math} &  Dit symbool verwijst naar de index van de array en wordt geinitialiseerd met de waarde 0. \\ \hline
     \begin{math} AV \end{math} & Dit symbool staat voor de valuatie van de array met standard input. \\ \hline
     \begin{math} \rho \end{math} &  Dit symbool staat voor de duratie van het programma in seconden. We gaan er hierbij van uit dat iedere operatie behalve het pauzeren, \begin{math}\Delta\end{math} tijd duurt. Waarbij \begin{math}\Delta\end{math} een zeer kleine tijd is, maar wel afhankelijk van de snelheid van het systeem waarop het Foo programma wordt gedraaid.  \\ \hline
-    \begin{math} \theta \end{math} & Dit symbool staat voor de stack. \begin{math}\theta[0]\end{math} staat voor de eerste waarde van de stack. \\ \hline %MEER UITLEG OVER STACK GEBRUIK MET SYMBOLEN
+    \begin{math} \theta \end{math} & Dit symbool staat voor de stack. \begin{math}\theta[0]\end{math} staat voor de eerste waarde van de stack. Het komt voor dat bovenste waarde van de stack gepopt wordt, waarna de onderliggende waardes automatisch omhoog schuiven. Dit wordt in de semantiekregels weergeven met \begin{math}\theta[1...]\end{math}. \\ \hline %MEER UITLEG OVER STACK GEBRUIK MET SYMBOLEN
     \begin{math} O \end{math} &  Dit symbool staat voor de stream standard output. Hieraan kunnen waardes worden geconcateneerd. \\ \hline
+    \begin{math} {\cal B} \end{math} &  Dit symbool staat voor Boolean en zal worden toegepast als er aan bepaalde condities moet worden voldaan om vervolgens een regel toe te passen. Het komt dat er meerdere condities moet worden voldaan dit wordt weergegeven met een $\land$. \\ \hline
 
 \end{tabular}
 \newline
 \newline
-\newline
 
 Onze state zal er als volgt uit zien:
-
 \[
 s = (\sigma, AV, \rho, \theta, O)
 \]
+\newpage
 
 Onze transitie van states zal er als volgt uit zien:
-
 \begin{prooftree}
 \AxiomC{$\langle S,  s \rangle \rightarrow s'$}
 \end{prooftree}
@@ -190,7 +190,7 @@ Als het nog niet duidelijk is wat er precies tijdens een transitie verandert, om
 
 
 \subsection{Semantiekregels}
-Hieronder beschrijven we de semantiekregels voor Foo:
+Hieronder beschrijven we de semantiekregels voor Foo aan de hand van de syntax en de symbolen beschreven in de bovenstaande tabel.
 
 \subsubsection{Compositieregel}
 De compositieregel zorgt ervoor dat twee verschillende statements aan elkaar geschreven kunnen worden en is vergelijkbaar met de compositieregel uit While. 
@@ -253,18 +253,18 @@ Het eerste (index nul) element van de stack wordt gebruikt, en in de volgende st
 \begin{tabular}[h]{l c r}
 
 	$[ass^s_{ns}]$	&	\AxiomC{$\langle $\&$, (\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow (\sigma, AV[\sigma \mapsto \theta[0]], \rho+\Delta, \theta[1...], O)$}
-		\DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined]s} == tt$
+		\DisplayProof & $if {\cal B} {[\theta[0] \neq undefined]s} == tt$
 
 \end{tabular}
 \newline
 \newline
 \begin{tabular}[h]{l c r}
 
-	$[ass^s_{ns}]$	&	\AxiomC{$\langle $\&$, (\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow (\sigma, AV[\sigma \mapsto 0], \rho+\Delta, \theta, O \| $"Stack is empty"$ \| newline)$}
+	$[ass^s_{ns}]$	&	\AxiomC{$\langle $\&$, (\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow (\sigma, AV[\sigma \mapsto 0], \rho+\Delta, \theta, O \| $Stack is empty$ \| newline)$}
 		\DisplayProof & %$if {\cal B} _{[\theta[0] \neq undefined]s} == ff $
 
 \end{tabular}
-\indent \indent \indent\indent $if {\cal B} _{[\theta[0] \neq undefined]s} == ff $
+\indent \indent \indent\indent $if {\cal B} {[\theta[0] \neq undefined]s} == ff $
 
 \subsubsection{Pushregel}
 De $push^n_{ns}$ regel pusht het argument op de stack.
@@ -294,7 +294,7 @@ $[push^{AV}_{ns}]$	&	\AxiomC{$\langle $@$, (\sigma, AV, \rho, \theta, O) \rangle
 \subsubsection{Pauzeerregel}
 De pauzeerregel zoals hieronder staat beschreven is vergelijkbaar met de skipregel uit While. 
 Als dit statement wordt uitgevoerd wordt er het opgeven aantal seconden gewacht met de uitvoering van de rest van het programma. 
-Het is niet mogelijk iets in de state te veranderen tijdens het pauzeren, waardoor de state na het pauzeren niet veranderd is op de verstreken tijd na.
+Het is tijdens het pauzeren niet mogelijk iets in de state te veranderen, waardoor de state na het pauzeren niet veranderd is op de verstreken tijd na.
 Net als andere operatoren kan de pauzeer-operatie met en zonder argument gebruikt worden, maar de documentatie van Foo conflicteert op dit punt met de referentie-implementatie.
 De documentatie beweert namelijk dat als deze operator geen argument \(n\) krijgt de waarde uit de huidige cel in de array moet worden gebruikt, terwijl de referentie-implementatie daarvoor een waarde van de stack popt.
 We hebben besloten in dit geval het gedrag van de interpreter aan te houden.
@@ -312,19 +312,19 @@ $[\#n_{ns}]$	&	\AxiomC{$\langle $\#$n, (\sigma, AV, \rho, \theta, O) \rangle \ri
 \begin{tabular}[h]{l c r}
 
 $[\#_{ns}]$	&	\AxiomC{$\langle $\#$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho + \theta[0] + \Delta, \theta[1...], O)$}
-		  \DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined]s} == tt $
+		  \DisplayProof & $if {\cal B} {[\theta[0] \neq undefined]s} == tt $
 
 \end{tabular}
 \newline
 \newline
 \begin{tabular}[h]{l c r}
 
-$[\#_{ns}]$	&	\AxiomC{$\langle $\#$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho+\Delta, \theta, O \|$"Stack is empty"$ \| newline)$}
+$[\#_{ns}]$	&	\AxiomC{$\langle $\#$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho+\Delta, \theta, O \|$Stack is empty$ \| newline)$}
 		  \DisplayProof & %$if {\cal B} _{[\theta[0] \neq undefined]s} == ff $
 
 \end{tabular}
 \newline
-\indent\indent\indent\indent$if {\cal B} _{[\theta[0] \neq undefined]s} == ff $
+\indent\indent\indent\indent$if {\cal B} {[\theta[0] \neq undefined]s} == ff $
 
 \subsubsection{Loopregel}
 Het is mogelijk om loops te maken in Foo.
@@ -339,7 +339,7 @@ De eerste regel geeft de situatie weer als er wel gebruik gemaakt wordt van het 
 $[Loop_{ns}^{tt^1}]$	&	\AxiomC{$\langle S, s \rangle \rightarrow  s'  $}
 					\AxiomC{$\langle $($nS$)$, s' \rangle \rightarrow s''$}
 					\BinaryInfC{$\langle $($nS$)$, s \rangle \rightarrow s''$}
-					\DisplayProof								& $if {\cal B} _{[ n \not= AV[\sigma]]s} = tt$
+					\DisplayProof								& $if {\cal B} {[ n \not= AV[\sigma]]s} = tt$
 
 \end{tabular}
 \newline
@@ -356,7 +356,7 @@ Hierbij wordt de loop uitgevoerd zolang de waarde van de cel ongelijk is aan nul
 $[Loop_{ns}^{tt^2}]$	&	\AxiomC{$\langle S, s \rangle \rightarrow s'$}
 					\AxiomC{$\langle $($S$)$, s' \rangle \rightarrow s'' $}
 					\BinaryInfC{$\langle $($S$)$, s \rangle \rightarrow  s'' $}
-					\DisplayProof								& $if {\cal B} _{[0 \not= AV[\sigma]]s} = tt$
+					\DisplayProof								& $if {\cal B} {[0 \not= AV[\sigma]]s} = tt$
 
 \end{tabular}
 \newline
@@ -371,7 +371,7 @@ Beide regels stoppen de uitvoering van de loop als de waarde in de cel gelijk is
 \begin{tabular}[h]{c c c}
 
 $[Loop_{ns}^{ff^1}]$	&	\AxiomC{$\langle $($nS$)$, s \rangle \rightarrow  s $}
-					\DisplayProof								& $if {\cal B}_{[n \not= AV[\sigma]]s} = ff$
+					\DisplayProof								& $if {\cal B} {[n \not= AV[\sigma]]s} = ff$
 
 \end{tabular}
 \newline
@@ -381,7 +381,7 @@ $[Loop_{ns}^{ff^1}]$	&	\AxiomC{$\langle $($nS$)$, s \rangle \rightarrow  s $}
 \begin{tabular}[h]{c c c}
 
 $[Loop_{ns}^{ff^2}]$	&	\AxiomC{$\langle $($S$)$, s \rangle \rightarrow  s $}
-					\DisplayProof								& $if {\cal B}_{[0 \not= AV(\sigma)]s} = ff$
+					\DisplayProof								& $if {\cal B} {[0 \not= AV(\sigma)]s} = ff$
 
 \end{tabular}
 \newline
@@ -399,7 +399,7 @@ Als er namelijk een waarde wordt opgegeven dan wordt dit uitgevoerd in combinati
 Als er geen waarde wordt opgegeven wordt er een waarde van de stack gepopt en gebruikt.
 Voor al deze gevallen moeten drie aparte regels opgesteld worden. 
 \'E\'en om een opgegeven waarde te herkennen in het argument en twee voor het gebruik van de stack: \'e\'en waarin de stack leeg is (foutafhandeling) en \'e\'en waarin de stack niet leeg is en er een waarde gepopt kan worden.
-\newline
+
 \subsubsection{+ regel}
 
 De $+^n_{ns}$ regel wordt gebruikt om het argument op te tellen bij de huidige waarde in de cel.
@@ -426,19 +426,19 @@ $[+_{ns}]$	&	\AxiomC{$\langle $+$, (\sigma, AV, \rho, \theta, O) \rangle \righta
 
 \end{tabular}
 \newline
-\indent\indent\indent\indent$if {\cal B} _{[\theta[0] \neq undefined]s} == tt $
-
-\subsubsection{- regel}
+\indent\indent\indent\indent$if {\cal B} {[\theta[0] \neq undefined]s} == tt $
+\newline
+\newline
 \begin{tabular}[h]{l c r}
 
-	$[+_{ns}]$	&	\AxiomC{$\langle $+$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho+\Delta, \theta, O \|$"Stack is empty"$ \| newline)$}
+	$[+_{ns}]$	&	\AxiomC{$\langle $+$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho+\Delta, \theta, O \|$Stack is empty$ \| newline)$}
 		  \DisplayProof & %$if {\cal B} _{[\theta[0] \neq undefined]s} == ff $
 
 \end{tabular}
 \newline
 \indent\indent\indent\indent$if {\cal B} _{[\theta[0] \neq undefined]s} == ff $
-\newline
-\newline
+
+\subsubsection{- regel}
 De $-^n_{ns}$ regel wordt gebruikt om een het argument af te trekken van de huidige waarde in de cel.
 \newline
 \newline
@@ -466,16 +466,17 @@ $[-_{ns}]$	&	\AxiomC{$\langle $-$, (\sigma, AV, \rho, \theta, O) \rangle \righta
 
 \end{tabular}
 \newline
-\indent\indent\indent\indent $if {\cal B} _{[\theta[0] \neq undefined]s} == tt $
+\indent\indent\indent\indent $if {\cal B} {[\theta[0] \neq undefined]s} == tt $
+\newline
 \newline
 \begin{tabular}[h]{l c r}
 
-$[-_{ns}]$	&	\AxiomC{$\langle $-$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho+\Delta, \theta, O \| $"Stack is empty"$ \| newline)$}
+$[-_{ns}]$	&	\AxiomC{$\langle $-$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho+\Delta, \theta, O \| $Stack is empty$ \| newline)$}
 		  \DisplayProof & %$if {\cal B} _{[\theta[0] \neq undefined]s} == tt $
 
 \end{tabular}
 \newline
-\indent\indent\indent\indent$if {\cal B} _{[\theta[0] \neq undefined]s} == tt $
+\indent\indent\indent\indent$if {\cal B} {[\theta[0] \neq undefined]s} == tt $
 
 %\begin{prooftree}
 %	\AxiomC{$\langle $-$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma] - \theta[0], \rho, \theta[1...], O)$}
@@ -502,19 +503,19 @@ De $*_{ns}$ regel wordt gebruikt om een waarde van de stack te poppen en de huid
 \begin{tabular}[h]{l c r}
 
 $[*_{ns}]$	&	\AxiomC{$\langle $*$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma \mapsto AV[\sigma]*\theta[0]], \rho+\Delta, \theta[1...], O)$}
-		  \DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined]s} == tt $
+		  \DisplayProof & $if {\cal B} {[\theta[0] \neq undefined]s} == tt $
 
 \end{tabular}
 \newline
 \newline
 \begin{tabular}[h]{l c r}
 
-$[*_{ns}]$	&	\AxiomC{$\langle $*$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma \mapsto 0], \rho+\Delta, \theta, O \| $"Stack is empty"$ \| newline)$}
+$[*_{ns}]$	&	\AxiomC{$\langle $*$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma \mapsto 0], \rho+\Delta, \theta, O \| $Stack is empty$ \| newline)$}
 		  \DisplayProof & %$if {\cal B} _{[\theta[0] \neq undefined]s} == ff $
 
 \end{tabular}
 \newline
-\indent\indent\indent\indent$if {\cal B} _{[\theta[0] \neq undefined]s} == ff $
+\indent\indent\indent\indent$if {\cal B} {[\theta[0] \neq undefined]s} == ff $
 %\begin{prooftree}
 %	\AxiomC{$\langle $*$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma]*\theta[0), \rho, \theta[1...], O)$}
 %\end{prooftree}
@@ -526,19 +527,19 @@ De $/^n_{ns}$ regel wordt gebruikt om de huidige waarde in de cel te delen met h
 \begin{tabular}[h]{l c r}
 
 $[/^n_{ns}]$	&	\AxiomC{$\langle $/$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma \mapsto AV[\sigma]/n], \rho+\Delta, \theta, O)$}
-				\DisplayProof & $if {\cal B} _{[n \neq 0]s} == tt $
+				\DisplayProof & $if {\cal B} {[n \neq 0]s} == tt $
 
 \end{tabular}
 \newline
 \newline
 \begin{tabular}[h]{l c r}
 
-$[/^n_{ns}]$	&	\AxiomC{$\langle $/$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho+\Delta, \theta, O \| $"Only Chuck Norris can divide by zero"$ \| newline)$}
+$[/^n_{ns}]$	&	\AxiomC{$\langle $/$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho+\Delta, \theta, O \| $Only Chuck Norris can divide by zero$ \| newline)$}
 				\DisplayProof & %$if {\cal B} _{[n \neq 0]s} == ff $
 
 \end{tabular}
 \newline
-\indent\indent\indent\indent$if {\cal B} _{[n \neq 0]s} == ff $
+\indent\indent\indent\indent$if {\cal B} {[n \neq 0]s} == ff $
 \newline
 %\end{table}
 %\begin{prooftree}
@@ -551,20 +552,23 @@ De $/_{ns}$ regel wordt gebruikt om een waarde van de stack te poppen en de huid
 \begin{tabular}[h]{l c r}
 
 $[/_{ns}]$	&	\AxiomC{$\langle $/$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma \mapsto AV[\sigma]/\theta[0]], \rho+\Delta, \theta[1...], O)$}
-	   \DisplayProof & $if {\cal B} _{[\theta[0] \neq undefined \land \theta[0] \neq 0]s} == tt $
+	   \DisplayProof & %$if {\cal B} {[\theta[0] \neq undefined \land \theta[0] \neq 0]s} == tt $
 
 \end{tabular}
-\newline\newline
+\newline
+\indent\indent\indent\indent$if {\cal B} {[\theta[0] \neq undefined \land \theta[0] \neq 0]s} == tt $
+\newline
+\newline
 \begin{tabular}[h]{l c r}
 
-$[/_{ns}]$	&	\AxiomC{$\langle $/$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho+\Delta, \theta, O \| $"Stack is empty"$ \| newline \|$ }
+$[/_{ns}]$	&	\AxiomC{$\langle $/$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho+\Delta, \theta, O \| $Stack is empty$ \| newline \|$ }
 		  \DisplayProof & %$if {\cal B} _{[\theta[0] \neq undefined \land \theta[0] \neq 0]s} == ff $
 
 \end{tabular}
 \newline
-\indent\indent\indent\indent\indent\indent\indent\indent\indent"Only Chuck Norris can divide by zero"$ \| newline)$
+\indent\indent\indent\indent\indent\indent\indent\indent\indent Only Chuck Norris can divide by zero$ \| newline)$
 \newline
-\indent\indent\indent\indent$if {\cal B} _{[\theta[0] \neq undefined \land \theta[0] \neq 0]s} == ff $
+\indent\indent\indent\indent$if {\cal B} {[\theta[0] \neq undefined \land \theta[0] \neq 0]s} == ff $
 %\begin{prooftree}
 %	\AxiomC{$\langle $/$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma]/\theta[0], \rho, \theta[1...], O)$}
 %\end{prooftree}
@@ -576,19 +580,19 @@ De $\%^n_{ns}$ regel wordt gebruikt om de huidige waarde in de cel te vervangen 
 \begin{tabular}[h]{l r c}
 
 $[\%^n_{ns}]$	&	\AxiomC{$\langle $\%$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma \mapsto AV[\sigma] \%n], \rho+\Delta, \theta, O)$}
-			    \DisplayProof & $if {\cal B} _{[n \neq 0]s} == tt $
+			    \DisplayProof & $if {\cal B} {[n \neq 0]s} == tt $
 
 \end{tabular}
 \newline
 \newline
 \begin{tabular}[h]{l r c}
 
-$[\%^n_{ns}]$	&	\AxiomC{$\langle $\%$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho+\Delta, \theta, O \| $"Only Chuck Norris can divide by zero"$ \| newline )$}
+$[\%^n_{ns}]$	&	\AxiomC{$\langle $\%$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho+\Delta, \theta, O \| $Only Chuck Norris can divide by zero$ \| newline )$}
 			    \DisplayProof & %$if {\cal B} _{[n \neq 0]s} == ff $
 
 \end{tabular}
 \newline
-\indent\indent\indent\indent$if {\cal B} _{[n \neq 0]s} == ff $
+\indent\indent\indent\indent$if {\cal B} {[n \neq 0]s} == ff $
 \newline
 %\end{table}
 %\begin{prooftree}
@@ -605,19 +609,19 @@ $[\%_{ns}]$	&	\AxiomC{$\langle $\%$, (\sigma, AV, \rho, \theta, O) \rangle \righ
 
 \end{tabular}
 \newline
-\indent\indent\indent\indent$if {\cal B} _{[\theta[0] \neq undefined \land \theta[0] \neq 0]s} == tt $
+\indent\indent\indent\indent$if {\cal B} {[\theta[0] \neq undefined \land \theta[0] \neq 0]s} == tt $
 \newline
 \newline
 \begin{tabular}[h]{l c r}
 
-$[\%_{ns}]$	&	\AxiomC{$\langle $\%$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho+\Delta, \theta, O \| $"Stack is empty"$ \| newline \| $}
+$[\%_{ns}]$	&	\AxiomC{$\langle $\%$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho+\Delta, \theta, O \| $Stack is empty$ \| newline \| $}
 		   \DisplayProof & %$if {\cal B} _{[\theta[0] \neq undefined \land \theta[0] \neq 0]s} == ff $
 
 \end{tabular}
 \newline
-\indent\indent\indent\indent\indent\indent\indent\indent\indent"Only Chuck Norris can divide by zero"$ \| newline)$
+\indent\indent\indent\indent\indent\indent\indent\indent\indent Only Chuck Norris can divide by zero$ \| newline)$
 \newline
-\indent\indent\indent\indent$if {\cal B} _{[\theta[0] \neq undefined \land \theta[0] \neq 0]s} == ff $
+\indent\indent\indent\indent$if {\cal B} {[\theta[0] \neq undefined \land \theta[0] \neq 0]s} == ff $
 %\begin{prooftree}
 %	\AxiomC{$\langle $\%$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma] \% \theta[0], \rho, \theta[1...], O)$}
 %\end{prooftree}
@@ -879,7 +883,7 @@ De afleidingsboom voor dit programma begint bij Figure 5 en maakt gebruik van Fi
 \end{figure}
 
 \begin{figure}[h!]
-\caption{$Boom$
+\caption{Boom! loop via de ene manier.
 		\\$s_4: (\sigma, AV[\sigma \mapsto 2], 5\Delta +1, \theta, O||2||newline)$, uit Figure 1.
 		\\$s_8: (\sigma, AV[\sigma \mapsto 1], 9\Delta +2, \theta, O||2||newline||1||newline)$, uit Figure 2.
 		\\$s_{12}:  (\sigma, AV[\sigma \mapsto 0], 13\Delta +3, \theta, O||2||newline||1||newline||0||newline)$, uit Figure 3.
@@ -1060,7 +1064,7 @@ De afleidingsboom wordt weergegeven in Figure 10 en maakt verder gebruik van de 
 \end{figure}
 
 \begin{figure}[h!]
-\caption{$Boom$
+\caption{Boom! loop via de andere manier.
 		\\$s_4: (\sigma, AV[\sigma \mapsto 2], 5\Delta +1, \theta, O||2||newline)$, uit Figure 6.
 		\\$s_8: (\sigma, AV[\sigma \mapsto 1], 9\Delta +2, \theta, O||2||newline||1||newline)$, uit Figure 7.
 		\\$s_{12}:  (\sigma, AV[\sigma \mapsto 0], 13\Delta +3, \theta, O||2||newline||1||newline||0||newline)$, uit Figure 8.
@@ -1100,12 +1104,12 @@ De afleidingsboom wordt weergegeven in Figure 10 en maakt verder gebruik van de 
 In dit voorbeeld zullen we nog twee interesante eigenschappen van Foo laten zien (ten opzichte van While), namelijk de navigatieregels voor het navigeren in de array en hoe Foo met fouten omgaat als er bijvoorbeeld een waarde van de stack wordt gepopt, terwijl deze leeg is.
 
 \begin{figure}[h!]
-\caption{$T_6$
+\caption{Navigatie voorbeeld
 		\\$s    : (\sigma = 0, AV, \rho = 0, \theta, O)$
 		\\$s_{1}: (\sigma, AV, \Delta, 1\|\theta, O)$
 		\\$s_{2}: (1, AV, 2\Delta, 1\|\theta, O)$
 		\\$s_{3}: (1, AV[\sigma \mapsto \theta[0]], 3\Delta, \theta[1...], O)$
-		\\$s_{4}: (1, AV[0 \mapsto 1, 1 \mapsto 0], 4\Delta, \theta, O \| $"Stack is empty"$ \| newline)$
+		\\$s_{4}: (1, AV[0 \mapsto 1, 1 \mapsto 0], 4\Delta, \theta, O \| $Stack is empty$ \| newline)$
 }
 %\centering
 \begin{prooftree}
@@ -1164,11 +1168,10 @@ Aan de hand van de analyse hebben we aangetoond dat de natuurlijke semantiekrege
 Het is echter mogelijk om oneindige loops in Foo te maken, bijvoorbeeld:
 \[(1)\]
 
+Of door in de body van de loop, de celwaarde aan te passen, zoals beschreven in 4.2.
 Het is niet mogelijk om dit te analyseren met onze semantiekregels, want het is niet mogelijk oneindige bomen te creeëren in natuurlijke semantiek. 
 Om dit wel te kunnen analyseren zouden we gebruik moeten maken Structurele Operationele Semantiek, want daar het is mogelijk om oneindige afleidingsrijen te maken. 
-Een SOS-regel die we zouden kunnen gebruiken om dit te analyseren ziet er als volgt uit: ...
-
-We hebben echter meer SOS-regels nodig om programma's volledig te analyseren. Dit valt buiten de scope van dit project en zal dus in een vervolg op dit project verder uitgewerkt moeten worden.
+Dit valt buiten de scope van ons project en zal dus in een vervolg op dit project verder uitgewerkt moeten worden.
 
 %\bibliographystyle{plain} % amsalpha
 %\bibliography{}
