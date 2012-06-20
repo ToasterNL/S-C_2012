@@ -102,9 +102,9 @@ Dit programma is dus een teller op zich.
 Zouden we de waarde 10 achter de \#-operator zetten, dan zou het programma tien seconden wachten en in totaal 100 seconden duren.
 
 Deze instructie lijkt qua effect in de taal erg op de {\bf\verb|<skip>|}-regel in While.
+Omdat in Foo geen parallele operaties mogelijk zijn is het onmogelijk om door deze operator het strikt logisch gedrag van een programma te veranderen.
 Het enige dat veranderd is ten opzichte van de vorige state is de verstreken tijd.
 Om dit te simuleren drukken we in onze semantiek uit dat iedere operatie een bepaalde tijd kost, waarbij pauzeer-operaties een opgegeven aantal seconden duren.
-Omdat in Foo geen parallele operaties mogelijk zijn is het onmogelijk om door deze operator het strikt logisch gedrag van een programma te veranderen.
 De andere operaties hebben een kortere, zelfs verwaarloosbare tijdsduur afhankelijk van de gebruikte Foo-machine, die verder ook niet van invloed is op de semantiek van Foo.
 Door deze tijdswaarde in ons model op te nemen kunnen we laten zien dat er bij pauzeer-operaties inderdaad een niet-verwaarloosbare tijd is verstreken.
 
