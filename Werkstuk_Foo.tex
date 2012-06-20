@@ -191,10 +191,10 @@ Verder maken we gebruik van wat hulpsymbolen en -functies, voor notatie en taalf
 \begin{tabular}{ | l | p{12cm} |}
     \hline
     Teken of functie & Betekenis \\ \hline
-    $newline$  & Met dit symbool bedoelen we de character-waarde van het newline symbool in ASCII. \\ \hline
-    $undef$    & Met dit symbool bedoelen we een ongedefinieerde waarde, zoals bij een fout als resultaat kan optreden. \\ \hline
-    $ascii(n)$ & Deze functie vertaalt een numerieke waarde (het argument) naar een reeks waardes voor de ASCII-symbolen die deze waarde decimaal weergeven. \\ \hline
-    $hex(n)$   & Deze functie vertaalt een numerieke waarde (het argument) naar een reeks waardes voor de ASCII-symbolen die deze waarde hexadecimaal weergeven. \\ \hline
+    $newline$   & Met dit symbool bedoelen we de character-waarde van het newline symbool in ASCII. \\ \hline
+    $undefined$ & Met dit symbool bedoelen we een ongedefinieerde waarde, zoals bij een fout als resultaat kan optreden. \\ \hline
+    $ascii(n)$  & Deze functie vertaalt een numerieke waarde (het argument) naar een reeks waardes voor de ASCII-symbolen die deze waarde decimaal weergeven. \\ \hline
+    $hex(n)$    & Deze functie vertaalt een numerieke waarde (het argument) naar een reeks waardes voor de ASCII-symbolen die deze waarde hexadecimaal weergeven. \\ \hline
 \end{tabular}
 
 
@@ -270,7 +270,7 @@ Het eerste (index nul) element van de stack wordt gebruikt, en in de volgende st
 \newline
 \begin{tabular}[h]{l c r}
 
-	$[ass^s_{ns}]$	&	\AxiomC{$\langle $\&$, (\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow (\sigma, AV[\sigma \mapsto 0], \rho+\Delta, \theta, O \| $Stack is empty$ \| newline)$}
+	$[ass^s_{ns}]$	&	\AxiomC{$\langle $\&$, (\sigma, AV(\sigma), \rho, \theta, O) \rangle \rightarrow (\sigma, AV[\sigma \mapsto undefined], \rho+\Delta, \theta, O \| $Stack is empty$ \| newline)$}
 		\DisplayProof & %$if {\cal B} _{[\theta[0] \neq undefined]s} == ff $
 
 \end{tabular}
@@ -441,7 +441,7 @@ $[+_{ns}]$	&	\AxiomC{$\langle $+$, (\sigma, AV, \rho, \theta, O) \rangle \righta
 \newline
 \begin{tabular}[h]{l c r}
 
-	$[+_{ns}]$	&	\AxiomC{$\langle $+$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho+\Delta, \theta, O \|$Stack is empty$ \| newline)$}
+	$[+_{ns}]$	&	\AxiomC{$\langle $+$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma \mapsto undefined], \rho+\Delta, \theta, O \|$Stack is empty$ \| newline)$}
 		  \DisplayProof & %$if {\cal B} _{[\theta[0] \neq undefined]s} == ff $
 
 \end{tabular}
@@ -481,7 +481,7 @@ $[-_{ns}]$	&	\AxiomC{$\langle $-$, (\sigma, AV, \rho, \theta, O) \rangle \righta
 \newline
 \begin{tabular}[h]{l c r}
 
-$[-_{ns}]$	&	\AxiomC{$\langle $-$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho+\Delta, \theta, O \| $Stack is empty$ \| newline)$}
+$[-_{ns}]$	&	\AxiomC{$\langle $-$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma \mapsto undefined], \rho+\Delta, \theta, O \| $Stack is empty$ \| newline)$}
 		  \DisplayProof & %$if {\cal B} _{[\theta[0] \neq undefined]s} == tt $
 
 \end{tabular}
@@ -520,7 +520,7 @@ $[*_{ns}]$	&	\AxiomC{$\langle $*$, (\sigma, AV, \rho, \theta, O) \rangle \righta
 \newline
 \begin{tabular}[h]{l c r}
 
-$[*_{ns}]$	&	\AxiomC{$\langle $*$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma \mapsto 0], \rho+\Delta, \theta, O \| $Stack is empty$ \| newline)$}
+$[*_{ns}]$	&	\AxiomC{$\langle $*$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma \mapsto undefined], \rho+\Delta, \theta, O \| $Stack is empty$ \| newline)$}
 		  \DisplayProof & %$if {\cal B} _{[\theta[0] \neq undefined]s} == ff $
 
 \end{tabular}
@@ -575,7 +575,7 @@ $[/_{ns}]$	&	\AxiomC{$\langle $/$, (\sigma, AV, \rho, \theta, O) \rangle \righta
 \newline
 \begin{tabular}[h]{l c r}
 
-$[/_{ns}]$	&	\AxiomC{$\langle $/$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho+\Delta, \theta, O \| $Stack is empty$ \| newline \|$ }
+$[/_{ns}]$	&	\AxiomC{$\langle $/$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma \mapsto undefined], \rho+\Delta, \theta, O \| $Stack is empty$ \| newline \|$ }
 		  \DisplayProof & %$if {\cal B} _{[\theta[0] \neq undefined \land \theta[0] \neq 0]s} == ff $
 
 \end{tabular}
@@ -630,7 +630,7 @@ $[\%_{ns}]$	&	\AxiomC{$\langle $\%$, (\sigma, AV, \rho, \theta, O) \rangle \righ
 \newline
 \begin{tabular}[h]{l c r}
 
-$[\%_{ns}]$	&	\AxiomC{$\langle $\%$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho+\Delta, \theta, O \| $Stack is empty$ \| newline \| $}
+$[\%_{ns}]$	&	\AxiomC{$\langle $\%$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma \mapsto undefined], \rho+\Delta, \theta, O \| $Stack is empty$ \| newline \| $}
 		   \DisplayProof & %$if {\cal B} _{[\theta[0] \neq undefined \land \theta[0] \neq 0]s} == ff $
 
 \end{tabular}
@@ -1131,7 +1131,7 @@ In dit voorbeeld zullen we nog twee interesante eigenschappen van Foo laten zien
 		\\$s_{1}: (\sigma, AV, \Delta, 1\|\theta, O)$
 		\\$s_{2}: (1, AV, 2\Delta, \theta, O)$
 		\\$s_{3}: (1, AV[\sigma \mapsto \theta[0]], 3\Delta, \theta[1...], O)$
-		\\$s_{4}: (1, AV[\sigma \mapsto undef], 4\Delta, \theta, O \| $Stack is empty$ \| newline)$
+		\\$s_{4}: (1, AV[\sigma \mapsto undefined], 4\Delta, \theta, O \| $Stack is empty$ \| newline)$
 }
 %\centering
 \begin{prooftree}
