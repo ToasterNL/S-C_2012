@@ -83,13 +83,14 @@ Programma's in Foo stoppen als de interpreter aan het einde van de programmacode
 \end{center}
 
 
-In het werkstuk van Talen \& Automaten hebben we aangetoond dat Foo een niet-reguliere taal is, maar wel een contextvrije taal.
+In het werkstuk van Talen \& Automaten hebben we reeds aangetoond dat Foo een niet-reguliere taal is, maar wel een contextvrije taal.
 
 \section{Interessante constructies in Foo}
 
 Foo bevat net als de taal While een beperkte instructieset. 
 Foo heeft een aantal constructies die niet voorkomen in While, wat Foo ten opzichte van While interessant maakt.
-Een aantal constructies die interessant zijn, zoals de pauzeer (\#) operatie, gebruik van een standard output en foutafhandeling, zullen we in dit hoofdstuk bespreken. %als inherent taalonderdeel, in tegenstelling tot While dat stacks slechts als intern berekeningsmodel gebruikt.
+%Een aantal constructies die interessant zijn, zoals de pauzeer (\#) operatie, gebruik van een standard output en foutafhandeling, zullen we in dit hoofdstuk bespreken. %als inherent taalonderdeel, in tegenstelling tot While dat stacks slechts als intern berekeningsmodel gebruikt.
+Constructies die wij interessant vinden in Foo zijn de mogelijkheid te pauzeren, gebruik van een standard output en foutafhandeling.
 %In dit hoofdstuk zullen we deze constructies bespreken.
 
 \subsection{Pauzeer-operatie (\#)}
@@ -117,7 +118,7 @@ Dat is ook in de werkelijkheid het geval.
 Dit gedrag kunnen we modelleren in onze state als een lijst waar telkens iets aangeplakt zal worden.
 
 Het kan handig zijn om een gelijksoortige output te defini\"eren voor het communiceren van errors, de zogenaamde standard error stream.
-Naar onze mening inzicht is het onderscheid tussen output en errors duidelijk, aangezien het gebruik van de standard output zich beperkt tot een specifieke set regels.
+Naar onze mening is het onderscheid tussen output en errors duidelijk, aangezien het gebruik van de standard output zich beperkt tot een specifieke set regels.
 Daarom hebben we voor de eenvoud en overzichtelijkheid van de regels ervoor gekozen beide soorten outputs naar een gemeenschappelijke standard output stream te sturen.
 
 Een onderdeel van de interpreter dat buiten de taal zelf valt is het mechanisme waarmee de standard output van Foo is gekoppeld aan de standard output van de interpreter.
