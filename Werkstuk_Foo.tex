@@ -49,7 +49,7 @@
 
 \section{Introductie Foo}
 
-Foo is een esoterische taal gebaseerd op `turing-tarpit'-achtige talen zoals `Brainfuck'. Het is in 2008 ontwikkeld door ene ``Feky''.
+Foo is een imperatieve esoterische taal gebaseerd op `turing-tarpit'-achtige talen zoals `Brainfuck'. Het is in 2008 ontwikkeld door ene ``Feky''.
 Taalconstructies in Foo zijn ASCII-strings die een tape met instructies, het programma voor een Foo-machine, voorstellen.
 De operaties draaien om een eendimensionale array, de standard input, die genavigeerd en bewerkt kan worden.
 Verder zijn er rekenkundige, interne stack- en kopieeroperaties aanwezig.
@@ -77,7 +77,7 @@ Programma's in Foo stoppen als de interpreter aan het einde van de programmacode
     \#                                      & 0 & Pauzeert de uitvoering van het programma voor het aantal seconden opgegeven door de laatste stack-waarde, die hiervoor gepopt wordt. \\ \hline
     (\(n\)                                  & 1 & Specificeert het begin van een loop: deze loop wordt uitgevoerd zolang de waarde in de huidige cel van de array met standard input ongelijk is aan de opgegeven waarde \(n\) (het argument). \\ \hline
     (                                       & 0 & Specificeert het begin van een loop: deze loop wordt uitgevoerd zolang de waarde in de huidige cel van de array met standard input ongelijk is aan nul. \\ \hline
-    )                                       & 0 & Specificeert het einde van een loop: er wordt teruggesprongen naar de laatste '(' tenzij de waarde van de huidige cel in de array met standard input gelijk is aan het eerder opgegeven nummer, danwel nul afhankelijk van de gekozen loop-opening. Dan wordt verder gegaan met de rest van code. \\ \hline
+    )                                       & 0 & Specificeert het einde van een loop: er wordt teruggesprongen naar de laatste '(' tenzij de waarde van de huidige cel in de array met standard input gelijk is aan de eerder opgegeven waarde, danwel nul afhankelijk van de gekozen loop-opening. Dan wordt verder gegaan met de rest van code. \\ \hline
    % \hline
     \end{tabular}
 \end{center}
@@ -87,9 +87,9 @@ In het werkstuk van Talen \& Automaten hebben we aangetoond dat Foo een niet-reg
 
 \section{Interessante constructies in Foo}
 
-Foo bevat, net als de taal While, een beperkte instructieset. 
+Foo bevat net als de taal While een beperkte instructieset. 
 Foo heeft een aantal constructies die niet voorkomen in While, wat Foo ten opzichte van While interessant maakt.
-Een aantal constructies die interessant zijn, zoals de pauzeer (\#) operatie en foutafhandeling, zullen we in dit hoofdstuk bespreken. %als inherent taalonderdeel, in tegenstelling tot While dat stacks slechts als intern berekeningsmodel gebruikt.
+Een aantal constructies die interessant zijn, zoals de pauzeer (\#) operatie, gebruik van een standard output en foutafhandeling, zullen we in dit hoofdstuk bespreken. %als inherent taalonderdeel, in tegenstelling tot While dat stacks slechts als intern berekeningsmodel gebruikt.
 %In dit hoofdstuk zullen we deze constructies bespreken.
 
 \subsection{Pauzeer-operatie (\#)}
@@ -98,33 +98,31 @@ Dit is terug te zien in het Foo programma van de terugtellende loop: \verb|&10(0
 
 {\bf \verb|#1|} betekent hier: pauzeer de rest van het programma \'e\'en seconde. 
 Pas dan wordt 1 van de huidige celwaarde afgehaald en de nieuwe waarde afgedrukt op de standard output, gevolgd door een newline karakter (ASCII waarde 10).
-Dit programma is dus een teller opzich.
+Dit programma is dus een teller op zich.
 Zouden we de waarde 10 achter de \#-operator zetten, dan zou het programma tien seconden wachten en in totaal 100 seconden duren.
 
-
-Dit lijkt in eerste instantie heel erg op de {\bf\verb|<skip>|} functie in While.
-Het enige wat veranderd is ten opzichte van de vorige state is de tijd.
-Om dit te simuleren moeten we ervoor zorgen dat iedere operatie een bepaalde tijd kost, waarbij pauzeer-operatie een opgegeven aantal seconden duurt.
-%Om dit te simuleren moeten we de tijd op het moment van uitvoeren van de pauzeer operatie uitlezen, vervolgens de ingestelde tijd laten verlopen en in de nieuwe state de verstreken tijd vertegenwoordigen.
-%We zouden dit kunnen modeleren met een interne klok die in hele secondes telt, die eigenlijk los staat van de semantiek van de taal.
-%Gebruikmakend van Structurele Operationele Semantiek zouden we wellicht deze operator een postconditie kunnen laten hebben die een ongebonden variabele (`tijd') gebruikt om de huidige waarde van de klok op te slaan en een variabele (`x') voor het argument, en aan elk (opvolgend) statement de preconditie kunnen stellen dat de waarde van `tijd' met minstens `x' seconden van de klok verschilt.
-
+Deze instructie lijkt qua effect in de taal erg op de {\bf\verb|<skip>|}-regel in While.
+Het enige dat veranderd is ten opzichte van de vorige state is de verstreken tijd.
+Om dit te simuleren drukken we in onze semantiek uit dat iedere operatie een bepaalde tijd kost, waarbij pauzeer-operaties een opgegeven aantal seconden duren.
 Omdat in Foo geen parallele operaties mogelijk zijn is het onmogelijk om door deze operator het strikt logisch gedrag van een programma te veranderen.
+De andere operaties hebben een kortere, zelfs verwaarloosbare tijdsduur afhankelijk van de gebruikte Foo-machine, die verder ook niet van invloed is op de semantiek van Foo.
+Door deze tijdswaarde in ons model op te nemen kunnen we laten zien dat er bij pauzeer-operaties inderdaad een niet-verwaarloosbare tijd is verstreken.
 
-\subsection{Foutafhandeling} % Verdere uitleg nodig. Hoe hebben we dit getest of blijkt dit uit de spec? en wat is het resultaat.
-
-Tijdens het gebruik van aritmetische expressies blijkt dat als er geen waarde wordt opgegeven, de eerste waarde van de stack wordt gebruikt. 
-Deze waarde wordt dan van de stack gepopt.
-Als er niks op de stack staat wordt er een foutmelding gegenereerd, maar de berekening wordt als nog uitgevoerd. %schijnt als nog te worden uitgevoerd.
-Door het nagaan van de referentie-implementatie van Foo hebben we geconstateerd dat in dit geval, bij het poppen van de stack namelijk de waarde nul wordt teruggegeven.
-We hebben in deze foutafhandeling echter een inconsistentie in de referentie-implementatie ontdekt, die lijkt toe te staan dat een lege stack nog eenmaal gepopt kan worden zonder een fout te rapporteren.
+\subsection{Foutafhandeling} 
+Bij Foo-operaties die geen argument vereisen wordt de eerste waarde van de stack gebruikt. 
+%Deze waarde wordt dan van de stack gepopt.
+Als de stack leeg is wordt er een foutmelding gegenereerd, maar de berekening wordt alsnog uitgevoerd met een ongeinitialiseerde stackwaarde.
+%Door het nagaan van de referentie-implementatie van Foo hebben we geconstateerd dat in dit geval bij het poppen van de stack namelijk de waarde nul wordt teruggegeven.
+We hebben voor deze foutafhandeling echter een inconsistentie in de referentie-implementatie ontdekt die toestaat dat een lege stack nog \'e\'enmaal gepopt kan worden zonder dat er een fout wordt gerapporteerd.
 Naar onze mening is dat een fout (off-by-one error) in de interpreter.
-Deze lijkt in de regel de waarde 0 te bevatten op ons testplatform, maar dat is niet iets waar de Foo-programmeur op kan rekenen.
+De ongeinitialiseerde waarde die gereturned wordt lijkt in de regel de waarde 0 te bevatten op ons testplatform, maar dat is niet iets waar de Foo-programmeur op kan rekenen.
 We hebben het genereren van de foutmelding meegenomen in onze regels voor het gebruik van stackwaardes.
 
 Een andere foutafhandeling is het delen door nul.
-Dit is niet mogelijk en als dit onverhoopt toch wordt gedaan, wordt de foutmelding gegenereerd ``Only Chuck Norris can divide by zero".
-\newpage
+Dit is natuurlijk niet mogelijk en als dit tegen de verwachting in toch voorkomt wordt de volgende foutmelding gegenereerd: \verb|``Only Chuck Norris can divide by zero''|.
+Een \textit{easter egg}!
+Dit gedrag hebben we voor de volledigheid ook meegenomen in de door ons opgestelde regels.
+
 \section{Syntax van Foo}
 In dit hoofdstuk zullen we de operaties van Foo formeler maken door een syntax op te stellen. 
 De syntax van Foo ziet er als volgt uit:
@@ -145,8 +143,6 @@ De syntax van Foo ziet er als volgt uit:
 
 
 
-
-
 \section{Natuurlijke semantiek van Foo}
 In dit hoofdstuk zullen we de operaties van Foo inzichtelijker maken door semantiekregels op te stellen.
 Aangezien Foo een imperatieve taal is zullen we gebruik maken van operationele semantiek en dan met name van natuurlijke semantiek.
@@ -162,16 +158,16 @@ Allereerst defini\"eren we de volgende symbolen en functies:
     Teken of functie & Betekenis \\ \hline
     \begin{math} \sigma \end{math} &  Dit symbool verwijst naar de index van de array en wordt geinitialiseerd met de waarde 0. \\ \hline
     \begin{math} AV \end{math} & Dit symbool staat voor de valuatie van de array met standard input. \\ \hline
-    \begin{math} \rho \end{math} &  Dit symbool staat voor de duratie van het programma in seconden. We gaan er hierbij van uit dat iedere operatie behalve het pauzeren, \begin{math}\Delta\end{math} tijd duurt. Waarbij \begin{math}\Delta\end{math} een zeer kleine tijd is, maar wel afhankelijk van de snelheid van het systeem waarop het Foo programma wordt gedraaid.  \\ \hline
-    \begin{math} \theta \end{math} & Dit symbool staat voor de stack. \begin{math}\theta[0]\end{math} staat voor de eerste waarde van de stack. Het komt voor dat bovenste waarde van de stack gepopt wordt, waarna de onderliggende waardes automatisch omhoog schuiven. Dit wordt in de semantiekregels weergeven met \begin{math}\theta[1...]\end{math}. \\ \hline %MEER UITLEG OVER STACK GEBRUIK MET SYMBOLEN
-    \begin{math} O \end{math} &  Dit symbool staat voor de stream standard output. Hieraan kunnen waardes worden geconcateneerd. \\ \hline
-    \begin{math} {\cal B} \end{math} &  Dit symbool staat voor Boolean en zal worden toegepast als er aan bepaalde condities moet worden voldaan om vervolgens een regel toe te passen. Het komt dat er meerdere condities moet worden voldaan dit wordt weergegeven met een $\land$. \\ \hline
+    \begin{math} \rho \end{math} &  Dit symbool staat voor de duratie van het programma in seconden. We gaan er hierbij van uit dat iedere operatie behalve het pauzeren, \begin{math}\Delta\end{math} tijd duurt. Waarbij \begin{math}\Delta\end{math} een zeer kleine tijd is, maar wel afhankelijk van de snelheid van het systeem waarop het Foo-programma wordt uitgevoerd.  \\ \hline
+    \begin{math} \theta \end{math} & Dit symbool staat voor de stack. \begin{math}\theta[0]\end{math} staat voor de eerste waarde van de stack, de waarde op index 0. Als de stack gepopt wordt moeten de waardes die achter dat eerste (gepopte) element liggen ieder \'e\'en plek in de stack naar voren opschuiven. Deze verschuiving bij het poppen wordt in de semantiekregels weergeven met een transformatie op de stack die voor een gegeven stack alle elementen vanaf index \'e\'en teruggeeft, \begin{math}\theta[1...]\end{math} - hierbij is dus de eerste waarde van de stack weggenomen (gepopt), die dan gebruikt kan zijn voor een andere operatie. \\ \hline
+    \begin{math} O \end{math} &  Dit symbool staat voor de stream standard output. Hieraan kunnen waardes worden geconcateneerd. Foo-programmas kunnen van deze stream gebruik maken om resultaten kenbaar te maken aan de buitenwereld. Het is logisch om in een Foo-interpreter deze outputstream aan de outputstream van de interpreter zelf te koppelen. Voor de eenvoud hebben we deze stream ook gebruikt voor het communiceren van foutmeldingen, hoewel deze in de praktijk naar een eigen stream met hetzelfde gedrag worden gestuurd. \\ \hline
+    \begin{math} {\cal B} \end{math} &  Dit symbool staat voor Boolean en zal worden toegepast als er aan bepaalde condities moet worden voldaan om vervolgens een regel toe te passen. Het komt voor dat er aan meerdere condities moet worden voldaan en dit wordt weergegeven met het conjunctie-symbool $\land$. \\ \hline
 
 \end{tabular}
 \newline
 \newline
 
-Onze state zal er als volgt uit zien:
+De state van een Foo-programma drukken we uit als:
 \[
 s = (\sigma, AV, \rho, \theta, O)
 \]
@@ -189,12 +185,25 @@ $s'$ bevat dus veranderde waardes van $\sigma, AV, \rho, \theta, O$.
 Als het nog niet duidelijk is wat er precies tijdens een transitie verandert, omdat dit afhankelijk is van nog uit te voeren states, zullen we dit aangeven met alleen $s'$.
 
 
+Verder maken we gebruik van wat hulpsymbolen en -functies, voor notatie en taalfeatures die platformafhankelijk zijn.
+\newline
+
+\begin{tabular}{ | l | p{12cm} |}
+    \hline
+    Teken of functie & Betekenis \\ \hline
+    $newline$  & Met dit symbool bedoelen we de character-waarde van het newline symbool in ASCII. \\ \hline
+    $undef$    & Met dit symbool bedoelen we een ongedefinieerde waarde, zoals bij een fout als resultaat kan optreden. \\ \hline
+    $ascii(n)$ & Deze functie vertaalt een numerieke waarde (het argument) naar een reeks waardes voor de ASCII-symbolen die deze waarde decimaal weergeven. \\ \hline
+    $hex(n)$   & Deze functie vertaalt een numerieke waarde (het argument) naar een reeks waardes voor de ASCII-symbolen die deze waarde hexadecimaal weergeven. \\ \hline
+\end{tabular}
+
+
 \subsection{Semantiekregels}
 Hieronder beschrijven we de semantiekregels voor Foo aan de hand van de syntax en de symbolen beschreven in de bovenstaande tabel.
 
 \subsubsection{Compositieregel}
 De compositieregel zorgt ervoor dat twee verschillende statements aan elkaar geschreven kunnen worden en is vergelijkbaar met de compositieregel uit While. 
-Bij Foo worden de statements direct aan elkaar geschreven zonder scheidingsteken, zoals de ; bij While.
+Bij Foo worden de statements direct aan elkaar geschreven zonder scheidingsteken, zoals de $;$ bij While.
 \newline
 \newline
 %\begin{table}[h]
@@ -246,7 +255,8 @@ $[ass^n_{ns}]$	&	\AxiomC{$\langle $\&$n, (\sigma, AV, \rho, \theta, O) \rangle \
 \newline
 
 De $ass^s_{ns}$ regel zet een waarde die van de stack gepopt wordt in de huidige arraycel.
-Het eerste (index nul) element van de stack wordt gebruikt, en in de volgende state wordt de stack gegeven vanaf het tweede (index \'e\'en).
+Het eerste (index nul) element van de stack wordt gebruikt, en in de volgende state wordt de stack gegeven vanaf het tweede (index \'e\'en) element.
+%De stack is zo dus gepopt, en in de volgende regels die de stack poppen zal ditzelfde principe worden gebruikt.
 \newline
 \newline
 %\begin{table}[h]
@@ -292,7 +302,7 @@ $[push^{AV}_{ns}]$	&	\AxiomC{$\langle $@$, (\sigma, AV, \rho, \theta, O) \rangle
 \newline
 
 \subsubsection{Pauzeerregel}
-De pauzeerregel zoals hieronder staat beschreven is vergelijkbaar met de skipregel uit While. 
+De pauzeerregel zoals hieronder staat beschreven is vergelijkbaar met de \verb|<skip>|-regel uit While. 
 Als dit statement wordt uitgevoerd wordt er het opgeven aantal seconden gewacht met de uitvoering van de rest van het programma. 
 Het is tijdens het pauzeren niet mogelijk iets in de state te veranderen, waardoor de state na het pauzeren niet veranderd is op de verstreken tijd na.
 Net als andere operatoren kan de pauzeer-operatie met en zonder argument gebruikt worden, maar de documentatie van Foo conflicteert op dit punt met de referentie-implementatie.
@@ -395,8 +405,8 @@ De invariant-waarde waartegen vergeleken wordt (0 of een argument) is echter nie
 \subsection{Aritmetische expressies}
 Hieronder volgen de semantiekregels voor de aritmetische expressies die gebruikt kunnen worden in Foo.
 Ook hier zit een lastig punt met betrekking tot de semantiekregels.
-Als er namelijk een waarde wordt opgegeven dan wordt dit uitgevoerd in combinatie met de huidige waarde van de cel.
-Als er geen waarde wordt opgegeven wordt er een waarde van de stack gepopt en gebruikt.
+Als er een argument wordt opgegeven dan wordt de operatie uitgevoerd in combinatie met de huidige waarde van de cel.
+Als er geen argument wordt opgegeven wordt er een waarde van de stack gepopt en als argument gebruikt.
 Voor al deze gevallen moeten drie aparte regels opgesteld worden. 
 \'E\'en om een opgegeven waarde te herkennen in het argument en twee voor het gebruik van de stack: \'e\'en waarin de stack leeg is (foutafhandeling) en \'e\'en waarin de stack niet leeg is en er een waarde gepopt kan worden.
 
@@ -521,6 +531,7 @@ $[*_{ns}]$	&	\AxiomC{$\langle $*$, (\sigma, AV, \rho, \theta, O) \rangle \righta
 %\end{prooftree}
 \subsubsection{/ regel}
 De $/^n_{ns}$ regel wordt gebruikt om de huidige waarde in de cel te delen met het argument.
+Extra bijzonderheid is dat er niet door nul gedeeld mag worden, waarvoor een speciaal \textit{easter egg} geval gedefinieerd is.
 \newline
 \newline
 %\begin{table}[h]
@@ -547,6 +558,9 @@ $[/^n_{ns}]$	&	\AxiomC{$\langle $/$n, (\sigma, AV, \rho, \theta, O) \rangle \rig
 %\end{prooftree}
 
 De $/_{ns}$ regel wordt gebruikt om een waarde van de stack te poppen en de huidige waarde in de cel hiermee te delen.
+Opvallend is dat de berekening ook doorgezet wordt bij een fout in het poppen van de stack.
+De gegeven waarde is ongeinitialiseerd maar in de praktijk (de referentie-implementatie op ons testplatform) bevonden de waarde nul te hebben.
+Omdat beide gevallen ons geen geldige delers opleveren komt hier ook de \textit{easter egg} terug.
 \newline
 \newline
 \begin{tabular}[h]{l c r}
@@ -574,6 +588,7 @@ $[/_{ns}]$	&	\AxiomC{$\langle $/$, (\sigma, AV, \rho, \theta, O) \rangle \righta
 %\end{prooftree}
 \subsubsection{\% regel}
 De $\%^n_{ns}$ regel wordt gebruikt om de huidige waarde in de cel te vervangen met zichzelf modulus het argument.
+Ook hier mag het argument niet nul zijn.
 \newline
 \newline
 %\begin{table}[h]
@@ -599,7 +614,8 @@ $[\%^n_{ns}]$	&	\AxiomC{$\langle $\%$n, (\sigma, AV, \rho, \theta, O) \rangle \r
 %	\AxiomC{$\langle $\%$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV[\sigma] \mapsto AV[\sigma] \%n, \rho, \theta, O)$}
 %\end{prooftree}
 
-De $\%_{ns}$ regel wordt gebruikt om de huidige waarde in de cel te vervangen met zichzelf modulus een waar de die van de stack wordt gepopt.
+De $\%_{ns}$ regel wordt gebruikt om de huidige waarde in de cel te vervangen met zichzelf modulus het argument, dat van de stack wordt gepopt.
+Ook hier mag het argument niet nul zijn of anderszins een ongedefinieerde berekening opleveren, en weer wordt bij het poppen van een lege stack een ongeinitialiseerde en daarom onbruikbare waarde teruggegeven.
 \newline
 \newline
 \begin{tabular}[h]{l c r}
@@ -630,14 +646,20 @@ $[\%_{ns}]$	&	\AxiomC{$\langle $\%$, (\sigma, AV, \rho, \theta, O) \rangle \righ
 %Vanaf hier hebben we een extra state-element, een standaard output stream \(O\) nodig.
 
 \subsection{Standard output}
-In de referentie-implementatie van Foo hebben we ontdekt dat de standard output gebufferd wordt, zoals normaal in Unix-programma's.
-Dit maakt het gedrag van operaties op de standard output wat onvoorspelbaar, zeker in combinatie met loopen en het pauzeren van het programma.
-Bij het printen van strings in een loop bijvoorbeeld is het effect dat de standard output wordt gebuffered totdat het programma afgelopen is, of de buffergrootte van de standard output wordt overschreven.
+Hier volgen de regels voor het gebruik van de standard output in Foo.
+Ter versimpeling gebruiken we de standard outputstream voor output (via deze regels) maar ook voor het communiceren van errors die bij het evalueren van het programma optreden.
+
+Een onderdeel van de interpreter dat buiten de taal zelf valt is het mechanisme waarmee de standard output van Foo is gekoppeld aan de standard output van de interpreter.
+In onze testomgevingen gebaseerd op GNU/Linux en Cygwin hebben we ontdekt dat de standard output van de referentie-implementatie gebufferd wordt, zoals normaal in Unix-programma's.
+Dit maakt het gedrag van operaties op de standard output wat moeilijk zichtbaar, zeker in combinatie met loopen en het pauzeren van het programma.
+Bijvoorbeeld bij het printen van strings in een loop is het effect dat de standard output wordt gebuffered totdat het programma afgelopen is, of de platformafhankelijke buffergrootte van de gegenereerde standard output wordt overschreven en het buffer ge\textit{flushed} wordt.
 Om bij een operatie op de standard output (ook bij loopen) direct resultaat te kunnen zien is het nodig het standard output buffer te `flushen' nadat er output gegenereerd is.
+
 We hebben voor ons onderzoek deze toevoeging in de referentieimplementatie gemaakt, en zijn van plan dit ook voor te leggen aan ``Feky'', de auteur van Foo.
+Met deze kleine platformafhankelijke aanpassing gedragen Foo-programmas die gebruik maken van de standard output in onze interpreter zich niet alleen formeel, maar ook zichtbaar precies volgens onze regels.
 
 \subsubsection{stdout regel}
-De $stdout_{ns}$ regel wordt gebruikt om een letterlijke string op de standard output te zetten door middel van concatenatie.
+De $stdout_{ns}$ regel wordt gebruikt om een letterlijke string (een rijtje van ASCII-characters dat geen \verb|"| bevat), hier aangegeven met $<str>$ op de standard output te zetten door middel van concatenatie.
 \newline
 \newline
 \begin{tabular}[h]{c c}
@@ -709,7 +731,7 @@ De $print^h_{ns}$ regel print in ASCII de hexadecimale represenatie van de huidi
 \newline
 \begin{tabular}[h]{c c}
 
-$[print^h_{ns}]$	&	\AxiomC{$\langle $\$h$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho+\Delta, \theta, O \| ascii(hex(AV[\sigma])))$}
+$[print^h_{ns}]$	&	\AxiomC{$\langle $\$h$, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho+\Delta, \theta, O \| hex(AV[\sigma]))$}
 				\DisplayProof
 
 \end{tabular}
@@ -723,7 +745,7 @@ De $print^{hn}_{ns}$ regel print in ASCII de hexadecimale represenatie van het a
 \newline
 \begin{tabular}[h]{c c}
 
-$[print^{hn}_{ns}]$	&	\AxiomC{$\langle $\$h$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho+\Delta, \theta, O \| ascii(hex(n)))$}
+$[print^{hn}_{ns}]$	&	\AxiomC{$\langle $\$h$n, (\sigma, AV, \rho, \theta, O) \rangle \rightarrow  (\sigma, AV, \rho+\Delta, \theta, O \| hex(n))$}
 					\DisplayProof
 
 \end{tabular}
@@ -1107,9 +1129,9 @@ In dit voorbeeld zullen we nog twee interesante eigenschappen van Foo laten zien
 \caption{Navigatie voorbeeld
 		\\$s    : (\sigma = 0, AV, \rho = 0, \theta, O)$
 		\\$s_{1}: (\sigma, AV, \Delta, 1\|\theta, O)$
-		\\$s_{2}: (1, AV, 2\Delta, 1\|\theta, O)$
+		\\$s_{2}: (1, AV, 2\Delta, \theta, O)$
 		\\$s_{3}: (1, AV[\sigma \mapsto \theta[0]], 3\Delta, \theta[1...], O)$
-		\\$s_{4}: (1, AV[0 \mapsto 1, 1 \mapsto 0], 4\Delta, \theta, O \| $Stack is empty$ \| newline)$
+		\\$s_{4}: (1, AV[\sigma \mapsto undef], 4\Delta, \theta, O \| $Stack is empty$ \| newline)$
 }
 %\centering
 \begin{prooftree}
@@ -1135,7 +1157,7 @@ In dit voorbeeld zullen we nog twee interesante eigenschappen van Foo laten zien
 \end{figure}
 
 \subsection{Case Study: Division by zero}
-Dit voorbeeld laat zien hoe Foo een deling door 0 afhandeld, door de foutmelding te geven ``Only Chuck Norris can divide by zero" en vervolgens de huidige array waarde af te drukken.
+Dit voorbeeld laat zien hoe Foo een deling door 0 afhandelt, door de foutmelding ``Only Chuck Norris can divide by zero'' te geven en vervolgens de daarvoor gewijzigde array waarde af te drukken.
 
 \begin{figure}[h!]
 \caption{Division by zero
@@ -1168,7 +1190,7 @@ Aan de hand van de analyse hebben we aangetoond dat de natuurlijke semantiekrege
 Het is echter mogelijk om oneindige loops in Foo te maken, bijvoorbeeld:
 \[(1)\]
 
-Of door in de body van de loop, de celwaarde aan te passen, zoals beschreven in 4.2.
+Of door in de body van de loop, de celwaarde die tegen de invariant gechecked wordt nooit aan te passen, zoals beschreven in 4.2.
 Het is niet mogelijk om dit te analyseren met onze semantiekregels, want het is niet mogelijk oneindige bomen te creeëren in natuurlijke semantiek. 
 Om dit wel te kunnen analyseren zouden we gebruik moeten maken Structurele Operationele Semantiek, want daar het is mogelijk om oneindige afleidingsrijen te maken. 
 Dit valt buiten de scope van ons project en zal dus in een vervolg op dit project verder uitgewerkt moeten worden.

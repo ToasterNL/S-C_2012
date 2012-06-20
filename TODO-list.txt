@@ -1,8 +1,5 @@
 TODO S&C:
 
-- beschrijving fout in de interpreter met stdout flush op linux		ARAM
-- 
-- typering van ascii/hex/int functies ARAM
 - AV omschrijving checken met verschillende maps to situaties ARAM
 
 SOS regel bedenken voor de loop regel zodat oneindige afleidingsleidingsrij kan worden bedacht + bespreken in discussie OVERLEG DOEN OF NIET
