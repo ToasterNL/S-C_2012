@@ -108,6 +108,27 @@ Omdat in Foo geen parallele operaties mogelijk zijn is het onmogelijk om door de
 De andere operaties hebben een kortere, zelfs verwaarloosbare tijdsduur afhankelijk van de gebruikte Foo-machine, die verder ook niet van invloed is op de semantiek van Foo.
 Door deze tijdswaarde in ons model op te nemen kunnen we laten zien dat er bij pauzeer-operaties inderdaad een niet-verwaarloosbare tijd is verstreken.
 
+\subsection{Standard output}
+De standard output is het kanaal waardoor resultaten uit een programma kenbaar kunnen worden gemaakt aan de omgeving.
+Zo'n output wordt vaak geimplementeerd als \textit{stream}, een reeks waarnaar geschreven of van gelezen kan worden.
+De taal Foo heeft zoals de meeste talen geen inzicht in zijn eigen output, vandaar dat voor onze doeleinden alleen het schrijven naar de output gemodelleerd dient te worden.
+%We hoeven zelfs niet onze positie in de stream bij te houden.
+Dat is ook in de werkelijkheid het geval.
+Dit gedrag kunnen we modelleren in onze state als een lijst waar telkens iets aangeplakt zal worden.
+
+Het kan handig zijn om een gelijksoortige output te defini\"eren voor het communiceren van errors, de zogenaamde standard error stream.
+Aangezien het gebruik van de standard output zich beperkt tot een specifieke set regels hebben we voor de eenvoud en overzichtelijkheid van de regels ervoor gekozen beide soorten outputs naar een gemeenschappelijke standard output stream te sturen.
+
+Een onderdeel van de interpreter dat buiten de taal zelf valt is het mechanisme waarmee de standard output van Foo is gekoppeld aan de standard output van de interpreter.
+In onze testomgevingen gebaseerd op GNU/Linux en Cygwin hebben we ontdekt dat de standard output van de referentie-implementatie gebufferd wordt, zoals normaal in Unix-programma's.
+Dit maakt het gedrag van operaties op de standard output wat moeilijk zichtbaar, zeker in combinatie met loopen en het pauzeren van het programma.
+Bijvoorbeeld bij het printen van strings in een loop is het effect dat de standard output wordt gebuffered totdat het programma afgelopen is, of de platformafhankelijke buffergrootte van de gegenereerde standard output wordt overschreven en het buffer ge\textit{flushed} wordt.
+Om bij een operatie op de standard output (ook bij loopen) direct resultaat te kunnen zien is het nodig het standard output buffer te `flushen' nadat er output gegenereerd is.
+
+We hebben voor ons onderzoek deze toevoeging in de referentieimplementatie gemaakt, en zijn van plan dit ook voor te leggen aan ``Feky'', de auteur van Foo.
+Met deze kleine platformafhankelijke aanpassing gedragen Foo-programmas die gebruik maken van de standard output in onze interpreter zich niet alleen formeel, maar ook zichtbaar precies volgens onze regels.
+
+
 \subsection{Foutafhandeling} 
 Bij Foo-operaties die geen argument vereisen wordt de eerste waarde van de stack gebruikt. 
 %Deze waarde wordt dan van de stack gepopt.
@@ -648,15 +669,6 @@ $[\%_{ns}]$	&	\AxiomC{$\langle $\%$, (\sigma, AV, \rho, \theta, O) \rangle \righ
 \subsection{Standard output}
 Hier volgen de regels voor het gebruik van de standard output in Foo.
 Ter versimpeling gebruiken we de standard outputstream voor output (via deze regels) maar ook voor het communiceren van errors die bij het evalueren van het programma optreden.
-
-Een onderdeel van de interpreter dat buiten de taal zelf valt is het mechanisme waarmee de standard output van Foo is gekoppeld aan de standard output van de interpreter.
-In onze testomgevingen gebaseerd op GNU/Linux en Cygwin hebben we ontdekt dat de standard output van de referentie-implementatie gebufferd wordt, zoals normaal in Unix-programma's.
-Dit maakt het gedrag van operaties op de standard output wat moeilijk zichtbaar, zeker in combinatie met loopen en het pauzeren van het programma.
-Bijvoorbeeld bij het printen van strings in een loop is het effect dat de standard output wordt gebuffered totdat het programma afgelopen is, of de platformafhankelijke buffergrootte van de gegenereerde standard output wordt overschreven en het buffer ge\textit{flushed} wordt.
-Om bij een operatie op de standard output (ook bij loopen) direct resultaat te kunnen zien is het nodig het standard output buffer te `flushen' nadat er output gegenereerd is.
-
-We hebben voor ons onderzoek deze toevoeging in de referentieimplementatie gemaakt, en zijn van plan dit ook voor te leggen aan ``Feky'', de auteur van Foo.
-Met deze kleine platformafhankelijke aanpassing gedragen Foo-programmas die gebruik maken van de standard output in onze interpreter zich niet alleen formeel, maar ook zichtbaar precies volgens onze regels.
 
 \subsubsection{stdout regel}
 De $stdout_{ns}$ regel wordt gebruikt om een letterlijke string (een rijtje van ASCII-characters dat geen \verb|"| bevat), hier aangegeven met $<str>$ op de standard output te zetten door middel van concatenatie.
