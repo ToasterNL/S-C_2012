@@ -82,6 +82,23 @@ Programma's in Foo stoppen als de interpreter aan het einde van de programmacode
     \end{tabular}
 \end{center}
 
+We zullen de operaties van Foo formeler maken door een syntax op te stellen. 
+De syntax van Foo ziet er als volgt uit:
+\newline
+
+\begin{math}
+{\bf S::= \verb|"c"| | \&n | \& | @n | @ | < | > | \$fn | \#a | \# | (nS) | (S) | S_{1}S_{2} }
+\newline
+\newline
+\indent{\bf c::= ASCII-symbolen| \epsilon}
+\newline
+\indent{\bf a::= n | +n | -n | *n | /n | \%n}
+\newline 
+\indent{\bf f::= c | i | h}
+\newline
+\indent{\bf n::= 0..9n | \epsilon}
+\end{math}
+\newline
 
 In het werkstuk van Talen \& Automaten hebben we reeds aangetoond dat Foo een niet-reguliere taal is, maar wel een contextvrije taal.
 
@@ -146,23 +163,8 @@ Dit is natuurlijk niet mogelijk en als dit tegen de verwachting in toch voorkomt
 Een \textit{easter egg}!
 Dit gedrag hebben we voor de volledigheid ook meegenomen in de door ons opgestelde regels.
 
-\section{Syntax van Foo}
-In dit hoofdstuk zullen we de operaties van Foo formeler maken door een syntax op te stellen. 
-De syntax van Foo ziet er als volgt uit:
-\newline
+%\section{Syntax van Foo}
 
-\begin{math}
-{\bf S::= \verb|"c"| | \&n | \& | @n | @ | < | > | \$fn | \#a | \# | (nS) | (S) | S_{1}S_{2} }
-\newline
-\newline
-\indent{\bf c::= ASCII-symbolen| \epsilon}
-\newline
-\indent{\bf a::= n | +n | -n | *n | /n | \%n}
-\newline 
-\indent{\bf f::= c | i | h}
-\newline
-\indent{\bf n::= 0..9n | \epsilon}
-\end{math}
 
 
 
@@ -1204,7 +1206,7 @@ Aan de hand van de analyse hebben we aangetoond dat de natuurlijke semantiekrege
 Het is echter mogelijk om oneindige loops in Foo te maken, bijvoorbeeld:
 \[(1)\]
 
-Of door in de body van de loop, de celwaarde die tegen de invariant gechecked wordt nooit aan te passen, zoals beschreven in 4.2.
+Of door in de body van de loop, de celwaarde die tegen de invariant gechecked wordt nooit aan te passen, zoals beschreven in 3.2.6.
 Het is niet mogelijk om dit te analyseren met onze semantiekregels, want het is niet mogelijk oneindige bomen te creeëren in natuurlijke semantiek. 
 Om dit wel te kunnen analyseren zouden we gebruik moeten maken Structurele Operationele Semantiek, want daar het is mogelijk om oneindige afleidingsrijen te maken. 
 Dit valt buiten de scope van ons project en zal dus in een vervolg op dit project verder uitgewerkt moeten worden.
